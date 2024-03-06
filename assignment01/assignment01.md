@@ -1,7 +1,7 @@
 # Effective Software Testing Lab (Assignment 1)
 
-- Deliverable: One single zip file containing all the folders that you find attached to this assignment, augmented with the tests you will write for each problem, as described below. Additionally, a `Documentation.md` file where you document your decisions and report test coverage.
-- Deadline: March 25, 2024 at 18:00 (Zurich time).
+- Deliverable: One single zip file containing all the folders that you find attached to this assignment, augmented with the tests you will write for each problem, as described below. Additionally, a `Documentation.md` file where you document your decisions and report test coverage requested nelow.
+- Deadline: March 25, 2024 at 18:00 (Zurich, CH, time).
 
 
 ## Forming Groups
@@ -45,3 +45,6 @@ Each assignment will be graded with either 0 (fail) or 1 (pass). In order for an
 3. Provide code that fulfills the requirements of the assignment.
 
 Please note that the lab assignments are propaedeutic to a proper preparation for the final exam, i.e., the lab work should be considered as important not only for the bonus points, but also for preparing the final exam.
+
+## Note:
+Using Generative AI tools in the assignments is allowed, given that you deliver an appendix in the `Documentation.md` file with all the prompts you used.
