@@ -6,10 +6,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 class MaximumSubarrayTest {
-
     @Test
-    void testGet() {
-        int[] a = null;
-        assertEquals("Hello JUnit 5", MaximumSubarray.maxSubArray(a));
+    void emptyArray() {
+        int[] a = new int[0];
+        assertEquals(0, MaximumSubarray.maxSubArray(a));
     }
 }
