@@ -23,7 +23,9 @@ class MaximumSubarrayTest {
 
     @Test
     void multipleElements() {
-        int[] a = {-2,1,-3,4,-1,2,1,-5,4};
-        assertEquals(6, MaximumSubarray.maxSubArray(a));
+        int[] a1 = {-2, 1, -3, 4, -1, 2, 1, -5, 4};
+        int[] a2 = {5, 4, -1, 7, 8};
+        assertEquals(6, MaximumSubarray.maxSubArray(a1));
+        assertEquals(23, MaximumSubarray.maxSubArray(a2));
     }
 }
