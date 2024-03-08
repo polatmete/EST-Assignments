@@ -1,6 +1,8 @@
 package zest;
 
-public class MaximumSubarray {
+public final class MaximumSubarray {
+
+    private MaximumSubarray(){}
 
     public static int maxSubArray(int[] a) {
         if (a == null || a.length == 0) {
