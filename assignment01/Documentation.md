@@ -22,6 +22,10 @@ Pursuing this idea and applying it to the given method, the following test cases
 2. Empty array
 3. Array with one integer only
 4. Array with more than one integer
+
+When running the corresponding test cases, the ones for a null and an empty array fail. Looking at the method this is no surprise
+since these edge cases are not handled before the array is accessed through indices. Therefore, an initial check for the corresponding cases
+is added.
 ## median_of_arrays
 
 ## needle_in_hay
