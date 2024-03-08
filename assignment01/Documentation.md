@@ -13,7 +13,15 @@
 ## generate_parantheses
 
 ## maximum_subarray
-
+The goal of the method is to find a subarray such that all its integer numbers added together output the highest possible value,
+when compared to other subarrays. For this the method receives an integer array as single input.\
+When testing arrays / lists it's common practice to test for null / undefined lists and empty ones. In addition lists with only one element, multiple elements as well as duplicates.\
+The requirements fail to clarify the case of an undefined list. Since the desired output of an empty list is zero, this behavior is adapted for the case of `null`.\
+Pursuing this idea and applying it to the given method, the following test cases can be derived as a first step:
+1. Null array
+2. Empty array
+3. Array with one integer only
+4. Array with more than one integer
 ## median_of_arrays
 
 ## needle_in_hay
