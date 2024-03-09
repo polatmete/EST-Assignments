@@ -26,10 +26,10 @@ Pursuing this idea and applying it to the given method, the following test cases
 When running the corresponding test cases, the ones for a null and an empty array fail. Looking at the method this is no surprise
 since these edge cases are not handled before the array is accessed through indices. Therefore, an initial check for the corresponding cases
 is added.\
-Next, running JaCoCo reveals full coverage for the method `maxSubArray`, however the class definition is not handled. For correctness the class `MaximumSubarray` is declared as final,
-since it serves as a utility class providing the static method `maxSubArray`. In addition, a private constructor is added. This prevents the option to instantiate a variable of `MaximumSubarray`,
-therefore, now yielding a 100% coverage with JaCoCo.\
-Last, running Pitest reveals full mutation coverage. Solely the constructor `MaximumSubarray` is not included in the line coverage.\
+Next, running JaCoCo reveals full coverage for the method `maxSubArray`. The class definition is not handled because the method is static but there is no class instance. However, given the context this can be ignored.
+A possibility would be to declare the class `MaximumSubarray` as final, since it serves as a utility class providing the static method `maxSubArray`. A private constructor can then be added.
+This would prevent the option to instantiate a variable of `MaximumSubarray`, therefore, yielding a 100% coverage with JaCoCo.\
+Last, running Pitest reveals full mutation coverage. Solely the constructor `MaximumSubarray` is not included in the line coverage which again can be ignored for this context.\
 In conclusion, the provided test suite catches all relevant bugs.
 ## median_of_arrays
 
