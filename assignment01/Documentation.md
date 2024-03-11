@@ -31,10 +31,11 @@
   - however, I decided that for negative as positive input testing with a certain number is enough and does not require testing with a bunch of other numbers in the same format
 - I used Junit5 to help me automate testcases and then performed some final checks
 
-### TODOs
+### Structural Testing
+With the assistance of JaCoCo, I performed structural testing. The code coverage tool revealed that I had overlooked a branch, specifically the one validating if the string is empty. I then created a new test `stringIsEmpty()`to test for this case, which then allowed me to reach 100% branch + condition coverage.
 
-- [ ] Structural Testing?
-- [ ] Mutation Testing?
+### TODOs
+- [ ] Mutation Testing
 
 ## combination_sum
 

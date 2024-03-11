@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class MyAtoiTest {
 
+
     @Test
     void happyCase() {
         String input = "42";
@@ -66,5 +67,10 @@ class MyAtoiTest {
     void outOfRange() {
         assertEquals(-2147483648, MyAtoi.myAtoi("-91283472332"));
         assertEquals(2147483647, MyAtoi.myAtoi("91283472332"));
+    }
+
+    @Test
+    void stringIsEmpty(){
+        assertEquals(0, MyAtoi.myAtoi(""));
     }
 }
