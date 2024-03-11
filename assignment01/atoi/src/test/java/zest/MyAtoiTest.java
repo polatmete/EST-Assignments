@@ -65,6 +65,13 @@ class MyAtoiTest {
 
     @Test
     void outOfRange() {
+        // on points
+        assertEquals(-2147483648, MyAtoi.myAtoi("-2147483648"));
+        assertEquals(2147483647, MyAtoi.myAtoi("2147483647"));
+        // off points (close to boundary)
+        assertEquals(-2147483647, MyAtoi.myAtoi("-2147483647"));
+        assertEquals(2147483646, MyAtoi.myAtoi("2147483646"));
+        // off points (boundary overflow)
         assertEquals(-2147483648, MyAtoi.myAtoi("-91283472332"));
         assertEquals(2147483647, MyAtoi.myAtoi("91283472332"));
     }

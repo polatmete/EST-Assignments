@@ -34,8 +34,8 @@
 ### Structural Testing
 With the assistance of JaCoCo, I performed structural testing. The code coverage tool revealed that I had overlooked a branch, specifically the one validating if the string is empty. I then created a new test `stringIsEmpty()`to test for this case, which then allowed me to reach 100% branch + condition coverage.
 
-### TODOs
-- [ ] Mutation Testing
+### Mutation Testing
+When conducting mutation testing using PITest, 20 out of 21 mutants were successfully eliminated. The one mutant that survived is the change of the conditional boundary "if (num > (Integer.MAX_VALUE - digit) / 10)". Consequently, I expanded the test suite by testing on points as well as off points left and right from the boundary. This allowed me to kill all mutants.
 
 ## combination_sum
 
