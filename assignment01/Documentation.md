@@ -31,7 +31,32 @@ A possibility would be to declare the class `MaximumSubarray` as final, since it
 This would prevent the option to instantiate a variable of `MaximumSubarray`, therefore, yielding a 100% coverage with JaCoCo.\
 Last, running Pitest reveals full mutation coverage. Solely the constructor `MaximumSubarray` is not included in the line coverage which again can be ignored for this context.\
 In conclusion, the provided test suite catches all relevant bugs.
+
 ## median_of_arrays
+The goal of the method `findMedianSortedArrays` is to compute the median of two sorted integer arrays (in ascending order). It receives the two arrays as input.\
+When testing arrays / lists it's common practice to test for null / undefined lists and empty ones. In addition, lists with only one element, multiple elements as well as duplicates.\
+The requirements fail to clarify the case of an empty list. Since the desired output is the median of both lists, the method is expected to return the median of the first array.
+If both lists are empty the method is expected to return zero.\
+Pursuing this idea and applying it to the given method, the following test cases can be derived as a first step:
+1. Null array
+2. Empty array
+3. Array with one integer only
+4. Array with more than one integer
+
+Since we have two lists and the additional requirement of them being in ascending order the test cases are extended:
+1. One null array (the other array has expected values)
+2. One unsorted array (the other array has expected values)
+3. Two empty arrays
+4. One empty array (the other array has expected values)
+5. Two arrays with one value only
+6. Two arrays with multiple values
+7. One array with one value only and the other array with multiple
+
+The last test seems a bit redundant, but it helps to cover all cases and therefore is also considered. For the cases where the return value is expected to be zero one test each is sufficient.
+Therefore, no tests are included where one array is null and the other is unsorted.\
+To be able to call `findMedianSortedArrays` a private instance of the class `MedianOfArray` is necessary.\
+When running the test suite, the tests for cases 3. and 6. fail. To catch the edge case when both arrays are empty a simple if-statement is added. For fixing the bug which causes the last test
+to fail the debugger is used.
 
 ## needle_in_hay
 
