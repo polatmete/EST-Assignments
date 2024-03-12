@@ -54,9 +54,9 @@ Since we have two lists and the additional requirement of them being in ascendin
 
 The last test seems a bit redundant, but it helps to cover all cases and therefore is also considered. For the cases where the return value is expected to be zero one test each is sufficient.
 Therefore, no tests are included where one array is null and the other is unsorted.\
-To be able to call `findMedianSortedArrays` a private instance of the class `MedianOfArray` is necessary.\
-When running the test suite, the tests for cases 3. and 6. fail. To catch the edge case when both arrays are empty a simple if-statement is added. For fixing the bug which causes the last test
-to fail the debugger is used.
+To be able to call `findMedianSortedArrays` a private instance of the class `MedianOfArray` is necessary and instantiated. To guarantee a correct initialization a `@BeforeEach` is used and the instance is
+re-initialized for every test.\
+When running the test suite, the test for case 3. fails. To catch the edge case when both arrays are empty a simple if-statement is added.
 
 ## needle_in_hay
 
