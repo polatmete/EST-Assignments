@@ -56,7 +56,18 @@ The last test seems a bit redundant, but it helps to cover all cases and therefo
 Therefore, no tests are included where one array is null and the other is unsorted.\
 To be able to call `findMedianSortedArrays` a private instance of the class `MedianOfArray` is necessary and instantiated. To guarantee a correct initialization a `@BeforeEach` is used and the instance is
 re-initialized for every test.\
-When running the test suite, the test for case 3. fails. To catch the edge case when both arrays are empty a simple if-statement is added.
+When running the test suite, the test for case 3. fails. To catch the edge case when both arrays are empty a simple if-statement is added.\
+Next, running JaCoCo reveals a code coverage of 98%. Since we only have one test for the cases where the return value is expected to be zero (i.e., a null or empty array), not all branches are covered.
+For example, the case where both arrays are null is not considered. However, including a test like this would be redundant and not necessary since testing for one null array is enough.
+Similarly, this is true for the unsorted array, the empty array as well as case 7. The report shows that the only line not covered at all is line 14. This makes sense, since the variables `p1` and `p2`
+are initialized with zero and then compared to the length of the arrays. Since the length of an array cannot be negative line 14 is never reached and can be considered dead code for this use case. For all of these
+reasons it does not make sense to include more tests in the test suite.\
+Last, running Pitest reveals a 88% mutation coverage. Following the control flow of the program the first mutant survived due to a changed conditional boundary on line 19. To tackle this mutant a test with an array
+not only in descending order but rather with duplicates is required. The test `arrayWithDuplicates` is added. This test additionally contributes to a better branch coverage once re-running JaCoCo.\
+The second mutant survived due to a change of the math operator on line 33. Since the variables `m` and `n` stand for the length of the respective arrays, adding or subtracting before computing the remainder of modulo 2
+will return the same result. Therefore, this mutant can be skipped.\
+The rest of the surviving mutants can be skipped as well since the test suite does not consider all the combinations of invalid inputs (such as null, empty or unordered arrays).
+
 
 ## needle_in_hay
 

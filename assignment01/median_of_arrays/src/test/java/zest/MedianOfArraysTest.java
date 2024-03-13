@@ -56,4 +56,11 @@ class MedianOfArraysTest {
         int[] nums2 = {3, 4};
         assertEquals(2.5, medianOfArrays.findMedianSortedArrays(nums1, nums2));
     }
+
+    @Test
+    void arrayWithDuplicates() {
+        int[] nums1 = {1, 1};
+        int[] nums2 = {2};
+        assertEquals(0.0, medianOfArrays.findMedianSortedArrays(nums1, nums2));
+    }
 }

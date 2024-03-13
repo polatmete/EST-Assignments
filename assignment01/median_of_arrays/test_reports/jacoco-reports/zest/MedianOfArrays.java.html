@@ -27,7 +27,7 @@
 
     public double findMedianSortedArrays(int[] nums1, int[] nums2) {
 <span class="pc bpc" id="L29" title="1 of 4 branches missed.">        if (nums1==null || nums2==null) return 0;</span>
-<span class="pc bpc" id="L30" title="1 of 4 branches missed.">        if (!isArraySortedAscending(nums1) || !isArraySortedAscending(nums2)) return 0;</span>
+<span class="fc bfc" id="L30" title="All 4 branches covered.">        if (!isArraySortedAscending(nums1) || !isArraySortedAscending(nums2)) return 0;</span>
 <span class="pc bpc" id="L31" title="1 of 4 branches missed.">        if (nums1.length == 0 &amp;&amp; nums2.length == 0) return 0;</span>
 <span class="fc" id="L32">        int m = nums1.length, n = nums2.length;</span>
 <span class="fc bfc" id="L33" title="All 2 branches covered.">        if ((m + n) % 2 == 0) {</span>
