@@ -64,9 +64,11 @@ are initialized with zero and then compared to the length of the arrays. Since t
 reasons it does not make sense to include more tests in the test suite.\
 Last, running Pitest reveals a 88% mutation coverage. Following the control flow of the program the first mutant survived due to a changed conditional boundary on line 19. To tackle this mutant a test with an array
 not only in descending order but rather with duplicates is required. The test `arrayWithDuplicates` is added. This test additionally contributes to a better branch coverage once re-running JaCoCo.\
-The second mutant survived due to a change of the math operator on line 33. Since the variables `m` and `n` stand for the length of the respective arrays, adding or subtracting before computing the remainder of modulo 2
-will return the same result. Therefore, this mutant can be skipped.\
-The rest of the surviving mutants can be skipped as well since the test suite does not consider all the combinations of invalid inputs (such as null, empty or unordered arrays).
+The second mutant survived due to a change of the math operator on line 33. Since the variables `m` and `n` stand for the length of the respective arrays, a case is necessary where the lengths added together return an odd number
+and the if-statement still evaluates to true. The only way to get an odd number of the total length is by having an array with an odd length and the other with an even length. By definition, their difference will always be
+odd. Therefore, this mutant can be skipped.\
+The third mutant survived due to a changed conditional boundary on line 8. However, since it doesn't matter whether the middle between two numbers is considered from the left or the right boundary, this mutant can also be skipped.
+The rest of the surviving mutants can be skipped as well since the test suite does not consider all the combinations of invalid inputs (such as null, empty or unordered arrays) intentionally.
 
 
 ## needle_in_hay
