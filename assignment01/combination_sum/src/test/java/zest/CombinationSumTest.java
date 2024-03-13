@@ -81,9 +81,9 @@ class CombinationSumTest {
     }
 
     @Test
-    void zeroCandidateZeroTarget() {
+    void onlyZeroCandidate() {
         int[] candidates = {0};
-        int target = 0;
+        int target = 2;
         List<List<Integer>> expected = Collections.emptyList();
         List<List<Integer>> result = CombinationSum.combinationSum(candidates, target);
         assertTrue(result.size() == 0 && expected.containsAll(result) && result.containsAll(expected));
@@ -108,10 +108,27 @@ class CombinationSumTest {
     }
 
     @Test
-    void tooManyCandidates() {
+    void tooManyPositiveResults() {
         int[] candidates = {1, 2, 3};
         int target = 1000;
         List<List<Integer>> result = CombinationSum.combinationSum(candidates, target);
         assertTrue(result.size() <= 150);
+    }
+
+    @Test
+    void tooManyNegativeResults() {
+        int[] candidates = {-1, -2, -3};
+        int target = -1000;
+        List<List<Integer>> result = CombinationSum.combinationSum(candidates, target);
+        assertTrue(result.size() <= 150);
+    }
+
+    @Test
+    void zeroTargetPositiveCandidates() {
+        int[] candidates = {1, 2, 3};
+        int target = 0;
+        List<List<Integer>> expected = Collections.singletonList(Collections.emptyList());
+        List<List<Integer>> result = CombinationSum.combinationSum(candidates, target);
+        assertTrue(expected.size() == result.size() && expected.containsAll(result) && result.containsAll(expected));
     }
 }

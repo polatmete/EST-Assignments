@@ -97,9 +97,20 @@ These combinations make logically no sense since there is either no output, or a
 
 After implementing a check to make sure the results list never exceeded 150 entries, all tests passed, and we moved to JaCoco.
 
-Next, running JaCoCo reveals full coverage for the method `maxSubArray`, however the class definition is not handled. For correctness the class `MaximumSubarray` is declared as final,
-since it serves as a utility class providing the static method `maxSubArray`. In addition, a private constructor is added. This prevents the option to instantiate a variable of `MaximumSubarray`,
-therefore, now yielding a 100% coverage with JaCoCo.\
+Jacoco revealed a method and line coverage of 100% and a branch coverage of 93%. One of the missing branches relates to the
+maximum of 150 entries for the results in the negative candidates' method. This bumped the coverage to 95%. The two missing 
+branches were the 'if else (target == 0)'. We changed the logic around detecting inputs with target = 0 to a more logic approach
+and to generally allow them but just return a list of one empty list. This did not bump the coverage up, but we felt like the
+test was still important. We left it at that, since the respective 'if else' branch still reported 1 hit and 1 false hit
+(so technically, they were at least one time true and one time false).
+
+PiTest reported a test strength of 83%, with one line missing and 9 mutations surviving. The one line was the class definition
+which was set to final since it serves as a utility class providing a static method. 
+- 3 of the surviving mutations regard the return statements, which were replaced by Collections.emptyList(). This is okay,
+since, this is what we want to return (in the code we just return the initialized result list).
+- The other 6 mutations are regarding 'changed conditional boundary → SURVIVED'. Most of them belong to the one big filter
+which checks for 'forbidden' combinations of inputs. Since only one of the conditions is targeted in a test, the other ones 
+can be replaced without the test failing. Therefore, this is also okay.
 
 ## frac2dec
 

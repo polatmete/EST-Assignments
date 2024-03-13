@@ -4,15 +4,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class CombinationSum {
+public final class CombinationSum {
     public static List<List<Integer>> combinationSum(int[] candidates, int target) {
         List<List<Integer>> result = new ArrayList<>();
 
         if (candidates == null) {
-            return result;
-        }
-
-        if (target == 0) {
             return result;
         }
 
