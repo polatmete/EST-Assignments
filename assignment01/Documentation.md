@@ -84,18 +84,21 @@ combinations out of the candidates summing to the target. To cover this we imple
 The next tests that failed revealed that the code was not able to handle negative candidates or targets, since tests 6/7/11 all failed.
 We therefore extended the code such that it was able to handle negative targets and candidates accordingly.
 
-Additionally, the code couldn't handle candidates that equalled zero. Since logically it doesn't make sense to count them
+Additionally, the code couldn't handle zero as a candidate. Since logically it doesn't make sense to count zero
 as valid candidates and because the specification don't mentioned this, we decided to 'clean' the candidates of all possible
 zeros before running the algorithm. The same goes for 'target == 0'. Since there were no specifics about this case, and 
 logically it doesn't make sense to add different numbers to zero, we decided to return an empty list if the target is 0.
 This made test 8 and 9 work again.
 
-The biggest chunk of tests that failed were all tests that included negative numbers. To not overcomplicate the code (since there
-are no restrictions or specifications regarding the matter) we decided to make the code work if a list of negative candidates with
-a negative target was inserted but restrict the insertion of negative AND positive candidates or negative candidates with positive targets.
-These combinations make logically no sense since there is either no output, or an infinite amount (both of which we don't need to show).
+The biggest chunk of tests that failed were all tests that included negative numbers. The specifications of the method
+do not provide any details about how to handle negative numbers. However, thinking about the candidates, negative numbers
+should, logically thinking, break the code. **This is because if you insert negative candidates mixed with positive candidates
+the possible combinations for a given target become endless!** To avoid this sort of behavior we decided to only allow negative 
+candidates if and only if there are only negative numbers in the list of candidates (subsequently this means that positive
+candidates are only allowed if and only if there are only positive numbers in the list of candidates).
 
-After implementing a check to make sure the results list never exceeded 150 entries, all tests passed, and we moved to JaCoco.
+After implementing a check to make sure the results list never exceeded 150 entries (A test with low candidates and 
+a very high target), all tests passed, and we moved to JaCoco.
 
 Jacoco revealed a method and line coverage of 100% and a branch coverage of 93%. One of the missing branches relates to the
 maximum of 150 entries for the results in the negative candidates' method. This bumped the coverage to 95%. The two missing 
