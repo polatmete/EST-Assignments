@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CombinationSum.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">EST_Assignments$CombinationSumTest.exec</a> &gt; <a href="index.source.html" class="el_package">zest</a> &gt; <span class="el_source">CombinationSum.java</span></div><h1>CombinationSum.java</h1><pre class="source lang-java linenums">package zest;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+<span class="nc" id="L7">public class CombinationSum {</span>
+    public static List&lt;List&lt;Integer&gt;&gt; combinationSum(int[] candidates, int target) {
+<span class="fc" id="L9">        List&lt;List&lt;Integer&gt;&gt; result = new ArrayList&lt;&gt;();</span>
+
+<span class="fc bfc" id="L11" title="All 2 branches covered.">        if (candidates == null) {</span>
+<span class="fc" id="L12">            return result;</span>
+        }
+
+        // Logic for deleting 0's from the candidates
+<span class="fc" id="L16">        int count = 0;</span>
+<span class="fc bfc" id="L17" title="All 2 branches covered.">        for (int candidate : candidates) {</span>
+<span class="fc bfc" id="L18" title="All 2 branches covered.">            if (candidate != 0) {</span>
+<span class="fc" id="L19">                count++;</span>
+            }
+        }
+
+<span class="fc" id="L23">        int[] sanitizedCandidates = new int[count];</span>
+
+<span class="fc" id="L25">        int index = 0;</span>
+<span class="fc bfc" id="L26" title="All 2 branches covered.">        for (int candidate : candidates) {</span>
+<span class="fc bfc" id="L27" title="All 2 branches covered.">            if (candidate != 0) {</span>
+<span class="fc" id="L28">                sanitizedCandidates[index++] = candidate;</span>
+            }
+        }
+
+<span class="fc bfc" id="L32" title="All 2 branches covered.">        if (sanitizedCandidates.length == 0) {</span>
+<span class="fc" id="L33">            return result;</span>
+        }
+
+<span class="fc" id="L36">        Arrays.sort(sanitizedCandidates);</span>
+
+        // Return if one the following combinations exists: negative AND positive candidates, negative candidates and
+        // positive target, positive candidates and negative target
+<span class="fc bfc" id="L40" title="All 12 branches covered.">        if ((sanitizedCandidates[0] &lt; 0 &amp;&amp; sanitizedCandidates[sanitizedCandidates.length - 1] &gt; 0) ||</span>
+                (sanitizedCandidates[sanitizedCandidates.length - 1] &lt; 0 &amp;&amp; target &gt; 0) ||
+                (sanitizedCandidates[0] &gt; 0 &amp;&amp; target &lt; 0)) {
+<span class="fc" id="L43">            return result;</span>
+        }
+
+
+<span class="fc bfc" id="L47" title="All 2 branches covered.">        if (target &gt;= 0) {</span>
+<span class="fc" id="L48">            getResultForNonNegativeTarget(result, new ArrayList&lt;&gt;(), sanitizedCandidates, target, 0);</span>
+        } else {
+<span class="fc" id="L50">            getResultForNegativeTarget(result, new ArrayList&lt;&gt;(), sanitizedCandidates, target, candidates.length - 1);</span>
+        }
+
+<span class="fc" id="L53">        return result;</span>
+    }
+
+    private static void getResultForNonNegativeTarget(List&lt;List&lt;Integer&gt;&gt; result, List&lt;Integer&gt; cur, int[] candidates, int target, int start) {
+<span class="fc bfc" id="L57" title="All 2 branches covered.">        if (result.size() &lt; 150) {</span>
+<span class="fc bfc" id="L58" title="All 2 branches covered.">            if (target &gt; 0) {</span>
+<span class="fc bfc" id="L59" title="All 4 branches covered.">                for (int i = start; i &lt; candidates.length &amp;&amp; target &gt;= candidates[i]; i++) {</span>
+<span class="fc" id="L60">                    cur.add(candidates[i]);</span>
+<span class="fc" id="L61">                    getResultForNonNegativeTarget(result, cur, candidates, target - candidates[i], i);</span>
+<span class="fc" id="L62">                    cur.remove(cur.size() - 1);</span>
+                }
+<span class="pc bpc" id="L64" title="1 of 2 branches missed.">            } else if (target == 0) {</span>
+<span class="fc" id="L65">                result.add(new ArrayList&lt;&gt;(cur));</span>
+            }
+        }
+<span class="fc" id="L68">    }</span>
+
+    private static void getResultForNegativeTarget(List&lt;List&lt;Integer&gt;&gt; result, List&lt;Integer&gt; cur, int[] candidates, int target, int start) {
+<span class="fc bfc" id="L71" title="All 2 branches covered.">        if (result.size() &lt; 150) {</span>
+<span class="fc bfc" id="L72" title="All 2 branches covered.">            if (target &lt; 0) {</span>
+<span class="fc bfc" id="L73" title="All 4 branches covered.">                for (int i = start; i &gt;= 0 &amp;&amp; target &lt;= candidates[i]; i--) {</span>
+<span class="fc" id="L74">                    cur.add(candidates[i]);</span>
+<span class="fc" id="L75">                    getResultForNegativeTarget(result, cur, candidates, target - candidates[i], i);</span>
+<span class="fc" id="L76">                    cur.remove(cur.size() - 1);</span>
+                }
+<span class="pc bpc" id="L78" title="1 of 2 branches missed.">            } else if (target == 0) {</span>
+<span class="fc" id="L79">                result.add(new ArrayList&lt;&gt;(cur));</span>
+            }
+        }
+<span class="fc" id="L82">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>
