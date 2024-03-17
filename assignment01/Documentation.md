@@ -50,7 +50,9 @@ Since we have two lists and the additional requirement of them being in ascendin
 4. One empty array (the other array has expected values)
 5. Two arrays with one value only
 6. Two arrays with multiple values
-7. One array with one value only and the other array with multiple
+7. One array with negative and one with positive numbers
+8. Two arrays with negative numbers only
+9. One array with one value only and the other array with multiple
 
 The last test seems a bit redundant, but it helps to cover all cases and therefore is also considered. For the cases where the return value is expected to be zero one test each is sufficient.
 Therefore, no tests are included where one array is null and the other is unsorted.\
@@ -59,14 +61,14 @@ re-initialized for every test.\
 When running the test suite, the test for case 3. fails. To catch the edge case when both arrays are empty a simple if-statement is added.\
 Next, running JaCoCo reveals a code coverage of 98%. Since we only have one test for the cases where the return value is expected to be zero (i.e., a null or empty array), not all branches are covered.
 For example, the case where both arrays are null is not considered. However, including a test like this would be redundant and not necessary since testing for one null array is enough.
-Similarly, this is true for the unsorted array, the empty array as well as case 7. The report shows that the only line not covered at all is line 14. This makes sense, since the variables `p1` and `p2`
+Similarly, this is true for the unsorted array, the empty array as well as case 9. The report shows that the only line not covered at all is line 14. This makes sense, since the variables `p1` and `p2`
 are initialized with zero and then compared to the length of the arrays. Since the length of an array cannot be negative line 14 is never reached and can be considered dead code for this use case. For all of these
 reasons it does not make sense to include more tests in the test suite.\
 Last, running Pitest reveals a 88% mutation coverage. Following the control flow of the program the first mutant survived due to a changed conditional boundary on line 19. To tackle this mutant a test with an array
-not only in descending order but rather with duplicates is required. The test `arrayWithDuplicates` is added. This test additionally contributes to a better branch coverage once re-running JaCoCo.\
+not only in descending order but rather with duplicates is required. The test `arrayWithDuplicates` is added and yields a coverage of 90%. This test additionally contributes to a better branch coverage once re-running JaCoCo.\
 The second mutant survived due to a change of the math operator on line 33. Since the variables `m` and `n` stand for the length of the respective arrays, a case is necessary where the lengths added together return an odd number
 and the if-statement still evaluates to true. The only way to get an odd number of the total length is by having an array with an odd length and the other with an even length. By definition, their difference will always be
-odd. Therefore, this mutant can be skipped.\
+odd and the sum as well as the difference if taken modulo two will give the same result. Therefore, this mutant can be skipped.\
 The third mutant survived due to a changed conditional boundary on line 8. However, since it doesn't matter whether the middle between two numbers is considered from the left or the right boundary, this mutant can also be skipped.
 The rest of the surviving mutants can be skipped as well since the test suite does not consider all the combinations of invalid inputs (such as null, empty or unordered arrays) intentionally.
 

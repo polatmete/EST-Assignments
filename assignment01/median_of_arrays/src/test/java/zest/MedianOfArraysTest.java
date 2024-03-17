@@ -44,17 +44,31 @@ class MedianOfArraysTest {
     }
 
     @Test
-    void oneOneOneMultipleElements() {
-        int[] nums1 = {1, 3};
-        int[] nums2 = {2};
-        assertEquals(2.0, medianOfArrays.findMedianSortedArrays(nums1, nums2));
-    }
-
-    @Test
     void bothMultipleElements() {
         int[] nums1 = {1, 2};
         int[] nums2 = {3, 4};
         assertEquals(2.5, medianOfArrays.findMedianSortedArrays(nums1, nums2));
+    }
+
+    @Test
+    void oneNegativeOnePositive() {
+        int[] nums1 = {-2, -1};
+        int[] nums2 = {1, 2};
+        assertEquals(0.0, medianOfArrays.findMedianSortedArrays(nums1, nums2));
+    }
+
+    @Test
+    void bothNegative() {
+        int[] nums1 = {-3, -2};
+        int[] nums2 = {-2};
+        assertEquals(-2.0, medianOfArrays.findMedianSortedArrays(nums1, nums2));
+    }
+
+    @Test
+    void oneOneOneMultipleElements() {
+        int[] nums1 = {1, 3};
+        int[] nums2 = {2};
+        assertEquals(2.0, medianOfArrays.findMedianSortedArrays(nums1, nums2));
     }
 
     @Test
