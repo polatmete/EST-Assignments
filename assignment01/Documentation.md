@@ -53,10 +53,8 @@ Running the tests revealed that the last test failed, because the input of n = 9
 the constraint forbids it. We therefore implement a precondition in the method that checks that the input is not greater
 than 8.
 
-Next, running JaCoCo reveals full coverage for the method `generateParentheses`, however the class definition is not handled. 
-For correctness the class `GenerateParentheses` is declared as final, since it serves as a utility class providing the 
-static method `generateParentheses`. In addition, a private constructor is added. This prevents the option to instantiate 
-a variable of `GenerateParentheses`, therefore, now yielding a 100% coverage with JaCoCo.
+Next, running JaCoCo reveals full coverage for the method `generateParentheses`. The only line not covered is the class definition,
+which is okay in our context. We could add the keyword 'final' to it, but that seems to be a bit overkill.
 
 Last, running Pitest reveals 95% mutation coverage. One mutant survived due to the new check we implemented earlier. There,
 we just added a '|| n >= 9' to the already existing check for n <= 0. This means that one of the checks can be altered, 

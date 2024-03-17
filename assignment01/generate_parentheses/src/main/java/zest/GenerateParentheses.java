@@ -3,9 +3,7 @@ package zest;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class GenerateParentheses {
-
-    private GenerateParentheses(){}
+public class GenerateParentheses {
 
     public static List<String> generateParentheses(int n) {
         List<String> combinations = new ArrayList();
