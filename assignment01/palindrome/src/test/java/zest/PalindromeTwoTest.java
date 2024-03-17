@@ -35,15 +35,8 @@ class PalindromeTwoTest {
         assertFalse(PalindromeTwo.isPalindrome(1231));
         assertFalse(PalindromeTwo.isPalindrome(13));
         assertFalse(PalindromeTwo.isPalindrome(1100));
+        assertFalse(PalindromeOne.isPalindrome(00121));
     }
-
-    /*
-    @Test
-    void leadingZeros() {
-        assertFalse(PalindromeTwo.isPalindrome(002200));
-        assertFalse(PalindromeTwo.isPalindrome(020));
-        assertTrue(PalindromeTwo.isPalindrome(022));
-    }*/
 
     @Test
     void outOfRange() {

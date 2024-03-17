@@ -10,17 +10,6 @@ public class PalindromeOne {
         // convert input into an array and rest is nothing but a simple two pointer solution
         char[] numbers = String.valueOf(x).toCharArray();
 
-        /* checking for leading zeros
-        int i = 0;
-        while (i <= x) {
-            if(numbers[i] == 0){
-                return false;
-            }
-            else {
-                break;
-            }
-        }*/
-
         int start = 0;
         int end = numbers.length - 1;
         while (start < end) {
