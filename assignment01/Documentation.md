@@ -107,8 +107,7 @@ and to generally allow them but just return a list of one empty list. This did n
 test was still important. We left it at that, since the respective 'if else' branch still reported 1 hit and 1 false hit
 (so technically, they were at least one time true and one time false).
 
-PiTest reported a test strength of 83%, with one line missing and 9 mutations surviving. The one line was the class definition
-which was set to final since it serves as a utility class providing a static method. 
+PiTest reported a test strength of 83%, with one line missing and 9 mutations surviving.
 - 3 of the surviving mutations regard the return statements, which were replaced by Collections.emptyList(). This is okay,
 since, this is what we want to return (in the code we just return the initialized result list).
 - The other 6 mutations are regarding 'changed conditional boundary → SURVIVED'. Most of them belong to the one big filter
