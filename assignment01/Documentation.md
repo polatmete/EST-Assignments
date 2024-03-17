@@ -11,6 +11,57 @@
 ## frac2dec
 
 ## generate_parantheses
+The goal of the method is to generate all combinations of well-formed parentheses, given n pairs of parentheses. If n is
+zero or negative, the method returns an empty array. Another constraint is that n shall not be smaller than 1 or higher than
+eight. The return of the method, should n be higher than 8 is not given. We assume it should also be handled with an empty
+array as return (similar to n < 1).
+
+Looking at this rather small set of possible inputs, we could just write a test for every possible number for n plus a
+test for n < 1 and n > 8, which would give us a total of 10 tests. For a method of this size we deem this too much. Therefore,
+we rather look at the on and off points. The on points are 1 and 8 and the off points are 0 and 9. Writing tests for these 
+numbers should suffice and shrink the number of tests to 4. Since negative inputs are specifically mentioned in the
+description we would also like a test that checks this. Normally we would also add a test for null input, but Java doesn't
+even allow this as an argument for the method and flags it immediately, which is why we can leave that out.
+
+After more thoughts, the test with n = 8 seems to be too complicated since there are 1'430 different possibilities and 
+writing them down for the assertion is totally out of scope. Another idea would be that we could test if the size of the 
+output with n = 8 is actually 1'430. For this to work we would need another way to calculate this number, since taking it
+for granted just by inserting it into the method is actually not a good practice (since the method could be implement
+incorrectly).
+
+At this stage we turned to ChatGpt with the following prompt: 'Given n pairs of parentheses, write a function to generate 
+all combinations of well-formed parentheses. If n is zero or negative, return empty array.' It then implemented a method,
+similar to the one given in this code. We then followed up: 'Is there any correlation between the number of possible 
+combinations and the input n?'. It now answered with the term 'Catalan number sequence'. A quick google search confirmed
+this suggestion. The Catalan number sequence is a sequence of numbers based on 'C = 1/(n+1)*(2n n)'. The parentheses problem
+is a known application of this sequence. We can therefore confirm that the size of the output for n = 8 should indeed be
+1'430.
+
+Following this, we would like to have a test that actually asserts the combinations of parentheses and decided on n = 3
+since the effort to write down the output in a test is low enough to make it worth it. For this test we have to ake sure that 
+the order of the output does not matter.
+
+This leads us to the following 5 test cases:
+1. n = -1 -> empty array
+2. n = 0 -> empty array
+3. n = 1 -> [()]
+4. n = 3 -> [((())), (()()), (())(), ()(()), ()()()]
+5. size of n = 8 -> 1'430
+6. n = 9 -> empty Array
+
+Running the tests revealed that the last test failed, because the input of n = 9 was allowed in the method even though
+the constraint forbids it. We therefore implement a precondition in the method that checks that the input is not greater
+than 8.
+
+Next, running JaCoCo reveals full coverage for the method `generateParentheses`, however the class definition is not handled. 
+For correctness the class `GenerateParentheses` is declared as final, since it serves as a utility class providing the 
+static method `generateParentheses`. In addition, a private constructor is added. This prevents the option to instantiate 
+a variable of `GenerateParentheses`, therefore, now yielding a 100% coverage with JaCoCo.
+
+Last, running Pitest reveals 95% mutation coverage. One mutant survived due to the new check we implemented earlier. There,
+we just added a '|| n >= 9' to the already existing check for n <= 0. This means that one of the checks can be altered, 
+with test still working. This behavior is okay and cannot be changed by e.g. separating the two checks to two lines. 
+In conclusion, the provided test suite catches all relevant bugs.
 
 ## maximum_subarray
 The goal of the method is to find a subarray such that all its integer numbers added together output the highest possible value,
