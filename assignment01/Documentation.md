@@ -38,6 +38,112 @@ When conducting mutation testing using PITest, 20 out of 21 mutants were success
 
 ## combination_sum
 
+The goal of the method is to find all unique combinations of integers from an array of integers where the sum of each 
+combination adds up to a defined target integer. For this the method receives an integer array of distinct integers and 
+a target integer.\
+
+When testing arrays (candidates) it is common practice testing for null / undefined lists and empty ones. In terms of 
+the target we don't have to test for null / undefined, since int cannot be null. Since we have two arguments, we also 
+have to look at possible combinations of the two. The requirements fail to clarify the case of an undefined candidate 
+list. Since the desired output of an empty list is zero, this behavior is adapted for the case of `null`. Therefore, 
+we get the following test cases for null / undefined:
+1. candidates: null; target: some number
+2. candidates: empty; target: some number
+
+Disclaimer: To ease testing we have decided to use 4 as target and {1, 2, 3} as candidates. It offers multiple 
+combinations of candidates, but not so much that writing the test cases gets too confusing.
+
+In addition, lists are often tested with only one element, multiple elements as well as duplicates. The case for the
+duplicates can be left out, since the requirements state, that the candidates have to be distinct (Note: Testing the 
+method with duplicates shows that the output differs heavily. However, this "bug" was not fixed due to the 
+specifications). Here we can also test the case for when no combination of the candidates adds up to the target (test 5). 
+We get the following additional test cases:
+3. candidates: array with one integer; target: some multiple of the candidate
+4. candidates: array with one integer; target: no multiple of the candidate
+5. candidates: array with multiple integers; target: some number
+
+Additionally, it is worth to look into different partitions of integers for the candidates. The partitions would be the 
+following: negative, zero and positive (and subsequently the combination of those). The positive case can be combined 
+with test 5, so we only want to look at the other two cases. The negative and zero case are worth looking into 
+separately. In terms of combinations we generally want to avoid creating a bloated test suite. On the other hand, 
+since we only have to look at 3 different cases we also only have to look at three different combinations. We therefore 
+add three more tests: negative/positive combination and zero/positive combination and zero/negative combination.
+6. candidates: all negative; target: some number
+7. candidates: zero; target: some number
+8. candidates: negative/positive; target: some number
+9. candidates: zero/positive; target: some number
+10. candidates: zero/negative; target: some number
+
+At this stage we noticed that the target integer of course can also be negative or zero. Adapting this to the test cases
+6.-10. would surely bloat the test suite too much. We therefore try to minimize the additional tests.\
+
+For the negative candidates, a negative target integer should yield some result, a positive target should yield and 
+empty list and zero as well. Since zero is the same as the positive case we leave out this case (overall one more test).\
+
+For the zero candidate, a negative or positive target should yield an empty list (covered with test 7.) and zero should 
+return 0. This case is potentially covered with test 4. but since 0 is such a special number we include is as well (overall one more test).\
+
+For the positive candidates, a negative target should yield an empty list, a positive target is already covered (test 5.) 
+and zero should yield an empty list. Since zero is the same as the positive case we leave out this case (overall one more test).\
+
+One could argue that we have to adapt the target cases also for the test cass 8.-10. However, since we included three more
+tests already, we think the possible results have been covered. Also we threw out test 10, since we covered negative numbers already 
+and if it was proven that those work, then test 9 should cover this already.
+
+We therefore update the tests 7.-11.:
+6. candidates: all negative; target: some positive number
+7. candidates: all negative; target: some negative number
+8. candidates: positive + zero; target: some number
+9. candidates: zero; target: zero
+10. candidates: all positive; target: some negative number
+11. candidates: negative/positive; target: some lower number (to avoid bloating the test)
+12. candidates: zero/positive; target: some number
+
+When running the corresponding test cases, 1. and 2. fail. Looking at the method this is no surprise
+since these edge cases are not handled before the array is accessed through indices. Therefore, an initial check for the corresponding cases
+is added.\
+
+Test 5 yielded an interesting result. It didn't pass because the order of the lists were not the same. After going through
+the requirements of the method we realised that this behavior is expected, but the test didn't reflect it. We therefore changed
+the test to only assert the List without paying attention to the order.
+
+This was noticed after revisiting the documentation. We also noticed the constraint of a maximum of 150 possible 
+combinations out of the candidates summing to the target. To cover this we implemented an additional test:
+13. candidates: positive; target: some very high number -> length of result should be <=150.
+
+The next tests that failed revealed that the code was not able to handle negative candidates or targets, since tests 6/7/11 all failed.
+We therefore extended the code such that it was able to handle negative targets and candidates accordingly.
+
+Additionally, the code couldn't handle zero as a candidate. Since logically it doesn't make sense to count zero
+as valid candidates and because the specification don't mentioned this, we decided to 'clean' the candidates of all possible
+zeros before running the algorithm. The same goes for 'target == 0'. Since there were no specifics about this case, and 
+logically it doesn't make sense to add different numbers to zero, we decided to return an empty list if the target is 0.
+This made test 8 and 9 work again.
+
+The biggest chunk of tests that failed were all tests that included negative numbers. The specifications of the method
+do not provide any details about how to handle negative numbers. However, thinking about the candidates, negative numbers
+should, logically thinking, break the code. **This is because if you insert negative candidates mixed with positive candidates
+the possible combinations for a given target become endless!** To avoid this sort of behavior we decided to only allow negative 
+candidates if and only if there are only negative numbers in the list of candidates (subsequently this means that positive
+candidates are only allowed if and only if there are only positive numbers in the list of candidates).
+
+After implementing a check to make sure the results list never exceeded 150 entries (A test with low candidates and 
+a very high target), all tests passed, and we moved to JaCoco.
+
+Jacoco revealed a method and line coverage of 100% and a branch coverage of 93%. One of the missing branches relates to the
+maximum of 150 entries for the results in the negative candidates' method. This bumped the coverage to 95%. The two missing 
+branches were the 'if else (target == 0)'. We changed the logic around detecting inputs with target = 0 to a more logic approach
+and to generally allow them but just return a list of one empty list. This did not bump the coverage up, but we felt like the
+test was still important. We left it at that, since the respective 'if else' branch still reported 1 hit and 1 false hit
+(so technically, they were at least one time true and one time false).
+
+PiTest reported a test strength of 83%, with one line missing and 9 mutations surviving.
+- 3 of the surviving mutations regard the return statements, which were replaced by Collections.emptyList(). This is okay,
+since, this is what we want to return (in the code we just return the initialized result list).
+- The other 6 mutations are regarding 'changed conditional boundary → SURVIVED'. Most of them belong to the one big filter
+which checks for 'forbidden' combinations of inputs. Since only one of the conditions is targeted in a test, the other ones 
+can be replaced without the test failing. Therefore, this is also okay.
+
 ## frac2dec
 
 ## generate_parantheses
