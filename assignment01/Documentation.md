@@ -261,3 +261,32 @@ The rest of the surviving mutants can be skipped as well since the test suite do
 ## needle_in_hay
 
 ## palindrome
+### Specification-based Testing
+- For Step 1 and Step 2 I carefully looked at the implementation and method description and then tested the method with happy cases `isPalindrome()` until I understood what the method does.
+- For Step 3 I explored possible inputs and outputs, and identified partitions
+    - The integer input can be:
+        - a negative number
+        - a palindrome with length equals 1
+          - I decided that single digits are considered a palindrome as well (including zero)
+        - a palindrome with length longer than 1
+        - not a palindrome
+        - leading zeros
+            - numbers with leading zeros will be automatically detected as octal integers and will be transformed to its decimal. I decided to calculate isPalindrome for its decimal representation. 
+- For Step 4 I explored the boundaries
+    - number can be out of range `-2^20 <= x <= 2^20 - 1`
+- For Step 5 I devised test cases
+- I used Junit5 to help me automate testcases and then performed some final checks.
+- I found some things to fix:
+  - The implementation of both methods did not handle the boundary constraint of `-2^20 <= x <= 2^20 - 1`, so I decided to implement an IllegalArgumentException for this case. I did not simple want to return false because this could be confusing for user, if they enter a number out of range which is clearly a palindrome like 1111111 but then get false as a result. 
+  - Furthermore, PalindromeTwo did not consider 0 as a palindrome, so I changed the implementation to fix this.
+
+### Structural Testing
+Structural testing revealed to me that I missed a branch in palindromeTwo, because the expression `if (x % 10 == 0) return false;` never evaluated to true with my tests. So I augmented the test suites with an additional test: `assertFalse(PalindromeTwo.isPalindrome(1100));`.
+In the end I had full branch coverage for both palindrome methods (leaving out the constructor as it is not relevant). 
+
+### Mutation Testing
+- For PalindromeOne there is one mutant that survived for the conditional boundary `while (start < end)`. However, if the condition would be <= instead of < that would always be fine, because if the index of the numbers array is the same, the value will also be the same and won't return false for the expression `if (numbers[start] != numbers[end])` anyway. Therefore, this mutant can survive. 
+- For PalindromeTwo there were many mutants that survived for the lines 16 and 17. However, these lines are just to quicker check whether the first and last digits for a two or three digits number is divisible by 11. This means even if these lines are altered the rest of the code will still be able to catch the palindrome. Therefore, it is reasonable that these mutant survive. 
+
+## ??
+- what to do with leading zeros???
