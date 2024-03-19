@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CombinationSumTest.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">EST_Assignments$CombinationSumTest.exec</a> &gt; <a href="index.source.html" class="el_package">zest</a> &gt; <span class="el_source">CombinationSumTest.java</span></div><h1>CombinationSumTest.java</h1><pre class="source lang-java linenums">package zest;
+
+import org.junit.jupiter.api.Test;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+<span class="fc" id="L12">class CombinationSumTest {</span>
+    @Test
+    void nullCandidates() {
+<span class="fc" id="L15">        int[] candidates = null;</span>
+<span class="fc" id="L16">        int target = 4;</span>
+<span class="fc" id="L17">        List&lt;List&lt;Integer&gt;&gt; expected = Collections.emptyList();</span>
+<span class="fc" id="L18">        List&lt;List&lt;Integer&gt;&gt; result = CombinationSum.combinationSum(candidates, target);</span>
+<span class="fc" id="L19">        assertEquals(expected, result);</span>
+<span class="fc" id="L20">    }</span>
+
+    @Test
+    void emptyCandidates() {
+<span class="fc" id="L24">        int[] candidates = {};</span>
+<span class="fc" id="L25">        int target = 4;</span>
+<span class="fc" id="L26">        List&lt;List&lt;Integer&gt;&gt; expected = Collections.emptyList();</span>
+<span class="fc" id="L27">        List&lt;List&lt;Integer&gt;&gt; result = CombinationSum.combinationSum(candidates, target);</span>
+<span class="fc" id="L28">        assertEquals(expected, result);</span>
+<span class="fc" id="L29">    }</span>
+
+    @Test
+    void oneCandidateWithResult() {
+<span class="fc" id="L33">        int[] candidates = {2};</span>
+<span class="fc" id="L34">        int target = 4;</span>
+<span class="fc" id="L35">        List&lt;List&lt;Integer&gt;&gt; expected = Collections.singletonList(Arrays.asList(2, 2));</span>
+<span class="fc" id="L36">        List&lt;List&lt;Integer&gt;&gt; result = CombinationSum.combinationSum(candidates, target);</span>
+<span class="fc" id="L37">        assertEquals(expected, result);</span>
+<span class="fc" id="L38">    }</span>
+    @Test
+    void oneCandidateWithoutResult() {
+<span class="fc" id="L41">        int[] candidates = {2};</span>
+<span class="fc" id="L42">        int target = 5;</span>
+<span class="fc" id="L43">        List&lt;List&lt;Integer&gt;&gt; expected = Collections.emptyList();</span>
+<span class="fc" id="L44">        List&lt;List&lt;Integer&gt;&gt; result = CombinationSum.combinationSum(candidates, target);</span>
+<span class="fc" id="L45">        assertEquals(expected, result);</span>
+<span class="fc" id="L46">    }</span>
+    @Test
+    void multipleCandidates() {
+<span class="fc" id="L49">        int[] candidates = {1, 2, 3};</span>
+<span class="fc" id="L50">        int target = 4;</span>
+<span class="fc" id="L51">        List&lt;List&lt;Integer&gt;&gt; expected = Arrays.asList(Arrays.asList(1, 1, 1, 1), Arrays.asList(1, 1, 2), Arrays.asList(2, 2), Arrays.asList(1, 3));</span>
+<span class="fc" id="L52">        List&lt;List&lt;Integer&gt;&gt; result = CombinationSum.combinationSum(candidates, target);</span>
+<span class="pc bpc" id="L53" title="3 of 6 branches missed.">        assertTrue(expected.size() == result.size() &amp;&amp; expected.containsAll(result) &amp;&amp; result.containsAll(expected));</span>
+<span class="fc" id="L54">    }</span>
+
+    @Test
+    void negativeCandidatesPositiveTarget() {
+<span class="fc" id="L58">        int[] candidates = {-1, -2, -3};</span>
+<span class="fc" id="L59">        int target = 4;</span>
+<span class="fc" id="L60">        List&lt;List&lt;Integer&gt;&gt; expected = Collections.emptyList();</span>
+<span class="fc" id="L61">        List&lt;List&lt;Integer&gt;&gt; result = CombinationSum.combinationSum(candidates, target);</span>
+<span class="pc bpc" id="L62" title="3 of 6 branches missed.">        assertTrue(result.size() == 0 &amp;&amp; expected.containsAll(result) &amp;&amp; result.containsAll(expected));</span>
+<span class="fc" id="L63">    }</span>
+
+    @Test
+    void negativeCandidatesNegativeTarget() {
+<span class="fc" id="L67">        int[] candidates = {-1, -2, -3};</span>
+<span class="fc" id="L68">        int target = -4;</span>
+<span class="fc" id="L69">        List&lt;List&lt;Integer&gt;&gt; expected = Arrays.asList(Arrays.asList(-1, -1, -1, -1), Arrays.asList(-1, -1, -2), Arrays.asList(-2, -2), Arrays.asList(-1, -3));</span>
+<span class="fc" id="L70">        List&lt;List&lt;Integer&gt;&gt; result = CombinationSum.combinationSum(candidates, target);</span>
+<span class="pc bpc" id="L71" title="3 of 6 branches missed.">        assertTrue(expected.size() == result.size() &amp;&amp; expected.containsAll(result) &amp;&amp; result.containsAll(expected));</span>
+<span class="fc" id="L72">    }</span>
+
+    @Test
+    void zeroCandidateDifferentTarget() {
+<span class="fc" id="L76">        int[] candidates = {0, 1, 2, 3};</span>
+<span class="fc" id="L77">        int target = 4;</span>
+<span class="fc" id="L78">        List&lt;List&lt;Integer&gt;&gt; expected = Arrays.asList(Arrays.asList(1, 1, 1, 1), Arrays.asList(1, 1, 2), Arrays.asList(2, 2), Arrays.asList(1, 3));</span>
+<span class="fc" id="L79">        List&lt;List&lt;Integer&gt;&gt; result = CombinationSum.combinationSum(candidates, target);</span>
+<span class="pc bpc" id="L80" title="3 of 6 branches missed.">        assertTrue(expected.size() == result.size() &amp;&amp; expected.containsAll(result) &amp;&amp; result.containsAll(expected));</span>
+<span class="fc" id="L81">    }</span>
+
+    @Test
+    void onlyZeroCandidate() {
+<span class="fc" id="L85">        int[] candidates = {0};</span>
+<span class="fc" id="L86">        int target = 2;</span>
+<span class="fc" id="L87">        List&lt;List&lt;Integer&gt;&gt; expected = Collections.emptyList();</span>
+<span class="fc" id="L88">        List&lt;List&lt;Integer&gt;&gt; result = CombinationSum.combinationSum(candidates, target);</span>
+<span class="pc bpc" id="L89" title="3 of 6 branches missed.">        assertTrue(result.size() == 0 &amp;&amp; expected.containsAll(result) &amp;&amp; result.containsAll(expected));</span>
+<span class="fc" id="L90">    }</span>
+
+    @Test
+    void positiveCandidatesNegativeTarget() {
+<span class="fc" id="L94">        int[] candidates = {1, 2, 3};</span>
+<span class="fc" id="L95">        int target = -4;</span>
+<span class="fc" id="L96">        List&lt;List&lt;Integer&gt;&gt; expected = Collections.emptyList();</span>
+<span class="fc" id="L97">        List&lt;List&lt;Integer&gt;&gt; result = CombinationSum.combinationSum(candidates, target);</span>
+<span class="pc bpc" id="L98" title="3 of 6 branches missed.">        assertTrue(result.size() == 0 &amp;&amp; expected.containsAll(result) &amp;&amp; result.containsAll(expected));</span>
+<span class="fc" id="L99">    }</span>
+
+    @Test
+    void negativeAndPositiveCandidates() {
+<span class="fc" id="L103">        int[] candidates = {-2, 1, 3};</span>
+<span class="fc" id="L104">        int target = 3;</span>
+<span class="fc" id="L105">        List&lt;List&lt;Integer&gt;&gt; expected = Collections.emptyList();</span>
+<span class="fc" id="L106">        List&lt;List&lt;Integer&gt;&gt; result = CombinationSum.combinationSum(candidates, target);</span>
+<span class="pc bpc" id="L107" title="3 of 6 branches missed.">        assertTrue(result.size() == 0 &amp;&amp; expected.containsAll(result) &amp;&amp; result.containsAll(expected));</span>
+<span class="fc" id="L108">    }</span>
+
+    @Test
+    void tooManyPositiveResults() {
+<span class="fc" id="L112">        int[] candidates = {1, 2, 3};</span>
+<span class="fc" id="L113">        int target = 1000;</span>
+<span class="fc" id="L114">        List&lt;List&lt;Integer&gt;&gt; result = CombinationSum.combinationSum(candidates, target);</span>
+<span class="pc bpc" id="L115" title="1 of 2 branches missed.">        assertTrue(result.size() &lt;= 150);</span>
+<span class="fc" id="L116">    }</span>
+
+    @Test
+    void tooManyNegativeResults() {
+<span class="fc" id="L120">        int[] candidates = {-1, -2, -3};</span>
+<span class="fc" id="L121">        int target = -1000;</span>
+<span class="fc" id="L122">        List&lt;List&lt;Integer&gt;&gt; result = CombinationSum.combinationSum(candidates, target);</span>
+<span class="pc bpc" id="L123" title="1 of 2 branches missed.">        assertTrue(result.size() &lt;= 150);</span>
+<span class="fc" id="L124">    }</span>
+
+    @Test
+    void zeroTargetPositiveCandidates() {
+<span class="fc" id="L128">        int[] candidates = {1, 2, 3};</span>
+<span class="fc" id="L129">        int target = 0;</span>
+<span class="fc" id="L130">        List&lt;List&lt;Integer&gt;&gt; expected = Collections.singletonList(Collections.emptyList());</span>
+<span class="fc" id="L131">        List&lt;List&lt;Integer&gt;&gt; result = CombinationSum.combinationSum(candidates, target);</span>
+<span class="pc bpc" id="L132" title="3 of 6 branches missed.">        assertTrue(expected.size() == result.size() &amp;&amp; expected.containsAll(result) &amp;&amp; result.containsAll(expected));</span>
+<span class="fc" id="L133">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>
