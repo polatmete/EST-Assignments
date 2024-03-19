@@ -2,7 +2,7 @@ package zest;
 
 class NeedleInHay {
     public static int find(String haystack, String needle) {
-        if (haystack == null || needle == null) return -1;
+        if (haystack == null || needle == null || needle.isEmpty() && !haystack.isEmpty()) return -1;
         if (haystack.isEmpty() && needle.isEmpty()) return 0;
         int lenHay = haystack.length(), lenNed = needle.length();
 

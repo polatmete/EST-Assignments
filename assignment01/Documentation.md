@@ -34,5 +34,18 @@ In conclusion, the provided test suite catches all relevant bugs.
 ## median_of_arrays
 
 ## needle_in_hay
+The goal of the method is to find the first occurrence of a substring (needle) in a string (haystack).\
+The requirements were clear, but one case was missing. It was not specified what should happen if `needle` is an empty string.
+
+I started with specification based testing. I went through the specification and wrote tests for each part of the specification. I also added some permutations, like what happens if the substring we are looking for is at the beginning, in the middle, or at the end.
+After writing the last test case `needleEmpty()`, I realized that this test failed. I looked at the code and saw that the method does not handle the case of an empty string `needle`. I added a check for this case and the test passed.
+
+After performing structural testing with JaCoCo, I realized that the coverage was already 100%. So I did not add any structural tests.
+
+
+Running the mutation test, I saw that 18 out of 19 mutations were successfully killed. The one that survived was "changed conditional boundary" and concerns `for(int i = 0; i < (lenHay-lenNed + 1); i++)`.
+Since this is not relevant to the method, I decided to ignore this mutation.
+
+
 
 ## palindrome
