@@ -98,4 +98,5 @@ The configuration inside Intellij is generated as follows:
 3. Expand the directory `Plugins`.
 4. Expand the plugin `pitest`.
 5. Right-click on the item `pitest:mutationCoverage` and select `Run '<subtask> [pitest:mutationCoverage]'`.
-6. The generated directory `pit-reports` is manually added to the `test_reports` directory.
+6. After every code change the project is rebuilt before running the mutation coverage.
+7. The generated directory `pit-reports` is manually added to the `test_reports` directory.
