@@ -7,17 +7,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class NeedleInHayTest {
     @Test
-    void stringAtBeginning() {
+    void correctAnswer() {
         assertEquals(0, NeedleInHay.find("needleinhaystack", "needle"));
-    }
-
-    @Test
-    void stringInMiddle() {
         assertEquals(2, NeedleInHay.find("inneedlehaystack", "needle"));
-    }
-
-    @Test
-    void stringAtEnd() {
         assertEquals(10, NeedleInHay.find("haystackinneedle", "needle"));
     }
 
