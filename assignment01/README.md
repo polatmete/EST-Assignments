@@ -77,6 +77,7 @@ For using Pitest to compute the mutation coverage the following plugin was added
 ```
 <build>
     <plugins>
+        [...]
         <plugin>
             <groupId>org.pitest</groupId>
             <artifactId>pitest-maven</artifactId>
