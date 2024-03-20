@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PalindromeOne.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Palindrome Coverage Results</a> &gt; <a href="index.source.html" class="el_package">zest</a> &gt; <span class="el_source">PalindromeOne.java</span></div><h1>PalindromeOne.java</h1><pre class="source lang-java linenums">package zest;
+
+<span class="nc" id="L3">public class PalindromeOne {</span>
+
+    public static boolean isPalindrome(int x) {
+<span class="fc bfc" id="L6" title="All 4 branches covered.">        if (x &lt; -Math.pow(2, 20) || x &gt; Math.pow(2, 20)) {</span>
+<span class="fc" id="L7">            throw new IllegalArgumentException(&quot;Input is out of range: &quot; + x + &quot;. It has to be in the range of -2^20 &lt;= x &lt;= 2^20 - 1&quot;);</span>
+        }
+
+        // convert input into an array and rest is nothing but a simple two pointer solution
+<span class="fc" id="L11">        char[] numbers = String.valueOf(x).toCharArray();</span>
+
+<span class="fc" id="L13">        int start = 0;</span>
+<span class="fc" id="L14">        int end = numbers.length - 1;</span>
+<span class="fc bfc" id="L15" title="All 2 branches covered.">        while (start &lt; end) {</span>
+<span class="fc bfc" id="L16" title="All 2 branches covered.">            if (numbers[start] != numbers[end]) return false;</span>
+<span class="fc" id="L17">            start++;</span>
+<span class="fc" id="L18">            end--;</span>
+        }
+<span class="fc" id="L20">        return true;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>
