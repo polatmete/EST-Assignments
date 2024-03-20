@@ -269,7 +269,7 @@ After performing structural testing with JaCoCo, I realized that the coverage wa
 
 
 Running the mutation test, I saw that 18 out of 19 mutations were successfully killed. The one that survived was "changed conditional boundary" and concerns `for(int i = 0; i < (lenHay-lenNed + 1); i++)`.
-Since this is not relevant to the method, I decided to ignore this mutation.
+I changed the for loop to `for(int i = 0; i <= lenHay-lenNed; i++)`. After that, all mutants were killed.
 
 
 
