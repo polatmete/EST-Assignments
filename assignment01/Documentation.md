@@ -145,6 +145,13 @@ which checks for 'forbidden' combinations of inputs. Since only one of the condi
 can be replaced without the test failing. Therefore, this is also okay.
 
 ## frac2dec
+The goal of this method is to convert a fraction into a decimal. To do this, the method is given two integers that represent the numerator and denominator of a fraction. The method should return the fraction in string format. If the fractional part is repeating, the repeating part should be enclosed in parentheses. If multiple answers are possible, the method should return one of them.
+
+I started with specification-based testing. I went through the specification and wrote tests for each part of the specification. After writing the `zeroDominator()` test, I realized that this test failed. After a closer look at the code, I saw that the case where the dominator is zero is not handled. So I added this check at the beginning of the method: `if (denominator == 0) return null;`.
+
+After that, I continued with the structural tests. I used JaCoCo to measure code coverage. The report showed that the coverage was 100%, so I continued with mutation testing.
+
+The mutation testing with PITest showed that 18 / 20 mutants were killed. After taking a closer look at the report, I saw that the line `res.append(((numerator > 0) ^ (denominator > 0)) ? "-" : "");` caused it with the mutation `changed conditional boundary`. But since I already handled the case where the denominator or numerator is 0 on lines 8 and 9, I can ignore those mutations.
 
 ## generate_parantheses
 The goal of the method is to generate all combinations of well-formed parentheses, given n pairs of parentheses. If n is
