@@ -70,7 +70,7 @@ Then the JUnit configuration inside Intellij is updated as follows:
 1. Click on `Modify options`.
 2. Under `Code Coverage` the option `Specify alternative coverage runner` is selected.
 3. In the appearing drop-down at the bottom the coverage runner `JaCoCo` is chosen.
-4. By running the test suite in coverage mode the test report is generated and manually added to a `test_reports` directory.
+4. By running the test suite in coverage mode the test report is generated and manually added to a `test_reports` directory under `jacoco-reports`.
 
 ## Pitest
 For using Pitest to compute the mutation coverage the following plugin was added to the maven configurations (including the JUnit dependency).
