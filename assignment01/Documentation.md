@@ -307,6 +307,3 @@ In the end I had full branch coverage for both palindrome methods (leaving out t
 ### Mutation Testing
 - For PalindromeOne there is one mutant that survived for the conditional boundary `while (start < end)`. However, if the condition would be <= instead of < that would always be fine, because if the index of the numbers array is the same, the value will also be the same and won't return false for the expression `if (numbers[start] != numbers[end])` anyway. Therefore, this mutant can survive. 
 - For PalindromeTwo there were many mutants that survived for the lines 16 and 17. However, these lines are just to quicker check whether the first and last digits for a two or three digits number is divisible by 11. This means even if these lines are altered the rest of the code will still be able to catch the palindrome. Therefore, it is reasonable that these mutant survive. 
-
-## ??
-- what to do with leading zeros???
