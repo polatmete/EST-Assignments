@@ -3,13 +3,6 @@
 - Deliverable: One single zip file containing all the folders that you find attached to this assignment, augmented with the tests you will write for each problem, as described below. Additionally, a `Documentation.md` file where you document your decisions and report test coverage requested nelow.
 - Deadline: March 25, 2024 at 18:00 (Zurich, CH, time).
 
-<!-- For reference when documenting -->
-## What to document on (delete in the end)
-- Perform specification-based testing, following the principles taught in the book and the lectures. Document each principle in the Documentation.md. If you find a bug, report the bug, the test that revealed the bug, as well as the bug fix.
-- Enhance the previous test suite using structural testing. Specifically, aim for maximizing condition+branch coverage, which can be measured using the JaCoCo plugin. Document the process in the Documentation.md file, by reporting which conditions, branches, or lines did you miss with specification-based testing (if any), and what tests did you add to cover them.
-- Now that you have a good testing suite, augment it further using mutation testing (you will need PItest and PItest plugin for JUnit 5). Report the mutation coverage in the Documentation.md. Explain whether the mutants that survive (if any) are worth writing tests for or not. If the surviving mutants are more than three (3), choose one from each mutation category (mutator in PITest terminology).
-
-
 ## atoi
 
 ### Specification-based Testing
@@ -307,6 +300,3 @@ In the end I had full branch coverage for both palindrome methods (leaving out t
 ### Mutation Testing
 - For PalindromeOne there is one mutant that survived for the conditional boundary `while (start < end)`. However, if the condition would be <= instead of < that would always be fine, because if the index of the numbers array is the same, the value will also be the same and won't return false for the expression `if (numbers[start] != numbers[end])` anyway. Therefore, this mutant can survive. 
 - For PalindromeTwo there were many mutants that survived for the lines 16 and 17. However, these lines are just to quicker check whether the first and last digits for a two or three digits number is divisible by 11. This means even if these lines are altered the rest of the code will still be able to catch the palindrome. Therefore, it is reasonable that these mutant survive. 
-
-## ??
-- what to do with leading zeros???
