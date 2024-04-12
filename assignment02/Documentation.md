@@ -9,6 +9,21 @@
 
 ## find_duplicate
 
+Assumptions:
+- array of n + 1 integers 
+- each integer is between 1 and n (inclusive)
+- there is only one duplicate number, but it could be repeated more than once
+
+### Task 1: Code Coverage
+
+ 
+
+### Task 2: Designing Contracts
+
+### Task 3: Testing Contracts
+
+### Task 4: Property-Based Testing
+
 ## longest_increasing_subsequence
 
 ## merge_k_sorted_lists

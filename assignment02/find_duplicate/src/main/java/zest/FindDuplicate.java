@@ -1,7 +1,20 @@
 package zest;
 
+import java.util.stream.IntStream;
+
 public class FindDuplicate {
+
     public static int findDuplicate(int[] nums) {
+
+        //pre-conditions check
+        assert nums != null : "array cannot be null";
+        assert nums.length > 1 : "array needs to have at least two elements";
+        int n = nums.length;
+        for (int num : nums) {
+            assert num >= 1 && num <= n : "All elements in the array must be in the range [1, n]";
+        }
+
+        //implementation
         int tortoise = nums[0];
         int hare = nums[0];
         // Phase 1: Finding the intersection point of the two runners.
@@ -18,5 +31,8 @@ public class FindDuplicate {
         }
 
         return hare;
+
+        //post-conditions
+        //TODO: implement
     }
 }
