@@ -4,12 +4,12 @@ import java.util.stream.IntStream;
 
 public class FindDuplicate {
 
-    public static int findDuplicate(int[] nums) {
+    public static int findDuplicate( int[] nums) {
 
-        //pre-conditions check
+        //pre-conditions 
         assert nums != null : "array cannot be null";
         assert nums.length > 1 : "array needs to have at least two elements";
-        int n = nums.length;
+        int n = nums.length -1;
         for (int num : nums) {
             assert num >= 1 && num <= n : "All elements in the array must be in the range [1, n]";
         }
@@ -30,9 +30,15 @@ public class FindDuplicate {
             hare = nums[hare];
         }
 
-        return hare;
-
         //post-conditions
-        //TODO: implement
+        //Assertions.assertThat(aList).doesNotHaveDuplicates();
+        assert hare >= 1 && hare <=n: "Not a valid output";
+
+        return hare;
+    }
+
+    public static void main(String[] args) {
+        int[] nums = {1,2,3,3};
+        findDuplicate(nums);
     }
 }
