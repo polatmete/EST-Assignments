@@ -28,9 +28,7 @@ class FindDuplicateTest {
     //test pre- and post-conditions
     @Test
     public void nullArray(){
-        assertThrows(AssertionError.class, () -> {
-            findDuplicate(null);
-        });
+        assertThrows(AssertionError.class, () -> findDuplicate(null));
     }
 
     @Test
@@ -60,8 +58,8 @@ class FindDuplicateTest {
     //property based testing
     @Property
     void propertyBasedTest(
-            @ForAll @IntRange(min = 0, max = 8) int idxDuplicate,
-            @ForAll @IntRange(min = 0, max = 9) int idxToInsertDuplicate) {
+            @ForAll @IntRange(max = 8) int idxDuplicate,
+            @ForAll @IntRange(max = 9) int idxToInsertDuplicate) {
 
         int[] nums = {1,2,3,4,5,6,7,8,9,10};
 

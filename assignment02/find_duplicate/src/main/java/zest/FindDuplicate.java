@@ -1,7 +1,5 @@
 package zest;
 
-import java.util.stream.IntStream;
-
 public class FindDuplicate {
 
     public static int findDuplicate( int[] nums) {
@@ -31,14 +29,8 @@ public class FindDuplicate {
         }
 
         //post-conditions
-        //Assertions.assertThat(aList).doesNotHaveDuplicates();
         assert hare >= 1 && hare <=n: "Not a valid output";
 
         return hare;
-    }
-
-    public static void main(String[] args) {
-        int[] nums = {1,2,3,3};
-        findDuplicate(nums);
     }
 }
