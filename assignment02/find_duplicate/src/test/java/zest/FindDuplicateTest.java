@@ -2,15 +2,8 @@ package zest;
 
 import net.jqwik.api.ForAll;
 import net.jqwik.api.Property;
-import net.jqwik.api.constraints.FloatRange;
 import net.jqwik.api.constraints.IntRange;
-import net.jqwik.api.constraints.Size;
-import net.jqwik.api.constraints.UniqueElements;
 import org.junit.jupiter.api.Test;
-
-import java.lang.reflect.Array;
-import java.util.Arrays;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -65,6 +58,27 @@ class FindDuplicateTest {
     }
 
     //property based testing
+    @Property
+    void propertyBasedTest(
+            @ForAll @IntRange(min = 0, max = 8) int idxDuplicate,
+            @ForAll @IntRange(min = 0, max = 9) int idxToInsertDuplicate) {
+
+        int[] nums = {1,2,3,4,5,6,7,8,9,10};
+
+        int duplicate = nums[idxDuplicate % nums.length];
+
+        //replace 10 as it is bigger than n
+        nums[nums.length-1] = duplicate;
+
+        if(idxDuplicate == idxToInsertDuplicate){
+            idxToInsertDuplicate = (idxToInsertDuplicate + 1) % nums.length;
+        }
+        nums[idxToInsertDuplicate] = duplicate;
+
+        int result = findDuplicate(nums);
+        assertEquals(result, duplicate);
+
+    }
 
 
 
