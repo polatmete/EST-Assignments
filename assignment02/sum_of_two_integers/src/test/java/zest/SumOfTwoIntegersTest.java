@@ -36,7 +36,7 @@ class SumOfTwoIntegersTest {
         assertEquals(4, SumOfTwoIntegers.getSum(-5, 9));
         assertEquals(4, SumOfTwoIntegers.getSum(9, -5));
         assertEquals(12, SumOfTwoIntegers.getSum(-11, 23));
-        assertEquals(12, SumOfTwoIntegers.getSum(23, 11));
+        assertEquals(12, SumOfTwoIntegers.getSum(23, -11));
     }
 
     @Test
