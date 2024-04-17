@@ -46,6 +46,11 @@ This would prevent the option to instantiate a variable of `SumOfTwoIntegers`, t
 3. If both ```a``` or ```b``` are positive the result must be positive (overflow otherwise).
 4. If both ```a``` or ```b``` are negative the result must be negative (underflow otherwise).
 
+#### Invariants
+The method does not deal with any state-changing operation for which an invariant could be added. Instead of checking for over- and underflow after the loop,
+the check could be added inside the loop, however the use of bitwise operations including the carry does not allow this.
+
+#### Implementation of Contract
 Due to the method declaration the pre- and post-conditions concerning the given range are already guaranteed. The method cannot be called otherwise.
 However, there is the issue of over- and underflow if both inputs added together are outside the integer range. Therefore, a check is added.
 ## unique_paths_grid
