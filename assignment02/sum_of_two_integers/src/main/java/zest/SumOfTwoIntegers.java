@@ -3,12 +3,7 @@ package zest;
 public class SumOfTwoIntegers {
     public static int getSum(int a, int b) {
         int sum = add(a, b);
-        if ((a & b) > 0 && sum < 0) {
-            throw new ArithmeticException("overflow occurred");
-        }
-        if ((a & b) < 0 && sum > 0) {
-            throw new ArithmeticException("underflow occurred");
-        }
+        verifyRange(a, b, sum);
         return sum;
     }
 
@@ -19,5 +14,14 @@ public class SumOfTwoIntegers {
             b = carry;  // Carry is shifted by one so that adding it to a gives the required sum
         }
         return a;
+    }
+
+    private static void verifyRange(int a, int b, int sum) {
+        if ((a & b) > 0 && sum < 0) {
+            throw new ArithmeticException("overflow occurred");
+        }
+        if ((a & b) < 0 && sum > 0) {
+            throw new ArithmeticException("underflow occurred");
+        }
     }
 }

@@ -53,5 +53,6 @@ the check could be added inside the loop, however the use of bitwise operations 
 #### Implementation of Contract
 Due to the method declaration the pre- and post-conditions concerning the given range are already guaranteed. The method cannot be called otherwise.
 However, there is the issue of over- and underflow if both inputs added together are outside the integer range. Therefore, a check is added.
+
 ## unique_paths_grid
 
