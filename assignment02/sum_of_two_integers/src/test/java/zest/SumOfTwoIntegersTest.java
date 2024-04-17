@@ -1,5 +1,7 @@
 package zest;
 
+import net.jqwik.api.*;
+import net.jqwik.api.constraints.IntRange;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -50,8 +52,45 @@ class SumOfTwoIntegersTest {
     void bitIntegerOutOfRange() {
         assertThrows(ArithmeticException.class, () -> SumOfTwoIntegers.getSum(Integer.MAX_VALUE, 1));
         assertThrows(ArithmeticException.class, () -> SumOfTwoIntegers.getSum(1, Integer.MAX_VALUE));
+        assertThrows(ArithmeticException.class, () -> SumOfTwoIntegers.getSum(Integer.MAX_VALUE, Integer.MAX_VALUE));
         assertThrows(ArithmeticException.class, () -> SumOfTwoIntegers.getSum(Integer.MIN_VALUE, -1));
         assertThrows(ArithmeticException.class, () -> SumOfTwoIntegers.getSum(-1, Integer.MIN_VALUE));
+        assertThrows(ArithmeticException.class, () -> SumOfTwoIntegers.getSum(Integer.MIN_VALUE, Integer.MIN_VALUE));
     }
 
+    @Property
+    void validRange(
+        @ForAll
+        @IntRange(min = Integer.MIN_VALUE / 2, max = Integer.MAX_VALUE / 2) int a,
+        @ForAll
+        @IntRange(min = Integer.MIN_VALUE / 2, max = Integer.MAX_VALUE / 2) int b
+    ) {
+        assertEquals(a + b, SumOfTwoIntegers.getSum(a, b));
+    }
+
+    @Property
+    void invalidPositiveRange(
+        @ForAll("invalidPositiveRange") int a,
+        @ForAll("invalidPositiveRange") int b
+    ) {
+        assertThrows(ArithmeticException.class, () -> SumOfTwoIntegers.getSum(a, b));
+    }
+
+    @Property
+    void invalidNegativeRange(
+            @ForAll("invalidNegativeRange") int a,
+            @ForAll("invalidNegativeRange") int b
+    ) {
+        assertThrows(ArithmeticException.class, () -> SumOfTwoIntegers.getSum(a, b));
+    }
+
+    @Provide
+    private Arbitrary<Integer> invalidPositiveRange() {
+        return Arbitraries.integers().greaterOrEqual(Integer.MAX_VALUE / 2 + 1);
+    }
+
+    @Provide
+    private Arbitrary<Integer> invalidNegativeRange() {
+        return Arbitraries.integers().lessOrEqual(Integer.MIN_VALUE / 2 - 1);
+    }
 }

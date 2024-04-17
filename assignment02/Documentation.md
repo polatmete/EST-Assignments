@@ -50,9 +50,18 @@ This would prevent the option to instantiate a variable of `SumOfTwoIntegers`, t
 The method does not deal with any state-changing operation for which an invariant could be added. Instead of checking for over- and underflow after the loop,
 the check could be added inside the loop, however the use of bitwise operations including the carry does not allow this.
 
-#### Implementation of Contract
+### Task 3
 Due to the method declaration the pre- and post-conditions concerning the given range are already guaranteed. The method cannot be called otherwise.
 However, there is the issue of over- and underflow if both inputs added together are outside the integer range. Therefore, a check is added.
 
+### Task 4
+According to the principles of property-based testing, many of the test cases can be replaced by one single test which uses integer ranges for both inputs ```a``` and ```b```.
+Three tests including the ```@Property``` tag are added.
+1. The first one (for valid ranges) makes use of the ```@ForAll @IntRange(min = ..., max = ...)``` annotation to test various values for ```a``` and ```b```.
+2. The second one checks all inputs that when summed up produce an overflow. This is achieved by using the ```@Provide``` tag and generating values that are larger than half
+of the largest value ```Integer.MAX_VALUE```.
+3. The last one works similar to the second but checks for underflow.
+
+To showcase the implementation process the other test cases are not deleted even though they are now redundant.
 ## unique_paths_grid
 

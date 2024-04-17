@@ -17,10 +17,10 @@ public class SumOfTwoIntegers {
     }
 
     private static void verifyRange(int a, int b, int sum) {
-        if ((a & b) > 0 && sum < 0) {
+        if (a > 0 && b > 0 && sum <= a) {
             throw new ArithmeticException("overflow occurred");
         }
-        if ((a & b) < 0 && sum > 0) {
+        if (a < 0 && b < 0 && sum >= a) {
             throw new ArithmeticException("underflow occurred");
         }
     }
