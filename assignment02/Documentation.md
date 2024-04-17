@@ -60,7 +60,7 @@ Three tests including the ```@Property``` tag are added.
 1. The first one (for valid ranges) makes use of the ```@ForAll @IntRange(min = ..., max = ...)``` annotation to test various values for ```a``` and ```b```.
 2. The second one checks all inputs that when summed up produce an overflow. This is achieved by using the ```@Provide``` tag and generating values that are larger than half
 of the largest value ```Integer.MAX_VALUE```.
-3. The last one works similar to the second but checks for underflow.
+3. The last one works similar to the second but checks for underflow with ```Integer.MIN_VALUE```.
 
 To showcase the implementation process the other test cases are not deleted even though they are now redundant.
 ## unique_paths_grid
