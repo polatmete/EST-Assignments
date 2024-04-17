@@ -2,6 +2,7 @@ package zest;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class SumOfTwoIntegersTest {
     @Test
@@ -41,8 +42,16 @@ class SumOfTwoIntegersTest {
 
     @Test
     void bitIntegerRange() {
-        assertEquals(-1, SumOfTwoIntegers.getSum(-2147483648, 2147483647));
-        assertEquals(-1, SumOfTwoIntegers.getSum(2147483647, -2147483648));
+        assertEquals(-1, SumOfTwoIntegers.getSum(Integer.MIN_VALUE, Integer.MAX_VALUE));
+        assertEquals(-1, SumOfTwoIntegers.getSum(Integer.MAX_VALUE, Integer.MIN_VALUE));
+    }
+
+    @Test
+    void bitIntegerOutOfRange() {
+        assertThrows(ArithmeticException.class, () -> SumOfTwoIntegers.getSum(Integer.MAX_VALUE, 1));
+        assertThrows(ArithmeticException.class, () -> SumOfTwoIntegers.getSum(1, Integer.MAX_VALUE));
+        assertThrows(ArithmeticException.class, () -> SumOfTwoIntegers.getSum(Integer.MIN_VALUE, -1));
+        assertThrows(ArithmeticException.class, () -> SumOfTwoIntegers.getSum(-1, Integer.MIN_VALUE));
     }
 
 }

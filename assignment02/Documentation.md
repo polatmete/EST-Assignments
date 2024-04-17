@@ -31,11 +31,22 @@ Pursuing this idea and applying it to the given method, the following test cases
 5. Negative & positive input
 
 In a first step, the method ```getSum``` is declared ```static```, because it's independent of any class instance. Running JaCoCo reveals full coverage.
-The class definition is not handled because the method is static but there is no class instance. However, given the context this can be ignored.
-A possibility would be to declare the class `SumOfTwoIntegers` as final, since it serves as a utility class providing the static method `getSum`. A private constructor can then be added.
-This would prevent the option to instantiate a variable of `SumOfTwoIntegers`, therefore, yielding a 100% coverage with JaCoCo.
+The class definition is not handled because there is no class instance. However, given the context this can be ignored.
+A possibility would be to declare the class `SumOfTwoIntegers` as final, since it serves as a utility class. A private constructor can then be added.
+This would prevent the option to instantiate a variable of `SumOfTwoIntegers`, therefore, yielding a true 100% coverage with JaCoCo.
 
 ### Task 2
+#### Pre-conditions
+1. ```a``` or ```b``` must be integers.
+2. ```a``` or ```b``` must be within the 32-bit signed integer range ([-2'147'483'648, 2'147'483'647]).
 
+#### Post-conditions
+1. The sum of ```a``` or ```b``` must be an integer.
+2. The sum of ```a``` or ```b``` must be within the 32-bit signed integer range ([-2'147'483'648, 2'147'483'647]).
+3. If both ```a``` or ```b``` are positive the result must be positive (overflow otherwise).
+4. If both ```a``` or ```b``` are negative the result must be negative (underflow otherwise).
+
+Due to the method declaration the pre- and post-conditions concerning the given range are already guaranteed. The method cannot be called otherwise.
+However, there is the issue of over- and underflow if both inputs added together are outside the integer range. Therefore, a check is added.
 ## unique_paths_grid
 
