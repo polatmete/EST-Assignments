@@ -101,7 +101,7 @@ This would prevent the option to instantiate a variable of `UniquePaths`, theref
 
 #### Invariants
 The updating of the grid ```dp``` is a state-changing operation, however, since the values are only added together and nothing is subtracted, they will always
-be positive. This guarantees a correct behavior by definition.
+be positive. This guarantees a correct output behavior by definition.
 
 ### Task 3
 To guarantee the pre-conditions a check has been added. Test cases 4.-6. verify the correctness of the conditions. Similarly, the check guarantees the post-conditions
