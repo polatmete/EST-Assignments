@@ -95,24 +95,24 @@ This would prevent the option to instantiate a variable of `UniquePaths`, theref
 
 #### Post-conditions
 1. The total number of possible paths has to be a positive integer.
-2. The maximum number of possible paths ``````
-3. If both ```a``` or ```b``` are positive the result must be positive (overflow otherwise).
-4. If both ```a``` or ```b``` are negative the result must be negative (underflow otherwise).
+2. The maximum number of possible paths is roughly ```2.28 x power(10, 58)``` and is achieved with ```m = n = 100```.
+3. If ```m > 100``` or ```n > 100``` the method returns the soft value ```-1```.
+4. If ```m < 1``` or ```n < 1``` the method returns the soft value ```-1```.
 
 #### Invariants
-The method does not deal with any state-changing operation for which an invariant could be added. Instead of checking for over- and underflow after the loop,
-the check could be added inside the loop, however the use of bitwise operations including the carry does not allow this.
+The updating of the grid ```dp``` is a state-changing operation, however, since the values are only added together and nothing is subtracted, they will always
+be positive. This guarantees a correct behavior by definition.
 
 ### Task 3
-Due to the method declaration the pre- and post-conditions concerning the given range are already guaranteed. The method cannot be called otherwise.
-However, there is the issue of over- and underflow if both inputs added together are outside the integer range. Therefore, a check is added.
+To guarantee the pre-conditions a check has been added. Test cases 4.-6. verify the correctness of the conditions. Similarly, the check guarantees the post-conditions
+concerning the soft value. To guarantee that the maximum number of possible paths doesn't overflow the method is changed to use ```BigIntegers```. This guarantees the
+correctness of all conditions.
 
 ### Task 4
-According to the principles of property-based testing, many of the test cases can be replaced by one single test which uses integer ranges for both inputs ```a``` and ```b```.
-Three tests including the ```@Property``` tag are added.
-1. The first one (for valid ranges) makes use of the ```@ForAll @IntRange(min = ..., max = ...)``` annotation to test various values for ```a``` and ```b```.
-2. The second one checks all inputs that when summed up produce an overflow. This is achieved by using the ```@Provide``` tag and generating values that are larger than half
-   of the largest value ```Integer.MAX_VALUE```.
-3. The last one works similar to the second but checks for underflow with ```Integer.MIN_VALUE```.
+According to the principles of property-based testing, many of the test cases can be replaced by one single test which uses integer ranges for both inputs ```m``` and ```n```.
+Two tests including the ```@Property``` tag are added.
+1. The first one (for valid ranges) makes use of the ```@ForAll @IntRange(min = ..., max = ...)``` annotation to test various values for ```m``` and ```n```.
+2. The second one checks all inputs which are lower than ```1``` or larger than ```100```. For this the ```@Provide``` tag is used in which integers outside the range are chosen
+using the ```Arbitrary<Integer>``` class.
 
 To showcase the implementation process the other test cases are not deleted even though they are now redundant.
