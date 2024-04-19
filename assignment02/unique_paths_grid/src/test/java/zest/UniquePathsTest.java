@@ -23,7 +23,9 @@ class UniquePathsTest {
 
     @Test
     void maxInput() {
-        assertEquals(BigIntegerMath.binomial(100, 100), UniquePaths.uniquePaths(100, 100));
+        int m = 100;
+        int n = 100;
+        assertEquals(BigIntegerMath.binomial(m + n - 2, m - 1), UniquePaths.uniquePaths(m, n));
     }
 
     @Test

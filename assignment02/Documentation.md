@@ -69,7 +69,7 @@ To showcase the implementation process the other test cases are not deleted even
 The goal of the method is to compute the total number of possible paths for a robot to reach the bottom right corner of a grid
 starting at the top lef corner. The robot can only move ```down``` or ```right```. It receives two inputs ```m``` and ```n```
 which represent the number of rows and columns respectively. Both inputs are positive integers in the range ```[1, 100]```.
-Given this specification the normal 32-bit integer range quickly will overflow. Therefore, the implementation is changed to ```BigIntegers```.\
+Given this specification the normal 32-bit integer range quickly will overflow. Therefore, the implementation is changed to using ```BigIntegers```.\
 The requirements fail to clarify the return value for integers not in the specified range. So, for these cases a soft value of -1 is returned.\
 To effectively test this method the following cases are implemented:
 1. Example case
