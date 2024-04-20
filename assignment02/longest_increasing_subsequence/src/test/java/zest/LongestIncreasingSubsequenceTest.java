@@ -11,7 +11,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class LongestIncreasingSubsequenceTest {
 
-    // code coverage
     @Test
     public void happyCase(){
         int[] nums = {1,3,4,2,2,3};
@@ -48,7 +47,6 @@ class LongestIncreasingSubsequenceTest {
         assertEquals(result, 1);
     }
 
-    // test pre- and post-conditions
     @Test
     public void nullArray(){
         int[] nums = null;
@@ -63,9 +61,12 @@ class LongestIncreasingSubsequenceTest {
         assertEquals(result, 0);
     }
 
+    @Property
+    void arrayGreaterEqualOne(@ForAll @Size(min = 1) int[] nums) {
+        int result = LongestIncreasingSubsequence.lengthOfLIS(nums);
+        assertTrue(result >= 1);
+    }
 
-
-    // property-based testing
     @Property
     void arrayIsSortedAndUniqueElements(@ForAll("arrProvider") int[] nums) {
         int result = LongestIncreasingSubsequence.lengthOfLIS(nums);
@@ -82,12 +83,6 @@ class LongestIncreasingSubsequenceTest {
                     Arrays.sort(uniqueArray);
                     return uniqueArray;
                 });
-    }
-
-    @Property
-    void arrayGreaterEqualOne(@ForAll @Size(min = 1) int[] nums) {
-        int result = LongestIncreasingSubsequence.lengthOfLIS(nums);
-        assertTrue(result >= 1);
     }
 
  

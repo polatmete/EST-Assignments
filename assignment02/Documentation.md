@@ -30,12 +30,11 @@ For property-based testing I create a test that inserts a random duplicate eleme
 ## longest_increasing_subsequence
 
 ### Task 1: Code Coverage
-My testsuite consists out of a happy case, of an array with unique numbers, decreasing numbers, a single element array and two edge case test a null and empty array test. With this test suite I was able to reach 100% branch and decision coverage.
+My testsuite consists out of a happy case, an array with unique numbers, decreasing numbers and a single element array. Without the pre-conditions checks at the beginning this already covers 100% branch and decision coverage of the actual implementation.
 
-TODO: zero input
 ### Task 2: Designing Contracts
-The pre-condition is that the method returns 0 for null and empty arrays. 
-The post-condition is that the number (if the array is not null or empty) returned is greater equal than 1, which is already ensured by the method. This is why an assert like 'assert maxLength >= 1...' is redundant.
+The pre-conditions were are implemented at the very beginning of the method and specify that if the array is null or empty the method returns zero.
+The post-condition is that the number (if the array is not null or empty) returned is greater equal than 1, which is already ensured by the method and therefore was marked as redundant when I explicitly specified it in the code.
 
 ### Task 3: Testing Contracts
 I wrote two test to test the pre-conditions null and empty array. 
