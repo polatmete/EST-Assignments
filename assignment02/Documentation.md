@@ -9,23 +9,26 @@
 
 ## find_duplicate
 
+### Task 1: Code Coverage
+The method proves that at least one duplicate number must exist if an array containing n + 1 integers where each integer is between 1 and n (inclusive) is given. 
+
 Assumptions:
-- array of n + 1 integers 
+- array of n + 1 integers
 - each integer is between 1 and n (inclusive)
 - there is only one duplicate number, but it could be repeated more than once
 
-### Task 1: Code Coverage
-To achieve 100% line and branch coverage one test case would have been enough. However, I decided to test with an examples containing duplicates twice and more than twice. Other edge cases were covered and tested by the pre-conditions (see below). The assertions were not included in the line coverage as they are tested extra.
+From the assumption and the restrictions of the definition of the input I derived the test cases where the same number occurs twice or more than twice. All other cases I then later tested when testing the contract (see below). 
+To achieve 100% line and branch coverage of the method implementation one of this test cases already would have been enough. The assertions were not included in the line coverage as they are tested extra.
 
 ### Task 2: Designing Contracts
-I then implemented pre- and post-conditions to ensure valid in- and output. The pre-condition check the cases that the array input is not null, has at least two elements and that all elements are in the range [1,n].
+I then implemented pre- and post-conditions to ensure valid in- and output. The pre-conditions check the cases that the array input is not null, has at least two elements and that all elements are in the range [1,n].
 The post-condition ensures that the output is also a valid number from the range [1,n].
 
 ### Task 3: Testing Contracts
-Next, I then made sure to test all the conditions in my test suite, covering the edge cases like an array with only two elements or a invalid or null input.
+Next, I then made sure to test all the pre-conditions in my test suite, including an array with only two elements, a null input or an array with numbers which were not in the range from [1,n]. The post-condition is already ensured by the pre-condition check as only numbers from the input array are returned which are in the range from [1,n].
 
 ### Task 4: Property-Based Testing
-For property-based testing I create a test that inserts a random duplicate element at a random position and then checks whether the same duplicate integer is returned by the findDuplicate method.
+For property-based testing I created a test that inserts a random duplicate element at a random position and then checks whether the same duplicate integer is returned by the findDuplicate method.
 
 ## longest_increasing_subsequence
 
