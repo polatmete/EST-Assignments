@@ -1,1 +1,11 @@
-//TODO: add logs
+timestamp = 2024-04-20T10:35:57.943875100, FindDuplicateTest:propertyBasedTest = 
+                              |-----------------------jqwik-----------------------
+tries = 90                    | # of calls to property
+checks = 90                   | # of not rejected calls
+generation = EXHAUSTIVE       | parameters are exhaustively generated
+after-failure = SAMPLE_FIRST  | try previously failed sample, then previous seed
+when-fixed-seed = ALLOW       | fixing the random seed is allowed
+edge-cases#mode = MIXIN       | edge cases are mixed in
+edge-cases#total = 0          | # of all combined edge cases
+edge-cases#tried = 0          | # of edge cases tried in current run
+seed = 5499837443549098079    | random seed to reproduce generated values
