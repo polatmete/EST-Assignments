@@ -78,8 +78,8 @@ class SumOfTwoIntegersTest {
 
     @Property
     void invalidNegativeRange(
-            @ForAll("invalidNegativeRange") int a,
-            @ForAll("invalidNegativeRange") int b
+        @ForAll("invalidNegativeRange") int a,
+        @ForAll("invalidNegativeRange") int b
     ) {
         assertThrows(ArithmeticException.class, () -> SumOfTwoIntegers.getSum(a, b));
     }
