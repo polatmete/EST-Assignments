@@ -28,7 +28,7 @@ public class CourseSchedule {
                 throw new IllegalArgumentException("Courses can't reference themselves.");
             }
 
-            if (prerequisite[0] >= numCourses || prerequisite[1] >= numCourses) {
+            if (prerequisite[0] >= numCourses || prerequisite[1] >= numCourses || prerequisite[0] < 0 || prerequisite[1] < 0) {
                 throw new ArrayIndexOutOfBoundsException("Prerequisites references non-existing course.");
             }
 

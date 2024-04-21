@@ -141,6 +141,7 @@ The following tests are added to target these conditions:
 7. invalidNumCourses: numCourses = 0, prerequisites = [[1,0],[0,1]] -> error
 8. circleTooSmall: numCourses = 2, prerequisites = [[1,0],[0,0]] -> error
 9. invalidPrerequisite: numCourses = 2, prerequisites = [[1,0],[2,0]] -> error
+10. negativePrerequisite: numCourses = 2, prerequisites = [[1,0],[2,-1]] -> error
 
 ### Task 3: Testing Contracts
 
@@ -152,9 +153,15 @@ only partially executed, which is fine. Adding another test just to have the oth
 ### Task 4: Property-Based Testing
 
 The following properties have been identified:
-1. Valid inputs for both arguments with circles.
-2. Valid inputs for both arguments without circles.
-3. Invalid inputs on either argument.
+1. validRangeWithoutCircles -> Valid inputs for both arguments without circles.
+2. validRangeWithCircles -> Valid inputs for both arguments with circles.
+3. invalidNoOfCourses -> Number of courses is negative.
+4. referencingItself -> Any prerequisite (a, b) existing where a = b should return an error.
+5. invalidPrerequisite -> A prerequisite references a course that doesn't exist or contains a negative number.
+
+Please note that we capped the number of courses and prerequisites to 100. This has to do with outOfMemoryErrors
+that we got if we didn't set maximums for those inputs. In this context we decided it should be sufficient to cap those
+inputs at much higher numbers than we used in the tests before.
 
 ## find_duplicate
 
