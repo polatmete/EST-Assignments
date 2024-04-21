@@ -114,6 +114,18 @@ To achieve 100% line and branch coverage of the method implementation one of thi
 ### Task 2: Designing Contracts
 I then implemented pre- and post-conditions to ensure valid in- and output. The pre-conditions check the cases that the array input is not null, has at least two elements and that all elements are in the range [1,n]. It can be mathematically proven that under the given constraints there always has to be a duplicate. Implementing a post-condition like `assert hare >= 1 && hare <=n: "Not a valid output";` would never be false, which is why I left it out. 
 
+#### Pre-conditions
+2. The input array ```nums``` is not null.
+3. The input array ```nums``` must have at least two elements.
+4. Each element in the array must adhere to the range [1,n].
+
+#### Post-Conditions
+The method returns an integer that is the duplicate number found in ```nums``` and therefore ranges from [1,n].
+
+#### Invariants
+The method does not deal with any state-changing operation for which an invariant could be added.
+
+
 ### Task 3: Testing Contracts
 Next, I then made sure to test all the pre-conditions in my test suite, including an array with only one element, a null input or an array with numbers which were not in the range from [1,n]. The post-condition is already ensured by the pre-condition check as only numbers from the input array are returned which are in the range from [1,n]. As  my post-condition is never reached (see the screenshot in the assets file), I decided to remove it.
 My test suites was therefore extended by the following tests: 
