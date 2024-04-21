@@ -2,11 +2,11 @@
 ## Requirements
 Java 11 is used for all the exercises. There is no guarantee things will work with other versions. Use JUnit 5 for implementing your test suite.
 
-1. In this task, you are required to achieve the highest possible (ideally, 100\%) line coverage. for the provided Java solutions. Utilize the [JaCoCo] plugin to analyze and generate coverage reports.
+1. In this task, you are required to achieve the highest possible (ideally, 100\%) line coverage. for the provided Java solutions. Utilize the ```JaCoCo``` plugin to analyze and generate coverage reports.
 2. Use **property-based testing** techniques to derive tests for the provided Java solutions.
    - Identify properties that should hold true for any inputs and document your rationale.
    - Use a property-based testing framework to automate the testing process.
-   - hint: Add jqwik framework to Your pom.xml
+   - hint: Add ```jqwik``` framework to your ```pom.xml```
 
 To guarantee consistency, the following steps are taken for every subtask!
 
@@ -15,7 +15,7 @@ In a first step the project structure is updated to fit the naming conventions o
 wherever possible. This is done to create a better overview of the project and can be seen as a purely subjective change.
 
 ## Java 11
-The pom.xml of every subtask was updated with the following property to guarantee the usage of Java 11.
+The ```pom.xml``` of every subtask was updated with the following property to guarantee the usage of Java 11.
 ```
 <properties>
     <java.version>11</java.version>
@@ -24,7 +24,7 @@ The pom.xml of every subtask was updated with the following property to guarante
 ```
 
 ## JUnit
-In addition, to successfully use JUnit for running the composed tests the following dependency was added to every pom.xml file.
+In addition, to successfully use JUnit for running the composed tests the following dependency was added to every ```pom.xml``` file.
 ```
 <dependencies>
     <dependency>
@@ -77,7 +77,7 @@ Then the JUnit configuration inside Intellij is updated as follows:
 4. By running the test suite in coverage mode the test report is generated and manually added to a `test_reports` directory under `jacoco-reports`.
 
 ## jqwik
-For using jqwik to test properties the following dependency was added to the maven configurations.
+For using ```jqwik``` to test properties the following dependency was added to the maven configurations.
 ```
 <dependencies>
     [...]
