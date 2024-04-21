@@ -70,8 +70,8 @@ class FindDuplicateTest {
     @Property
     void propertyBasedTestOneDuplicate(
             @ForAll @IntRange(max = 8) int idxDuplicate,
-            @ForAll @IntRange(max = 9) int idxToInsertDuplicate) {
-
+            @ForAll @IntRange(max = 9) int idxToInsertDuplicate
+    ) {
         int[] nums = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 
         int duplicate = nums[idxDuplicate % nums.length];
@@ -95,7 +95,6 @@ class FindDuplicateTest {
             @ForAll @IntRange(min = 5, max = 8) int idxDuplicate2,
             @ForAll @IntRange(min = 5, max = 8) int idxToInsertDuplicate2
     ) {
-
         int[] nums = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
 
         int duplicate = nums[idxDuplicate];
@@ -115,6 +114,5 @@ class FindDuplicateTest {
 
         int result = findDuplicate(nums);
         assertTrue(result == duplicate || result == duplicate2);
-
     }
 }
