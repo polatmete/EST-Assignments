@@ -98,6 +98,35 @@ at Jacoco, we can see that we still reach a 100% line coverage.
 ## longest_increasing_subsequence
 
 ## merge_k_sorted_lists
+### Task 1: Code Coverage
+After performing specification-based testing, the coverage was at 100% for the class `MergeKSortedLists`.
+The test cases `testNull`,  `testEmptyList`, `testEmptyNode`, and `testExample` were enough to cover all the lines and branches of code.
+
+### Task 2: Designing Contracts
+The precondition, postcondition, and invariant can be abbreviated from the task description:
+ - Precondition
+   - 0 <= #nodes >= 10^4
+   - all nodes provided should be sorted in ascending order within the list their in
+ - Postcondition
+   - A single sorted list should be returned
+ - Invariant
+   - The list should be sorted at any time during the runtime
+
+### Task 3: Testing Contracts
+To check the precondition I added the test case `testPrecondition`, which checks the above-mentioned conditions.
+The postcondition and invariant are already checked by previous test cases (`testExample`) and do not need to be tested separately.
+Unfortunately adding preconditions, postconditions, and invariants to the code lead to a decrease in branch coverage to 97%.
+The one missing branch is due to the fact that during the runtime the invariant is always true. To cover the branch where the invariant is false the code must be manipulated in a way that it produces a wrong output.
+
+### Task 4: Property-Based Testing
+The following 3 properties have been identified:
+1. Valid combinations in lists
+2. Invalid combinations in lists
+3. Lists in different lengths
+
+To test the first property, an `Arbitrary<ListNode[]>` was created, which generates a list of nodes with a length between 0 and 10^4.
+For the second property, tha same was done but with parameters that lead to an invalid list.
+Lastly, to test the third property, lists with random lengths were generated.
 
 ## sorted_array2bst
 
@@ -105,7 +134,7 @@ at Jacoco, we can see that we still reach a 100% line coverage.
 ### Task 1
 The goal of the method is to calculate the sum of two integers without using mathematical operations such as ```+``` or ```-```. It receives two inputs ```a``` and ```b```
 which are both within the 32-bit signed integer range.\
-When testing such inputs it's common practice to test for zero, positive and negative numbers. The 32-bit signed integer range includes all numbers in the interval [-2'147'483'648, 2'147'483'647].
+When testing such inputs it's common practice to test for zero, positive and negative numbers. The 32-bit signed integer range includes all numbers in the interval ```[-2'147'483'648, 2'147'483'647]```.
 Therefore, especially these values are candidates for boundary testing. Furthermore, since the implementation works with ```carry```, it's important to include corresponding tests.
 Additionally, input validation could be applied to verify neither of the inputs are ```null```.
 However, according to the description it can be assumed that they are both integers.\
@@ -124,11 +153,11 @@ This would prevent the option to instantiate a variable of `SumOfTwoIntegers`, t
 ### Task 2
 #### Pre-conditions
 1. ```a``` or ```b``` must be integers.
-2. ```a``` or ```b``` must be within the 32-bit signed integer range ([-2'147'483'648, 2'147'483'647]).
+2. ```a``` or ```b``` must be within the 32-bit signed integer range ```[-2'147'483'648, 2'147'483'647]```.
 
 #### Post-conditions
 1. The sum of ```a``` or ```b``` must be an integer.
-2. The sum of ```a``` or ```b``` must be within the 32-bit signed integer range ([-2'147'483'648, 2'147'483'647]).
+2. The sum of ```a``` or ```b``` must be within the 32-bit signed integer range ```[-2'147'483'648, 2'147'483'647]```.
 3. If both ```a``` or ```b``` are positive the result must be positive (overflow otherwise).
 4. If both ```a``` or ```b``` are negative the result must be negative (underflow otherwise).
 
@@ -149,5 +178,56 @@ of the largest value ```Integer.MAX_VALUE```.
 3. The last one works similar to the second but checks for underflow with ```Integer.MIN_VALUE```.
 
 To showcase the implementation process the other test cases are not deleted even though they are now redundant.
-## unique_paths_grid
 
+## unique_paths_grid
+### Task 1
+The goal of the method is to compute the total number of possible paths for a robot to reach the bottom right corner of a grid
+starting at the top lef corner. The robot can only move ```down``` or ```right```. It receives two inputs ```m``` and ```n```
+which represent the number of rows and columns respectively. Both inputs are positive integers in the range ```[1, 100]```.
+Given this specification the normal 32-bit integer range quickly will overflow. Therefore, the implementation is changed to using ```BigIntegers```.\
+The requirements fail to clarify the return value for integers not in the specified range. So, for these cases a soft value of -1 is returned.\
+To effectively test this method the following cases are implemented:
+1. Example case
+2. Max case (```m = 100```, ```n = 100```)
+3. Special case (```m = 1```, ```n = 100```)
+4. Zero input (```m``` or ```n```)
+5. Negative input
+6. 100+ input
+
+In a first step, the method ```uniquePaths``` is declared ```static```, because it's independent of any class instance.\
+For test cases 4. and 5. the execution crashes. When using zero input there is an IndexOutOfBoundsException. For negative input
+there is a NegativeArraySizeException. To fix both of them a input check at the beginning of the method is included.\
+For test case 6. an additional check is included, since otherwise the code does in fact return the correct computation, but the requirements
+specify that the input should be in range ```[1, 100]``` and therefore a soft value of ```-1``` is expected.\
+Running JaCoCo reveals full coverage. The class definition is not handled because there is no class instance. However, given the context this can be ignored.
+A possibility would be to declare the class `UniquePaths` as final, since it serves as a utility class. A private constructor can then be added.
+This would prevent the option to instantiate a variable of `UniquePaths`, therefore, yielding a true 100% coverage with JaCoCo.
+
+### Task 2
+#### Pre-conditions
+1. ```m``` or ```n``` must be integers.
+2. ```m``` or ```n``` must be within the range ```[1, 100]```.
+
+#### Post-conditions
+1. The total number of possible paths has to be a positive integer.
+2. The maximum number of possible paths is roughly ```2.28 x power(10, 58)``` and is achieved with ```m = n = 100```.
+3. If ```m > 100``` or ```n > 100``` the method returns the soft value ```-1```.
+4. If ```m < 1``` or ```n < 1``` the method returns the soft value ```-1```.
+
+#### Invariants
+The updating of the grid ```dp``` is a state-changing operation, however, since the values are only added together and nothing is subtracted, they will always
+be positive. This guarantees a correct output behavior by definition.
+
+### Task 3
+To guarantee the pre-conditions a check has been added. Test cases 4.-6. verify the correctness of the conditions. Similarly, the check guarantees the post-conditions
+concerning the soft value. To guarantee that the maximum number of possible paths doesn't overflow the method is changed to use ```BigIntegers```. This guarantees the
+correctness of all conditions.
+
+### Task 4
+According to the principles of property-based testing, many of the test cases can be replaced by one single test which uses integer ranges for both inputs ```m``` and ```n```.
+Two tests including the ```@Property``` tag are added.
+1. The first one (for valid ranges) makes use of the ```@ForAll @IntRange(min = ..., max = ...)``` annotation to test various values for ```m``` and ```n```.
+2. The second one checks all inputs which are lower than ```1``` or larger than ```100```. For this the ```@Provide``` tag is used in which integers outside the range are chosen
+using the ```Arbitrary<Integer>``` class.
+
+To showcase the implementation process the other test cases are not deleted even though they are now redundant.
