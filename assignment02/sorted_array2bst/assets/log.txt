@@ -1,3 +1,4 @@
+timestamp = 2024-04-21T11:28:19.572729600, SortedArrayToBSTTest:testValid =
                               |-----------------------jqwik-----------------------
 tries = 1000                  | # of calls to property
 checks = 1000                 | # of not rejected calls
@@ -7,9 +8,10 @@ when-fixed-seed = ALLOW       | fixing the random seed is allowed
 edge-cases#mode = MIXIN       | edge cases are mixed in
 edge-cases#total = 10         | # of all combined edge cases
 edge-cases#tried = 10         | # of edge cases tried in current run
-seed = -632137513881331761    | random seed to reproduce generated values
+seed = 6625169423593735327    | random seed to reproduce generated values
 
 
+timestamp = 2024-04-21T11:28:20.067336400, SortedArrayToBSTTest:testInvalid =
                               |-----------------------jqwik-----------------------
 tries = 100                   | # of calls to property
 checks = 100                  | # of not rejected calls
@@ -19,4 +21,8 @@ when-fixed-seed = ALLOW       | fixing the random seed is allowed
 edge-cases#mode = MIXIN       | edge cases are mixed in
 edge-cases#total = 0          | # of all combined edge cases
 edge-cases#tried = 0          | # of edge cases tried in current run
-seed = -916208677779212122    | random seed to reproduce generated values
+seed = 8981906412184871603    | random seed to reproduce generated values
+
+
+
+Process finished with exit code 0
