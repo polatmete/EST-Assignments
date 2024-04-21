@@ -22,3 +22,7 @@ edge-cases#mode = MIXIN       | edge cases are mixed in
 edge-cases#total = 10         | # of all combined edge cases
 edge-cases#tried = 10         | # of edge cases tried in current run
 seed = 5238060315605653850    | random seed to reproduce generated values
+
+
+
+Process finished with exit code 0
