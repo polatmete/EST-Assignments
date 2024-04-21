@@ -131,15 +131,26 @@ Lastly, to test the third property, lists with random lengths were generated.
 ## sorted_array2bst
 ### Task 1: Code Coverage
 After performing specification-based testing, the coverage was at 100% for the class `SortedArrayToBST`.
-The test cases `testNull`,  `testEmptyList`, `testOne`, `testExample`, `testMaxSize`, `testTooLong`, `testNotSorted`, and `testNotUnique` were enough to cover all the lines and branches of code.
+
+The test cases
+ - `testNull`: Tests for null as input
+ - `testEmptyList`: Tests for an empty list as input
+ - `testOne`: Tests for a list with one element
+ - `testExample`: Tests for an arbitrary example
+ - `testMaxSize`: Tests for the maximum allowed size of the list (10^4)
+ - `testTooLong`: Tests for a list that is too long (10^4 + 1)
+ - `testNotSorted`: Tests for a list that is not sorted in ascending order
+ - `testNotUnique`: Tests for a list that contains duplicates
+
+were enough to cover all the lines and branches of code.
 
 ### Task 2: Designing Contracts
 The precondition, postcondition, and invariant can be abbreviated from the task description:
  - Precondition
-   - array contains unique integers
+   - Array contains unique integers
    - 0 <= array.length() >= 10^4
-   - input array is sorted in ascending order
-   - input array is not null
+   - Input array is sorted in ascending order
+   - Input array is not null
  - Postcondition
    - Valid height-balanced binary search tree
    - BST has the same size as the input array
@@ -151,8 +162,7 @@ The precondition, postcondition, and invariant can be abbreviated from the task 
 ### Task 3: Testing Contracts
 The precondition is already checked by the other test cases. 
 To check the postcondition and the invariant, the test case `testPostcondition` respectively `testInvariant` was added.
-Those test cases check the above mentioned conditions.
-The postcondition and invariant are already checked by previous test cases (`testExample`) and do not need to be tested separately.
+Those test cases check the above-mentioned conditions.
 
 ### Task 4: Property-Based Testing
 The following 2 properties have been identified:
@@ -160,8 +170,7 @@ The following 2 properties have been identified:
 2. Array with more than 10^4 elements
 
 To test the first property, an array with unique values is created and sorted afterward. The size is between 0 and 10^4.
-For the second property, an array with the size of 10^4 + 1 is created. Since the array is too large, the other properties do not matter.
-
+For the second property, an array with the size of 10^4 + 1 is created. Since the array is too large, it does not matter if the other properties hold.
 
 ## sum_of_two_integers
 ### Task 1
