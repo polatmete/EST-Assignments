@@ -107,8 +107,10 @@ The precondition, postcondition, and invariant can be abbreviated from the task 
 #### Precondition
 1. ```0 <= #nodes >= 10^4```
 2. all nodes provided should be sorted in ascending order within the list their in
+
 #### Postcondition
 1. A single sorted list should be returned 
+
 #### Invariant
 1. The list should be sorted at any time during the runtime
 
@@ -137,8 +139,8 @@ The test cases
  - `testEmptyList`: Tests for an empty list as input
  - `testOne`: Tests for a list with one element
  - `testExample`: Tests for an arbitrary example
- - `testMaxSize`: Tests for the maximum allowed size of the list (10^4)
- - `testTooLong`: Tests for a list that is too long (10^4 + 1)
+ - `testMaxSize`: Tests for the maximum allowed size of the list ```10^4```
+ - `testTooLong`: Tests for a list that is too long ```10^4 + 1```
  - `testNotSorted`: Tests for a list that is not sorted in ascending order
  - `testNotUnique`: Tests for a list that contains duplicates
 
@@ -146,18 +148,20 @@ were enough to cover all the lines and branches of code.
 
 ### Task 2: Designing Contracts
 The precondition, postcondition, and invariant can be abbreviated from the task description:
- - Precondition
-   - Array contains unique integers
-   - 0 <= array.length() >= 10^4
-   - Input array is sorted in ascending order
-   - Input array is not null
- - Postcondition
-   - Valid height-balanced binary search tree
-   - BST has the same size as the input array
- - Invariant
-   - BST must be height-balanced at all times
-   - Left subtree must be less or equal to root
-   - Right subtree must be greater than root
+#### Precondition
+1. Array contains unique integers
+2. ```0 <= array.length() >= 10^4```
+3. Input array is sorted in ascending order 
+4. Input array is not null
+
+#### Postcondition
+1. Valid height-balanced binary search tree 
+2. BST has the same size as the input array 
+
+#### Invariant
+1. BST must be height-balanced at all times 
+2. Left subtree must be less or equal to root 
+3. Right subtree must be greater than root
 
 ### Task 3: Testing Contracts
 The precondition is already checked by the other test cases. 
@@ -166,11 +170,11 @@ Those test cases check the above-mentioned conditions.
 
 ### Task 4: Property-Based Testing
 The following 2 properties have been identified:
-1. Valid array that has not more than 10^4 elements
-2. Array with more than 10^4 elements
+1. Valid array that has not more than ```10^4``` elements
+2. Array with more than ```10^4``` elements
 
-To test the first property, an array with unique values is created and sorted afterward. The size is between 0 and 10^4.
-For the second property, an array with the size of 10^4 + 1 is created. Since the array is too large, it does not matter if the other properties hold.
+To test the first property, an array with unique values is created and sorted afterward. The size is between ```0``` and ```10^4```.
+For the second property, an array with the size of ```10^4 + 1``` is created. Since the array is too large, it does not matter if the other properties hold.
 
 ## sum_of_two_integers
 ### Task 1
@@ -227,7 +231,7 @@ The goal of the method is to compute the total number of possible paths for a ro
 starting at the top lef corner. The robot can only move ```down``` or ```right```. It receives two inputs ```m``` and ```n```
 which represent the number of rows and columns respectively. Both inputs are positive integers in the range ```[1, 100]```.
 Given this specification the normal 32-bit integer range quickly will overflow. Therefore, the implementation is changed to using ```BigIntegers```.\
-The requirements fail to clarify the return value for integers not in the specified range. So, for these cases a soft value of -1 is returned.\
+The requirements fail to clarify the return value for integers not in the specified range. So, for these cases a soft value of ```-1``` is returned.\
 To effectively test this method the following cases are implemented:
 1. Example case
 2. Max case (```m = 100```, ```n = 100```)
@@ -252,7 +256,7 @@ This would prevent the option to instantiate a variable of `UniquePaths`, theref
 
 #### Post-conditions
 1. The total number of possible paths has to be a positive integer.
-2. The maximum number of possible paths is roughly ```2.28 x power(10, 58)``` and is achieved with ```m = n = 100```.
+2. The maximum number of possible paths is roughly ```2.28 x 10^58``` and is achieved with ```m = n = 100```.
 3. If ```m > 100``` or ```n > 100``` the method returns the soft value ```-1```.
 4. If ```m < 1``` or ```n < 1``` the method returns the soft value ```-1```.
 
