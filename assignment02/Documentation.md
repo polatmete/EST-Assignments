@@ -95,7 +95,79 @@ at Jacoco, we can see that we still reach a 100% line coverage.
 
 ## find_duplicate
 
+### Task 1: Code Coverage
+The method proves that at least one duplicate number must exist if an array containing n + 1 integers where each integer is between 1 and n (inclusive) is given. 
+
+Assumptions:
+- array of n + 1 integers
+- each integer is between 1 and n (inclusive)
+- there is only one duplicate number, but it could be repeated more than once
+
+From the assumption and the restrictions of the definition of the input I derived the test cases where the same number occurs twice or more than twice. All other cases I then later tested when testing the contract (see below). 
+To achieve 100% line and branch coverage of the method implementation one of this test cases already would have been enough. So far my test suite contained the following tests:
+
+- `oneDuplicate`: Find the only existing duplicate
+- `hasSameNumberMoreThanTwice`: The duplicate number appears more than twice 
+- `multipleDuplicates`: Find the first duplicate when multiple duplicates exist
+
+
+### Task 2: Designing Contracts
+I then implemented pre- and post-conditions to ensure valid in- and output. The pre-conditions check the cases that the array input is not null, has at least two elements and that all elements are in the range [1,n]. It can be mathematically proven that under the given constraints there always has to be a duplicate. Implementing a post-condition like `assert hare >= 1 && hare <=n: "Not a valid output";` would never be false, which is why I left it out. 
+
+#### Pre-conditions
+2. The input array ```nums``` is not null.
+3. The input array ```nums``` must have at least two elements.
+4. Each element in the array must adhere to the range [1,n].
+
+#### Post-Conditions
+The method returns an integer that is the duplicate number found in ```nums``` and therefore ranges from [1,n].
+
+#### Invariants
+The method does not deal with any state-changing operation for which an invariant could be added.
+
+
+### Task 3: Testing Contracts
+Next, I then made sure to test all the pre-conditions in my test suite, including an array with only one element, a null input or an array with numbers which were not in the range from [1,n]. The post-condition is already ensured by the pre-condition check as only numbers from the input array are returned which are in the range from [1,n]. As  my post-condition is never reached (see the screenshot in the assets file), I decided to remove it.
+My test suites was therefore extended by the following tests: 
+
+- `nullArray`: input array is null
+- `oneElementArray`: the input array only contains one element
+- `elementOutOfRange`: the array contains at least one element which is not in the range [1,n]
+
+### Task 4: Property-Based Testing
+For property-based testing I created tests that inserts a random duplicate element at a random position and then checks whether the same duplicate integer is returned by the findDuplicate method. I did this with one duplicate element and multiple duplicates:
+
+- `propertyBasedTestMultipleDuplicates`
+- `propertyBasedTestOneDuplicate`
+
 ## longest_increasing_subsequence
+
+### Task 1: Code Coverage
+My testsuite consists out of a `happyCase` test to test the behaviour for a sequence with increasing numbers, a test with an array with unique numbers `uniqueNumbers`, decreasing numbers `decreasingNumbers` for both positive and negative numbers and a single element array test `singleElementArray`. Without the pre-conditions checks at the beginning this already covers 100% branch and decision coverage of the actual implementation.
+
+### Task 2: Designing Contracts
+The pre-conditions are implemented at the very beginning of the method and specify that if the array is null or empty the method returns zero.
+The post-condition is that the number (if the array is not null or empty) returned is greater equal than 1, which is already ensured by the method and therefore was marked as redundant when I explicitly specified it in the code.
+
+#### Pre-conditions
+1. the input ```nums``` is an array of integers.
+2. ```nums``` is not null.
+3. ```nums``` is not empty. 
+4. Each element in the array can be negative, positive or zero.
+
+#### Post-Conditions
+The method returns a non-negative integer
+
+#### Invariants
+The method does not deal with any state-changing operation for which an invariant could be added.
+
+### Task 3: Testing Contracts
+I wrote two test to test the pre-conditions null and empty array: `nullArray` and `emptyArray`.  
+With the use of property-based testing I tested the post-condition that if the array is not null or empty the result hast to be greater equal than 1: `resultGreaterEqualOne`.
+
+### Task 4: Property-Based Testing
+As written above one of my property-based tests ensures that the post-condition result is greater equal than 1: `resultGreaterEqualOne`.
+The other creates a random sorted array with unique elements to check whether the result is equal the length of the generated array: `propertyBasedTest`. 
 
 ## merge_k_sorted_lists
 ### Task 1: Code Coverage
