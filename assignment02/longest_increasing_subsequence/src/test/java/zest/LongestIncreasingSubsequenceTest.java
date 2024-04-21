@@ -62,13 +62,13 @@ class LongestIncreasingSubsequenceTest {
     }
 
     @Property
-    void arrayGreaterEqualOne(@ForAll @Size(min = 1) int[] nums) {
+    void resultGreaterEqualOne(@ForAll @Size(min = 1) int[] nums) {
         int result = LongestIncreasingSubsequence.lengthOfLIS(nums);
         assertTrue(result >= 1);
     }
 
     @Property
-    void arrayIsSortedAndUniqueElements(@ForAll("arrProvider") int[] nums) {
+    void propertyBasedTest(@ForAll("arrProvider") int[] nums) {
         int result = LongestIncreasingSubsequence.lengthOfLIS(nums);
         assertEquals(result, nums.length);
     }
