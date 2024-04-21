@@ -4,8 +4,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CourseSchedule {
-    public boolean canFinish(int numCourses, int[][] prerequisites) {
+    public static boolean canFinish(int numCourses, int[][] prerequisites) {
 
+        if (prerequisites == null) {
+            throw new NullPointerException("Prerequisites are null.");
+        }
+
+        if (prerequisites.length == 0) {
+            return true;
+        }
+
+        if (numCourses < 1) {
+            throw new IllegalArgumentException("Number of courses must be higher than 0.");
+        }
 
         // Create a graph from prerequisites
         List<List<Integer>> graph = new ArrayList<>();
@@ -13,6 +24,14 @@ public class CourseSchedule {
             graph.add(new ArrayList<>());
         }
         for (int[] prerequisite : prerequisites) {
+            if (prerequisite[0] == prerequisite[1]) {
+                throw new IllegalArgumentException("Courses can't reference themselves.");
+            }
+
+            if (prerequisite[0] >= numCourses || prerequisite[1] >= numCourses) {
+                throw new ArrayIndexOutOfBoundsException("Prerequisites references non-existing course.");
+            }
+
             graph.get(prerequisite[1]).add(prerequisite[0]);
         }
 
@@ -27,7 +46,7 @@ public class CourseSchedule {
         return true; // No cycle detected
     }
 
-    private boolean hasCycle(List<List<Integer>> graph, int current, boolean[] visited, boolean[] onPath) {
+    private static boolean hasCycle(List<List<Integer>> graph, int current, boolean[] visited, boolean[] onPath) {
         if (onPath[current]) return true; // Cycle detected
         if (visited[current]) return false; // Already visited
 
