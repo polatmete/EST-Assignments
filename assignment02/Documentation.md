@@ -7,33 +7,33 @@
 ### Task 1: Code Coverage
 
 The goal of the method is to calculate all distinct combinations of steps to reach the top of a staircase with n steps. 
-Each time you can either climb 1 or 2 steps. As constraints, it is given that n must be positive, and the return value 
+Each time you can either climb ```1``` or ```2``` steps. As constraints, it is given that n must be positive, and the return value 
 must be non-negative.
 
 For such tasks, where the input value is an integer it is common to test for negative and positive values as well as 
-zero. When looking at the implementation of the method we can also see that n=2 acts as a boundary, since the return values
-for the inputs 1 and 2 are their respective numbers as well. We therefore also want to test for n>2. This leads us 
+zero. When looking at the implementation of the method we can also see that ```n = 2``` acts as a boundary, since the return values
+for the inputs ```1``` and ```2``` are their respective numbers as well. We therefore also want to test for ```n > 2```. This leads us 
 to the following test suite.
-1. n=-1 -> Should not be accepted as input, because of the constraint mentioned above. As no return value for such cases
-    is specified, we will return 0 (return value must be non-negative).
-2. n=0 -> Should not be accepted as input, because of the constraint mentioned above. As no return value for such cases
-   is specified, we will return 0 (return value must be non-negative).
-3. n=2 -> Should return 2.
-4. n=4 -> Should return 5.
+1. ```n = -1```: Should not be accepted as input, because of the constraint mentioned above. As no return value for such cases
+    is specified, we will return ```0``` (return value must be non-negative).
+2. ```n = 0```: Should not be accepted as input, because of the constraint mentioned above. As no return value for such cases
+   is specified, we will return ```0``` (return value must be non-negative).
+3. ```n = 2```: Should return ```2```.
+4. ```n = 4```: Should return ```5```.
 
 To clarify: In order for the test suite to run, we had to make the test class as well as the single test cases public, 
 in order to be able to access them (I do recognize that this could have been a local issue, but I had to declare them
 in this way in order to make them work).
 
 In a first step, the method ```climbStairs``` is declared ```static```, because it's independent of any class instance.
-Running the tests with Jacoco we can see that only test 1 fails. This is due to a missing precondition (not allowing non-negative
-inputs). Test 2 passes but not in the correct way, as 0 is also forbidden as an input. These issues will be addressed
+Running the tests with Jacoco we can see that only test 1. fails. This is due to a missing precondition (not allowing non-negative
+inputs). Test 2. passes but not in the correct way, as ```0``` is also forbidden as an input. These issues will be addressed
 in Task 2 since we have to implement a pre-condition for these tests to both pass in the correct way. The class definition 
 is not handled because there is no class instance. However, given the context this can be ignored. A possibility would be 
 to declare the class `ClimbingStairs` as final, since it serves as a utility class. A private constructor can then be added. 
 This would prevent the option to instantiate a variable of `ClimbingStairs`, therefore, yielding a true 100% coverage with JaCoCo.
 
-It is important to notice that the 100% line coverage at the moment only comes from tests 3 and 4. Tests 1 and 2 seem
+It is important to notice that the 100% line coverage at the moment only comes from tests 3. and 4. Tests 1. and 2. seem
 to be redundant for the moment, but it will get clear why they are still important in Task 2.
 
 ### Task 2: Designing Contracts
@@ -50,9 +50,9 @@ The method does not deal with any state-changing operation for which an invarian
 As we already declared tests for the constraints the whole test suite is now passing. However, Jacoco reveals that the 
 line coverage dropped to 92%. This is due to the post condition, that states that the return value cannot be non-negative.
 Looking at the code we can see that it is actually impossible to return a negative value. Either the input is:
-1. 0 -> return value 0
-2. Between 1 and 2 -> return value 1 and 2
-3. Larger than 2 -> return value larger than 2, since the for loop is executed at least once, which means that the line
+1. ```0```: return value ```0```
+2. Between ```1``` and ```2```: return value ```1``` and ```2```
+3. Larger than ```2```: return value larger than ```2```, since the for loop is executed at least once, which means that the line
    ```allWays = oneStepBefore + twoStepsBefore;``` is executed at least once. Given that ```oneStepBefore``` and ```twoStepsBefore```
    are hardcoded positive values, ```allWays``` cannot be negative.
    
@@ -63,14 +63,14 @@ More details in Task 4.
 This means that we can delete the post-condition, as the code itself guarantees the non-negative return value. This bumps
 the line coverage back to 100%.
 
-Please notice that it is clear that test 1 and 2 executed the same block of code (pre-condition). We could therefore delete
+Please notice that it is clear that tests 1. and 2. executed the same block of code (pre-condition). We could therefore delete
 one of these tests and still come to a 100% line coverage. However, we decided to keep them both in, since est 1 targets a set
 of integers that conceptually should not be allowed as input and test 2 targets an integer that acts as a boundary.
 
 ### Task 3: Testing Contracts
 In this task we updated the test once more, since now it is clear that approprate exceptions need to be thrown whenever
-pre-conditions are violated. Up until now, we just returned 0, which didn't make the most sense. We implemented a 
-```IllegalArgumentException``` to be thrown whenever the input is non-positive. We then adjusted tests 1 and 2 to check 
+pre-conditions are violated. Up until now, we just returned ```0```, which didn't make the most sense. We implemented a 
+```IllegalArgumentException``` to be thrown whenever the input is non-positive. We then adjusted tests 1. and 2. to check 
 for that exceptions. In terms of post-condition and invariants we do not have to adjust anything. An updated jacoco report
 is also added under ```assets/```.
 
@@ -84,8 +84,8 @@ stairs method. For all the negative inputs we implemented a second property-base
 the correct error. The first property-based test revealed that some outputs higher than the max value of a ```long``` would 
 be returned as negative numbers. This is due to overflow. To counter this, we wanted to implement a post-condition in the 
 method to assure that no negative values are returned. However, this got even more complicated, since not all return values
-for inputs higher than 91 are negative. To counter this, we therefore changed the post-condition into a pre-condition, 
-saying that the input values could not be higher than 91 (because otherwise we would enter overflow territory). 
+for inputs higher than ```91``` are negative. To counter this, we therefore changed the post-condition into a pre-condition, 
+saying that the input values could not be higher than ```91``` (because otherwise we would enter overflow territory). 
 A third property-based test was implemented to check for this.
 
 To showcase the implementation process the other test cases are not deleted even though they are now redundant. Looking
@@ -104,13 +104,13 @@ The test cases `testNull`,  `testEmptyList`, `testEmptyNode`, and `testExample` 
 
 ### Task 2: Designing Contracts
 The precondition, postcondition, and invariant can be abbreviated from the task description:
- - Precondition
-   - 0 <= #nodes >= 10^4
-   - all nodes provided should be sorted in ascending order within the list their in
- - Postcondition
-   - A single sorted list should be returned
- - Invariant
-   - The list should be sorted at any time during the runtime
+#### Precondition
+1. ```0 <= #nodes >= 10^4```
+2. all nodes provided should be sorted in ascending order within the list their in
+#### Postcondition
+1. A single sorted list should be returned 
+#### Invariant
+1. The list should be sorted at any time during the runtime
 
 ### Task 3: Testing Contracts
 To check the precondition I added the test case `testPrecondition`, which checks the above-mentioned conditions.
@@ -124,7 +124,7 @@ The following 3 properties have been identified:
 2. Invalid combinations in lists
 3. Lists in different lengths
 
-To test the first property, an `Arbitrary<ListNode[]>` was created, which generates a list of nodes with a length between 0 and 10^4.
+To test the first property, an `Arbitrary<ListNode[]>` was created, which generates a list of nodes with a length between ```0``` and ```10^4```.
 For the second property, tha same was done but with parameters that lead to an invalid list.
 Lastly, to test the third property, lists with random lengths were generated.
 
