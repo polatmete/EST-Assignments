@@ -28,9 +28,6 @@ public class FindDuplicate {
             hare = nums[hare];
         }
 
-        //post-conditions
-        assert hare >= 1 && hare <=n: "Not a valid output";
-
         return hare;
     }
 }

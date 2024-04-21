@@ -104,17 +104,29 @@ Assumptions:
 - there is only one duplicate number, but it could be repeated more than once
 
 From the assumption and the restrictions of the definition of the input I derived the test cases where the same number occurs twice or more than twice. All other cases I then later tested when testing the contract (see below). 
-To achieve 100% line and branch coverage of the method implementation one of this test cases already would have been enough. The assertions were not included in the line coverage as they are tested extra.
+To achieve 100% line and branch coverage of the method implementation one of this test cases already would have been enough. So far my test suite contained the following tests:
+
+- `oneDuplicate`: Find the only existing duplicate
+- `hasSameNumberMoreThanTwice`: The duplicate number appears more than twice 
+- `multipleDuplicates`: Find the first duplicate when multiple duplicates exist
+
 
 ### Task 2: Designing Contracts
-I then implemented pre- and post-conditions to ensure valid in- and output. The pre-conditions check the cases that the array input is not null, has at least two elements and that all elements are in the range [1,n].
-The post-condition ensures that the output is also a valid number from the range [1,n].
+I then implemented pre- and post-conditions to ensure valid in- and output. The pre-conditions check the cases that the array input is not null, has at least two elements and that all elements are in the range [1,n]. It can be mathematically proven that under the given constraints there always has to be a duplicate. Implementing a post-condition like `assert hare >= 1 && hare <=n: "Not a valid output";` would never be false, which is why I left it out. 
 
 ### Task 3: Testing Contracts
-Next, I then made sure to test all the pre-conditions in my test suite, including an array with only two elements, a null input or an array with numbers which were not in the range from [1,n]. The post-condition is already ensured by the pre-condition check as only numbers from the input array are returned which are in the range from [1,n].
+Next, I then made sure to test all the pre-conditions in my test suite, including an array with only one element, a null input or an array with numbers which were not in the range from [1,n]. The post-condition is already ensured by the pre-condition check as only numbers from the input array are returned which are in the range from [1,n]. As  my post-condition is never reached (see the screenshot in the assets file), I decided to remove it.
+My test suites was therefore extended by the following tests: 
+
+- `nullArray`: input array is null
+- `oneElementArray`: the input array only contains one element
+- `elementOutOfRange`: the array contains at least one element which is not in the range [1,n]
 
 ### Task 4: Property-Based Testing
-For property-based testing I created a test that inserts a random duplicate element at a random position and then checks whether the same duplicate integer is returned by the findDuplicate method.
+For property-based testing I created tests that inserts a random duplicate element at a random position and then checks whether the same duplicate integer is returned by the findDuplicate method. I did this with one duplicate element and multiple duplicates:
+
+- `propertyBasedTestMultipleDuplicates`
+- `propertyBasedTestOneDuplicate`
 
 ## longest_increasing_subsequence
 
