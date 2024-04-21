@@ -1,3 +1,4 @@
+timestamp = 2024-04-21T11:15:33.071680500, MergeKSortedListsTest:testInvalidList =
                               |-----------------------jqwik-----------------------
 tries = 1000                  | # of calls to property
 checks = 1000                 | # of not rejected calls
@@ -6,10 +7,11 @@ after-failure = SAMPLE_FIRST  | try previously failed sample, then previous seed
 when-fixed-seed = ALLOW       | fixing the random seed is allowed
 edge-cases#mode = MIXIN       | edge cases are mixed in
 edge-cases#total = 72         | # of all combined edge cases
-edge-cases#tried = 72         | # of edge cases tried in current run
-seed = 1936211061402897042    | random seed to reproduce generated values
+edge-cases#tried = 67         | # of edge cases tried in current run
+seed = 2258738725917380336    | random seed to reproduce generated values
 
 
+timestamp = 2024-04-21T11:15:44.018370100, MergeKSortedListsTest:testRandomLists =
                               |-----------------------jqwik-----------------------
 tries = 1000                  | # of calls to property
 checks = 1000                 | # of not rejected calls
@@ -19,9 +21,10 @@ when-fixed-seed = ALLOW       | fixing the random seed is allowed
 edge-cases#mode = MIXIN       | edge cases are mixed in
 edge-cases#total = 5          | # of all combined edge cases
 edge-cases#tried = 5          | # of edge cases tried in current run
-seed = 2606256433792995750    | random seed to reproduce generated values
+seed = -2269914832452777498   | random seed to reproduce generated values
 
 
+timestamp = 2024-04-21T11:15:44.054000500, MergeKSortedListsTest:testValidList =
                               |-----------------------jqwik-----------------------
 tries = 1000                  | # of calls to property
 checks = 1000                 | # of not rejected calls
@@ -30,5 +33,9 @@ after-failure = SAMPLE_FIRST  | try previously failed sample, then previous seed
 when-fixed-seed = ALLOW       | fixing the random seed is allowed
 edge-cases#mode = MIXIN       | edge cases are mixed in
 edge-cases#total = 81         | # of all combined edge cases
-edge-cases#tried = 81         | # of edge cases tried in current run
-seed = 3653819817797312632    | random seed to reproduce generated values
+edge-cases#tried = 71         | # of edge cases tried in current run
+seed = -7056939498608258128   | random seed to reproduce generated values
+
+
+
+Process finished with exit code 0
