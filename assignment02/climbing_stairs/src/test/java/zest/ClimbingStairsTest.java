@@ -53,14 +53,13 @@ public class ClimbingStairsTest {
                 f[i] = f[i - 1] + f[i - 2];
             }
         }
-
         assertEquals(f[n], ClimbingStairs.climbStairs(n));
     }
 
     @Property
     void invalidLowRange(
             @ForAll
-            @IntRange(min = Integer.MIN_VALUE,max = 0) int n
+            @IntRange(min = Integer.MIN_VALUE, max = 0) int n
     ) {
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () ->
                 ClimbingStairs.climbStairs(n));
@@ -76,7 +75,6 @@ public class ClimbingStairsTest {
                 ClimbingStairs.climbStairs(n));
         assertEquals("Input value is to high for the return to be stored on a 'long'.", exception.getMessage());
     }
-
 }
 
 
