@@ -3,8 +3,11 @@ package zest;
 import net.jqwik.api.*;
 import net.jqwik.api.constraints.IntRange;
 import org.junit.jupiter.api.Test;
+
 import java.math.BigInteger;
+
 import com.google.common.math.BigIntegerMath;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class UniquePathsTest {
@@ -51,18 +54,18 @@ class UniquePathsTest {
 
     @Property
     void validInput(
-        @ForAll
-        @IntRange(min = 1, max = 100) int m,
-        @ForAll
-        @IntRange(min = 1, max = 100) int n
+            @ForAll
+            @IntRange(min = 1, max = 100) int m,
+            @ForAll
+            @IntRange(min = 1, max = 100) int n
     ) {
         assertEquals(BigIntegerMath.binomial(m + n - 2, m - 1), UniquePaths.uniquePaths(m, n));
     }
 
     @Property
     void invalidInput(
-        @ForAll("invalidInput") int m,
-        @ForAll("invalidInput") int n
+            @ForAll("invalidInput") int m,
+            @ForAll("invalidInput") int n
     ) {
         assertEquals(BigInteger.valueOf(-1), UniquePaths.uniquePaths(m, n));
     }
@@ -70,8 +73,8 @@ class UniquePathsTest {
     @Provide
     private Arbitrary<Integer> invalidInput() {
         return Arbitraries.oneOf(
-            Arbitraries.integers().lessOrEqual(0),
-            Arbitraries.integers().greaterOrEqual(101)
+                Arbitraries.integers().lessOrEqual(0),
+                Arbitraries.integers().greaterOrEqual(101)
         );
     }
 }

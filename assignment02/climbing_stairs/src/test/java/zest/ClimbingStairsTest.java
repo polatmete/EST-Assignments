@@ -4,7 +4,7 @@ package zest;
 import net.jqwik.api.ForAll;
 import net.jqwik.api.Property;
 import net.jqwik.api.constraints.IntRange;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class ClimbingStairsTest {
 
     @Test
-    public void negative() {
+    void negative() {
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () ->
                 ClimbingStairs.climbStairs(-1));
 
@@ -20,7 +20,7 @@ public class ClimbingStairsTest {
     }
 
     @Test
-    public void zero() {
+    void zero() {
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () ->
                 ClimbingStairs.climbStairs(0));
 
@@ -28,12 +28,12 @@ public class ClimbingStairsTest {
     }
 
     @Test
-    public void lowPositive() {
+    void lowPositive() {
         assertEquals(2, ClimbingStairs.climbStairs(2));
     }
 
     @Test
-    public void largePositive() {
+    void largePositive() {
         assertEquals(5, ClimbingStairs.climbStairs(4));
     }
 

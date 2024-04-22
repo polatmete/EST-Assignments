@@ -3,33 +3,32 @@ package zest;
 
 import net.jqwik.api.*;
 import net.jqwik.api.constraints.IntRange;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class CourseScheduleTest {
 
     @Test
-    public void withoutCircles() {
+    void withoutCircles() {
         int[][] input = {{1, 0}};
-        assertEquals(true, CourseSchedule.canFinish(2, input));
+        assertTrue(CourseSchedule.canFinish(2, input));
     }
 
     @Test
-    public void withCircles() {
-        int[][] input = {{1, 0}, {0,1}};
-        assertEquals(false, CourseSchedule.canFinish(2, input));
+    void withCircles() {
+        int[][] input = {{1, 0}, {0, 1}};
+        assertFalse(CourseSchedule.canFinish(2, input));
     }
 
     @Test
-    public void emptyPrerequisites() {
+    void emptyPrerequisites() {
         int[][] input = {};
-        assertEquals(true, CourseSchedule.canFinish(2, input));
+        assertTrue(CourseSchedule.canFinish(2, input));
     }
 
     @Test
-    public void nullPrerequisites() {
+    void nullPrerequisites() {
         NullPointerException exception = assertThrows(NullPointerException.class, () ->
                 CourseSchedule.canFinish(2, null));
 
@@ -37,20 +36,20 @@ public class CourseScheduleTest {
     }
 
     @Test
-    public void largeWithoutCircles() {
-        int[][] input = {{1,0}, {4, 0}, {5, 1}, {3, 2}, {2, 5}, {3, 0}};
-        assertEquals(true, CourseSchedule.canFinish(6, input));
+    void largeWithoutCircles() {
+        int[][] input = {{1, 0}, {4, 0}, {5, 1}, {3, 2}, {2, 5}, {3, 0}};
+        assertTrue(CourseSchedule.canFinish(6, input));
     }
 
     @Test
-    public void largeWithCircles() {
+    void largeWithCircles() {
         int[][] input = {{1, 0}, {0, 4}, {4, 2}, {2, 3}, {3, 5}, {5, 1}};
-        assertEquals(false, CourseSchedule.canFinish(6, input));
+        assertFalse(CourseSchedule.canFinish(6, input));
     }
 
     @Test
-    public void invalidNumCourses() {
-        int[][] input = {{1, 0}, {0,1}};
+    void invalidNumCourses() {
+        int[][] input = {{1, 0}, {0, 1}};
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () ->
                 CourseSchedule.canFinish(0, input));
 
@@ -58,8 +57,8 @@ public class CourseScheduleTest {
     }
 
     @Test
-    public void referencingItself() {
-        int[][] input = {{1, 0}, {0,0}};
+    void referencingItself() {
+        int[][] input = {{1, 0}, {0, 0}};
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () ->
                 CourseSchedule.canFinish(2, input));
 
@@ -67,8 +66,8 @@ public class CourseScheduleTest {
     }
 
     @Test
-    public void invalidPrerequisite() {
-        int[][] input = {{1, 0}, {2,0}};
+    void invalidPrerequisite() {
+        int[][] input = {{1, 0}, {2, 0}};
         ArrayIndexOutOfBoundsException exception = assertThrows(ArrayIndexOutOfBoundsException.class, () ->
                 CourseSchedule.canFinish(2, input));
 
@@ -76,8 +75,8 @@ public class CourseScheduleTest {
     }
 
     @Test
-    public void negativePrerequisite() {
-        int[][] input = {{1, 0}, {2,-1}};
+    void negativePrerequisite() {
+        int[][] input = {{1, 0}, {2, -1}};
         ArrayIndexOutOfBoundsException exception = assertThrows(ArrayIndexOutOfBoundsException.class, () ->
                 CourseSchedule.canFinish(2, input));
 
@@ -95,7 +94,7 @@ public class CourseScheduleTest {
             prerequisites[i][1] = Arbitraries.integers().between(numCourses / 2, numCourses - 1).sample();
         }
 
-        assertEquals(true, CourseSchedule.canFinish(numCourses, prerequisites));
+        assertTrue(CourseSchedule.canFinish(numCourses, prerequisites));
     }
 
     @Property
@@ -110,10 +109,10 @@ public class CourseScheduleTest {
         }
 
         // Change the last tuple to the first one but reversed to make sure there is a circle.
-        prerequisites[numRequisites-1][0] = prerequisites[0][1];
-        prerequisites[numRequisites-1][1] = prerequisites[0][0];
+        prerequisites[numRequisites - 1][0] = prerequisites[0][1];
+        prerequisites[numRequisites - 1][1] = prerequisites[0][0];
 
-        assertEquals(false, CourseSchedule.canFinish(numCourses, prerequisites));
+        assertFalse(CourseSchedule.canFinish(numCourses, prerequisites));
     }
 
     @Property
@@ -146,7 +145,7 @@ public class CourseScheduleTest {
 
         // Change the last tuple so it references itself.
         int randomPrerequisites = Arbitraries.integers().between(2, numRequisites).sample();
-        prerequisites[randomPrerequisites-1][1] = prerequisites[randomPrerequisites-1][0];
+        prerequisites[randomPrerequisites - 1][1] = prerequisites[randomPrerequisites - 1][0];
 
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () ->
                 CourseSchedule.canFinish(numCourses, prerequisites));
@@ -169,7 +168,7 @@ public class CourseScheduleTest {
         int randomPrerequisites = Arbitraries.integers().between(2, numRequisites).sample();
         int randomColumn = Arbitraries.integers().between(0, 1).sample();
         int randomOutOfBounds = Arbitraries.integers().between(numCourses + 1, Integer.MAX_VALUE).sample();
-        prerequisites[randomPrerequisites-1][randomColumn] = randomOutOfBounds;
+        prerequisites[randomPrerequisites - 1][randomColumn] = randomOutOfBounds;
 
         ArrayIndexOutOfBoundsException exception = assertThrows(ArrayIndexOutOfBoundsException.class, () ->
                 CourseSchedule.canFinish(numCourses, prerequisites));
@@ -192,12 +191,11 @@ public class CourseScheduleTest {
         int randomPrerequisites = Arbitraries.integers().between(2, numRequisites).sample();
         int randomColumn = Arbitraries.integers().between(0, 1).sample();
         int randomOutOfBounds = Arbitraries.integers().between(Integer.MIN_VALUE, -1).sample();
-        prerequisites[randomPrerequisites-1][randomColumn] = randomOutOfBounds;
+        prerequisites[randomPrerequisites - 1][randomColumn] = randomOutOfBounds;
 
         ArrayIndexOutOfBoundsException exception = assertThrows(ArrayIndexOutOfBoundsException.class, () ->
                 CourseSchedule.canFinish(numCourses, prerequisites));
 
         assertEquals("Prerequisites references non-existing course.", exception.getMessage());
     }
-
 }

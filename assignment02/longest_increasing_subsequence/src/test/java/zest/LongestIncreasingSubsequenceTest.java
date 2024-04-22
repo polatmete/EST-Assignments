@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class LongestIncreasingSubsequenceTest {
 
     @Test
-    public void happyCase() {
+    void happyCase() {
         int[] nums = {1, 3, 4, 2, 2, 3};
         int result = LongestIncreasingSubsequence.lengthOfLIS(nums);
         assertEquals(result, 3);
@@ -23,14 +23,14 @@ class LongestIncreasingSubsequenceTest {
     }
 
     @Test
-    public void uniqueNumbers() {
+    void uniqueNumbers() {
         int[] nums = {1, 1, 1, 1, 1, 1, 1};
         int result = LongestIncreasingSubsequence.lengthOfLIS(nums);
         assertEquals(result, 1);
     }
 
     @Test
-    public void decreasingNumbers() {
+    void decreasingNumbers() {
         int[] nums = {6, 5, 4, 3, 2, 1};
         int result = LongestIncreasingSubsequence.lengthOfLIS(nums);
         assertEquals(result, 1);
@@ -41,21 +41,21 @@ class LongestIncreasingSubsequenceTest {
     }
 
     @Test
-    public void singleElementArray() {
+    void singleElementArray() {
         int[] nums = {1};
         int result = LongestIncreasingSubsequence.lengthOfLIS(nums);
         assertEquals(result, 1);
     }
 
     @Test
-    public void nullArray() {
+    void nullArray() {
         int[] nums = null;
         int result = LongestIncreasingSubsequence.lengthOfLIS(nums);
         assertEquals(result, 0);
     }
 
     @Test
-    public void emptyArray() {
+    void emptyArray() {
         int[] nums = {};
         int result = LongestIncreasingSubsequence.lengthOfLIS(nums);
         assertEquals(result, 0);

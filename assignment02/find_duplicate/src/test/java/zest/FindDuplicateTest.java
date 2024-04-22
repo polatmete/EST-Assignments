@@ -12,21 +12,21 @@ class FindDuplicateTest {
 
     //code coverage
     @Test
-    public void oneDuplicate() {
+    void oneDuplicate() {
         int[] nums = {1, 3, 4, 2, 2};
         int result = findDuplicate(nums);
         assertEquals(result, 2);
     }
 
     @Test
-    public void hasSameNumberMoreThanTwice() {
+    void hasSameNumberMoreThanTwice() {
         int[] nums = {1, 3, 4, 2, 2};
         int result = findDuplicate(nums);
         assertEquals(result, 2);
     }
 
     @Test
-    public void multipleDuplicates() {
+    void multipleDuplicates() {
         int[] nums = {1, 3, 4, 2, 2, 3};
         int result = findDuplicate(nums);
         assertEquals(result, 2);
@@ -38,12 +38,12 @@ class FindDuplicateTest {
 
     //test pre- and post-conditions
     @Test
-    public void nullArray() {
+    void nullArray() {
         assertThrows(AssertionError.class, () -> findDuplicate(null));
     }
 
     @Test
-    public void oneElementArray() {
+    void oneElementArray() {
         assertThrows(AssertionError.class, () -> {
             int[] nums = {1};
             findDuplicate(nums);
@@ -51,7 +51,7 @@ class FindDuplicateTest {
     }
 
     @Test
-    public void elementOutOfRange() {
+    void elementOutOfRange() {
         assertThrows(AssertionError.class, () -> {
             int[] nums = {1, 3, 4, 2, 2, 7};
             findDuplicate(nums);
