@@ -12,37 +12,38 @@ class FindDuplicateTest {
 
     //code coverage
     @Test
-    public void oneDuplicate(){
-        int[] nums = {1,3,4,2,2};
-        int result = findDuplicate(nums);
-        assertEquals(result, 2);
-    }
-    @Test
-    public void hasSameNumberMoreThanTwice(){
-        int[] nums = {1,3,4,2,2};
+    void oneDuplicate() {
+        int[] nums = {1, 3, 4, 2, 2};
         int result = findDuplicate(nums);
         assertEquals(result, 2);
     }
 
     @Test
-    public void multipleDuplicates(){
-        int[] nums = {1,3,4,2,2,3};
+    void hasSameNumberMoreThanTwice() {
+        int[] nums = {1, 3, 4, 2, 2};
+        int result = findDuplicate(nums);
+        assertEquals(result, 2);
+    }
+
+    @Test
+    void multipleDuplicates() {
+        int[] nums = {1, 3, 4, 2, 2, 3};
         int result = findDuplicate(nums);
         assertEquals(result, 2);
 
-        int[] nums2 = {1,1,2,2};
+        int[] nums2 = {1, 1, 2, 2};
         int result2 = findDuplicate(nums2);
         assertEquals(result2, 1);
     }
 
     //test pre- and post-conditions
     @Test
-    public void nullArray(){
+    void nullArray() {
         assertThrows(AssertionError.class, () -> findDuplicate(null));
     }
 
     @Test
-    public void oneElementArray(){
+    void oneElementArray() {
         assertThrows(AssertionError.class, () -> {
             int[] nums = {1};
             findDuplicate(nums);
@@ -50,17 +51,17 @@ class FindDuplicateTest {
     }
 
     @Test
-    public void elementOutOfRange(){
+    void elementOutOfRange() {
         assertThrows(AssertionError.class, () -> {
-            int[] nums = {1,3,4,2,2,7};
+            int[] nums = {1, 3, 4, 2, 2, 7};
             findDuplicate(nums);
         });
         assertThrows(AssertionError.class, () -> {
-            int[] nums = {0,3,4,2,2,3};
+            int[] nums = {0, 3, 4, 2, 2, 3};
             findDuplicate(nums);
         });
         assertThrows(AssertionError.class, () -> {
-            int[] nums = {-1,3,4,2,2,3};
+            int[] nums = {-1, 3, 4, 2, 2, 3};
             findDuplicate(nums);
         });
     }
@@ -69,23 +70,22 @@ class FindDuplicateTest {
     @Property
     void propertyBasedTestOneDuplicate(
             @ForAll @IntRange(max = 8) int idxDuplicate,
-            @ForAll @IntRange(max = 9) int idxToInsertDuplicate) {
-
-        int[] nums = {1,2,3,4,5,6,7,8,9,10};
+            @ForAll @IntRange(max = 9) int idxToInsertDuplicate
+    ) {
+        int[] nums = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 
         int duplicate = nums[idxDuplicate % nums.length];
 
         //replace 10 as it is bigger than n
-        nums[nums.length-1] = duplicate;
+        nums[nums.length - 1] = duplicate;
 
-        if(idxDuplicate == idxToInsertDuplicate){
+        if (idxDuplicate == idxToInsertDuplicate) {
             idxToInsertDuplicate = (idxToInsertDuplicate + 1) % nums.length;
         }
         nums[idxToInsertDuplicate] = duplicate;
 
         int result = findDuplicate(nums);
         assertEquals(result, duplicate);
-
     }
 
     @Property
@@ -93,31 +93,26 @@ class FindDuplicateTest {
             @ForAll @IntRange(min = 0, max = 4) int idxDuplicate,
             @ForAll @IntRange(min = 0, max = 4) int idxToInsertDuplicate,
             @ForAll @IntRange(min = 5, max = 8) int idxDuplicate2,
-            @ForAll @IntRange(min = 5, max = 8) int idxToInsertDuplicate2) {
-
-        int[] nums = {1,2,3,4,5,6,7,8,9, 10, 11};
+            @ForAll @IntRange(min = 5, max = 8) int idxToInsertDuplicate2
+    ) {
+        int[] nums = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
 
         int duplicate = nums[idxDuplicate];
         int duplicate2 = nums[idxDuplicate2];
 
         //replace 10 & 11 as it is bigger than n
-        nums[nums.length-2] = duplicate;
-        nums[nums.length-1] = duplicate2;
+        nums[nums.length - 2] = duplicate;
+        nums[nums.length - 1] = duplicate2;
 
         nums[idxToInsertDuplicate2] = duplicate2;
 
-        if(idxDuplicate == idxToInsertDuplicate){
+        if (idxDuplicate == idxToInsertDuplicate) {
             idxToInsertDuplicate = (idxToInsertDuplicate + 1) % nums.length;
         }
         nums[idxToInsertDuplicate] = duplicate;
 
 
-
         int result = findDuplicate(nums);
         assertTrue(result == duplicate || result == duplicate2);
-
     }
-
-
-
 }

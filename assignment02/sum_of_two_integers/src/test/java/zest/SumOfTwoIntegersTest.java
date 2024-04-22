@@ -3,6 +3,7 @@ package zest;
 import net.jqwik.api.*;
 import net.jqwik.api.constraints.IntRange;
 import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -60,26 +61,26 @@ class SumOfTwoIntegersTest {
 
     @Property
     void validRange(
-        @ForAll
-        @IntRange(min = Integer.MIN_VALUE / 2, max = Integer.MAX_VALUE / 2) int a,
-        @ForAll
-        @IntRange(min = Integer.MIN_VALUE / 2, max = Integer.MAX_VALUE / 2) int b
+            @ForAll
+            @IntRange(min = Integer.MIN_VALUE / 2, max = Integer.MAX_VALUE / 2) int a,
+            @ForAll
+            @IntRange(min = Integer.MIN_VALUE / 2, max = Integer.MAX_VALUE / 2) int b
     ) {
         assertEquals(a + b, SumOfTwoIntegers.getSum(a, b));
     }
 
     @Property
     void invalidPositiveRange(
-        @ForAll("invalidPositiveRange") int a,
-        @ForAll("invalidPositiveRange") int b
+            @ForAll("invalidPositiveRange") int a,
+            @ForAll("invalidPositiveRange") int b
     ) {
         assertThrows(ArithmeticException.class, () -> SumOfTwoIntegers.getSum(a, b));
     }
 
     @Property
     void invalidNegativeRange(
-        @ForAll("invalidNegativeRange") int a,
-        @ForAll("invalidNegativeRange") int b
+            @ForAll("invalidNegativeRange") int a,
+            @ForAll("invalidNegativeRange") int b
     ) {
         assertThrows(ArithmeticException.class, () -> SumOfTwoIntegers.getSum(a, b));
     }
