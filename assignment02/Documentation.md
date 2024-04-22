@@ -26,7 +26,7 @@ in order to be able to access them (I do recognize that this could have been a l
 in this way in order to make them work).
 
 In a first step, the method `climbStairs` is declared `static`, because it's independent of any class instance.
-Running the tests with Jacoco we can see that only test 1. fails. This is due to a missing precondition (not allowing non-negative
+Running the tests with Jacoco we can see that only test 1. fails. This is due to a missing pre-condition (not allowing non-negative
 inputs). Test 2. passes but not in the correct way, as `0` is also forbidden as an input. These issues will be addressed
 in Task 2 since we have to implement a pre-condition for these tests to both pass in the correct way. The class definition 
 is not handled because there is no class instance. However, given the context this can be ignored. A possibility would be 
@@ -94,58 +94,61 @@ at Jacoco, we can see that we still reach a 100% line coverage.
 ## course_schedule
 ### Task 1: Code Coverage
 
-The method gets a list of courses numbered from 0 to numCourses-1 as well as a list of prerequisite requirements that tell
+The method gets a list of courses numbered from `0` to `numCourses - 1` as well as a list of prerequisite requirements that tell
 if one of the courses is a prerequisite of one of the other courses. It then checks if it is possible for a student to 
 enroll in all the courses in a certain order or if there are any circular prerequisites.
 
 As input values we therefore have a positive integer (this is a constraint and will be adhered to in Task 2), and a list
 of lists that is transformed into a directed graph and then searched for circles. To test integers we usually start
-with negative, 0 and positive values. However, this will be checked in detail in Task 2. For now, we will only test positive 
+with negative, `0` and positive values. However, this will be checked in detail in Task 2. For now, we will only test positive 
 integers.
 
 In terms of the directed graph we would usually test for null/empty inputs (For empty we decided to return true, since in that
 case it makes sense to say that there are no circles), inputs with circles and inputs without circles. The 
-two preconditions (no courses have itself as a prerequisite and each prerequisite must refer to a valid course) will be adhered
+two pre-conditions (no courses have itself as a prerequisite and each prerequisite must refer to a valid course) will be adhered
 to in Task 2. For now, we implemented the following test cases:
 
-1. withoutCircles: numCourses = 2, prerequisites = [[1,0]] -> true
-2. withCircles: numCourses = 2, prerequisites = [[1,0],[0,1]] -> false
-3. emptyPrerequisites: numCourses = 2, prerequisites = [] -> true
-4. nullPrerequisites: numCourses = 2, prerequisites = [] -> error
+1. `withoutCircles`: `numCourses = 2`, `prerequisites = [[1,0]]` returns `true`
+2. `withCircles`: `numCourses = 2`, `prerequisites = [[1,0],[0,1]]` returns `false`
+3. `emptyPrerequisites`: `numCourses = 2`, `prerequisites = []` returns `true`
+4. `nullPrerequisites`: `numCourses = 2`, `prerequisites = []` throws `error`
 
 With these the first two tests we already get to a 100% line coverage in Jacoco. However, since we only settled for the simplest
 solution, we want to add two more tests with higher numbers to really stress the method and especially the for-loops. This
 should also test larger circles than only with two prerequisites.
 
-5. largeWithoutCircles: numCourses = 6, prerequisites = [[1,0], [4,0], [5,1], [3,2], [2,5], [3,0]] -> true
-6. withLargeCircles: numCourses = 6, prerequisites = [[1,0], [0,4], [4,2], [2,3], [3,5], [5,1]] -> false
+5. `largeWithoutCircles`: `numCourses = 6`, `prerequisites = [[1,0], [4,0], [5,1], [3,2], [2,5], [3,0]]` returns `true`
+6. `withLargeCircles`: `numCourses = 6`, `prerequisites = [[1,0], [0,4], [4,2], [2,3], [3,5], [5,1]]` returns `false`
 
-Tests 3 and 4 fail currently which is why we implement null and empty checks for the prerequisites. After this, we reach
+Tests 3. and 4. fail currently which is why we implement null and empty checks for the prerequisites. After this, we reach
 100% line coverage on Jacoco again.
 
 ### Task 2: Designing Contracts
 
-The precondition, postcondition, and invariant can be abbreviated from the task description:
-- Preconditions:
-   - Prerequisites are depicted as a pair [a, b] indicating a one-way requirement from b to a -> logical precondition, does
-     not have to be tested.
-   - numCourses must be a positive integer.
-   - No courses can require itself directly as a prerequisite.
-   - Each prerequisite must refer to a valid course (0 ≤ a, b < numCourses).
-- Postcondition:
-   - Method returns a boolean value -> already given through method declaration.
-- Invariant:
-   - The method does not deal with any state-changing operation for which an invariant could be added.
-   
+The pre-condition, post-condition, and invariant can be abbreviated from the task description:
+
+#### Pre-conditions:
+1. Prerequisites are depicted as a pair `[a, b]` indicating a one-way requirement from `b` to `a`. Since this is a logical pre-condition,  it does not have to be tested. 
+2. numCourses must be a positive integer. 
+3. No courses can require itself directly as a prerequisite. 
+4. Each prerequisite must refer to a valid course (`0 ≤ a`, `b < numCourses`).
+
+#### Post-condition:
+Method returns a boolean value. This is already given through method declaration.
+
+#### Invariant:
+The method does not deal with any state-changing operation for which an invariant could be added.
+
+#### Test suite update
 The following tests are added to target these conditions:
-7. invalidNumCourses: numCourses = 0, prerequisites = [[1,0],[0,1]] -> error
-8. circleTooSmall: numCourses = 2, prerequisites = [[1,0],[0,0]] -> error
-9. invalidPrerequisite: numCourses = 2, prerequisites = [[1,0],[2,0]] -> error
-10. negativePrerequisite: numCourses = 2, prerequisites = [[1,0],[2,-1]] -> error
+7. `invalidNumCourses`: `numCourses = 0`, `prerequisites = [[1,0],[0,1]]` throws `error`
+8. `circleTooSmall`: `numCourses = 2`, `prerequisites = [[1,0],[0,0]]` throws `error`
+9. `invalidPrerequisite`: `numCourses = 2`, `prerequisites = [[1,0],[2,0]]` throws `error`
+10. `negativePrerequisite`: `numCourses = 2`, `prerequisites = [[1,0],[2,-1]]` throws `error`
 
 ### Task 3: Testing Contracts
 
-Test 7 and 9 already fail but should throw and catch and error and test 8 passes, since the self-reference is not checked.
+Tests 7. and 9. already fail but should throw and catch and error and test 8. passes, since the self-reference is not checked.
 We implemented the according checks throwing errors with descriptive messages, updated the tests to catch those errors
 and after re-running the suite Jacoco revealed a 100% line coverage again (Line 31 is marked yellow, which means it is 
 only partially executed, which is fine. Adding another test just to have the other integer being to high is an overkill).
@@ -153,13 +156,13 @@ only partially executed, which is fine. Adding another test just to have the oth
 ### Task 4: Property-Based Testing
 
 The following properties have been identified:
-1. validRangeWithoutCircles -> Valid inputs for both arguments without circles.
-2. validRangeWithCircles -> Valid inputs for both arguments with circles.
-3. invalidNoOfCourses -> Number of courses is negative.
-4. referencingItself -> Any prerequisite (a, b) existing where a = b should return an error.
-5. invalidPrerequisite -> A prerequisite references a course that doesn't exist or contains a negative number.
+1. `validRangeWithoutCircles`: Valid inputs for both arguments without circles.
+2. `validRangeWithCircles`: Valid inputs for both arguments with circles.
+3. `invalidNoOfCourses`: Number of courses is negative.
+4. `referencingItself`: Any prerequisite (`a`, `b`) existing where `a = b` should return an error.
+5. `invalidPrerequisite`: A prerequisite references a course that doesn't exist or contains a negative number.
 
-Please note that we capped the number of courses and prerequisites to 100. This has to do with outOfMemoryErrors
+Please note that we capped the number of courses and prerequisites to 100. This has to do with `outOfMemoryErrors`
 that we got if we didn't set maximums for those inputs. In this context we decided it should be sufficient to cap those
 inputs at much higher numbers than we used in the tests before.
 
@@ -189,7 +192,7 @@ I then implemented pre- and post-conditions to ensure valid in- and output. The 
 2. The input array `nums` must have at least two elements.
 3. Each element in the array must adhere to the range `[1, n]`.
 
-#### Post-Conditions
+#### Post-conditions
 The method returns an integer that is the duplicate number found in `nums` and therefore ranges from `[1, n]`.
 
 #### Invariants
@@ -225,7 +228,7 @@ The post-condition is that the number (if the array is not null or empty) return
 3. `nums` is not empty. 
 4. Each element in the array can be negative, positive or zero.
 
-#### Post-Conditions
+#### Post-conditions
 The method returns a non-negative integer
 
 #### Invariants
@@ -245,21 +248,21 @@ After performing specification-based testing, the coverage was at 100% for the c
 The test cases `testNull`,  `testEmptyList`, `testEmptyNode`, and `testExample` were enough to cover all the lines and branches of code.
 
 ### Task 2: Designing Contracts
-The precondition, postcondition, and invariant can be abbreviated from the task description:
-#### Precondition
+The pre-condition, post-condition, and invariant can be abbreviated from the task description:
+#### Pre-condition
 1. `0 <= #nodes >= 10^4`
 2. all nodes provided should be sorted in ascending order within the list their in
 
-#### Postcondition
+#### Post-condition
 A single sorted list should be returned 
 
 #### Invariant
 The list should be sorted at any time during the runtime
 
 ### Task 3: Testing Contracts
-To check the precondition I added the test case `testPrecondition`, which checks the above-mentioned conditions.
-The postcondition and invariant are already checked by previous test cases (`testExample`) and do not need to be tested separately.
-Unfortunately adding preconditions, postconditions, and invariants to the code lead to a decrease in branch coverage to 97%.
+To check the pre-condition I added the test case `testPrecondition`, which checks the above-mentioned conditions.
+The post-condition and invariant are already checked by previous test cases (`testExample`) and do not need to be tested separately.
+Unfortunately adding pre-conditions, post-conditions, and invariants to the code lead to a decrease in branch coverage to 97%.
 The one missing branch is due to the fact that during the runtime the invariant is always true. To cover the branch where the invariant is false the code must be manipulated in a way that it produces a wrong output.
 
 ### Task 4: Property-Based Testing
@@ -289,14 +292,14 @@ The test cases
 were enough to cover all the lines and branches of code.
 
 ### Task 2: Designing Contracts
-The precondition, postcondition, and invariant can be abbreviated from the task description:
-#### Precondition
+The pre-condition, post-condition, and invariant can be abbreviated from the task description:
+#### Pre-condition
 1. Array contains unique integers
 2. `0 <= array.length() >= 10^4`
 3. Input array is sorted in ascending order 
 4. Input array is not null
 
-#### Postcondition
+#### Post-condition
 1. Valid height-balanced binary search tree 
 2. BST has the same size as the input array 
 
@@ -306,8 +309,8 @@ The precondition, postcondition, and invariant can be abbreviated from the task 
 3. Right subtree must be greater than root
 
 ### Task 3: Testing Contracts
-The precondition is already checked by the other test cases. 
-To check the postcondition and the invariant, the test case `testPostcondition` respectively `testInvariant` was added.
+The pre-condition is already checked by the other test cases. 
+To check the post-condition and the invariant, the test case `testPostcondition` respectively `testInvariant` was added.
 Those test cases check the above-mentioned conditions.
 
 ### Task 4: Property-Based Testing
