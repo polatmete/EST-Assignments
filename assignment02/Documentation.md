@@ -92,6 +92,76 @@ To showcase the implementation process the other test cases are not deleted even
 at Jacoco, we can see that we still reach a 100% line coverage.
 
 ## course_schedule
+### Task 1: Code Coverage
+
+The method gets a list of courses numbered from 0 to numCourses-1 as well as a list of prerequisite requirements that tell
+if one of the courses is a prerequisite of one of the other courses. It then checks if it is possible for a student to 
+enroll in all the courses in a certain order or if there are any circular prerequisites.
+
+As input values we therefore have a positive integer (this is a constraint and will be adhered to in Task 2), and a list
+of lists that is transformed into a directed graph and then searched for circles. To test integers we usually start
+with negative, 0 and positive values. However, this will be checked in detail in Task 2. For now, we will only test positive 
+integers.
+
+In terms of the directed graph we would usually test for null/empty inputs (For empty we decided to return true, since in that
+case it makes sense to say that there are no circles), inputs with circles and inputs without circles. The 
+two preconditions (no courses have itself as a prerequisite and each prerequisite must refer to a valid course) will be adhered
+to in Task 2. For now, we implemented the following test cases:
+
+1. withoutCircles: numCourses = 2, prerequisites = [[1,0]] -> true
+2. withCircles: numCourses = 2, prerequisites = [[1,0],[0,1]] -> false
+3. emptyPrerequisites: numCourses = 2, prerequisites = [] -> true
+4. nullPrerequisites: numCourses = 2, prerequisites = [] -> error
+
+With these the first two tests we already get to a 100% line coverage in Jacoco. However, since we only settled for the simplest
+solution, we want to add two more tests with higher numbers to really stress the method and especially the for-loops. This
+should also test larger circles than only with two prerequisites.
+
+5. largeWithoutCircles: numCourses = 6, prerequisites = [[1,0], [4,0], [5,1], [3,2], [2,5], [3,0]] -> true
+6. withLargeCircles: numCourses = 6, prerequisites = [[1,0], [0,4], [4,2], [2,3], [3,5], [5,1]] -> false
+
+Tests 3 and 4 fail currently which is why we implement null and empty checks for the prerequisites. After this, we reach
+100% line coverage on Jacoco again.
+
+### Task 2: Designing Contracts
+
+The precondition, postcondition, and invariant can be abbreviated from the task description:
+- Preconditions:
+   - Prerequisites are depicted as a pair [a, b] indicating a one-way requirement from b to a -> logical precondition, does
+     not have to be tested.
+   - numCourses must be a positive integer.
+   - No courses can require itself directly as a prerequisite.
+   - Each prerequisite must refer to a valid course (0 ≤ a, b < numCourses).
+- Postcondition:
+   - Method returns a boolean value -> already given through method declaration.
+- Invariant:
+   - The method does not deal with any state-changing operation for which an invariant could be added.
+   
+The following tests are added to target these conditions:
+7. invalidNumCourses: numCourses = 0, prerequisites = [[1,0],[0,1]] -> error
+8. circleTooSmall: numCourses = 2, prerequisites = [[1,0],[0,0]] -> error
+9. invalidPrerequisite: numCourses = 2, prerequisites = [[1,0],[2,0]] -> error
+10. negativePrerequisite: numCourses = 2, prerequisites = [[1,0],[2,-1]] -> error
+
+### Task 3: Testing Contracts
+
+Test 7 and 9 already fail but should throw and catch and error and test 8 passes, since the self-reference is not checked.
+We implemented the according checks throwing errors with descriptive messages, updated the tests to catch those errors
+and after re-running the suite Jacoco revealed a 100% line coverage again (Line 31 is marked yellow, which means it is 
+only partially executed, which is fine. Adding another test just to have the other integer being to high is an overkill).
+
+### Task 4: Property-Based Testing
+
+The following properties have been identified:
+1. validRangeWithoutCircles -> Valid inputs for both arguments without circles.
+2. validRangeWithCircles -> Valid inputs for both arguments with circles.
+3. invalidNoOfCourses -> Number of courses is negative.
+4. referencingItself -> Any prerequisite (a, b) existing where a = b should return an error.
+5. invalidPrerequisite -> A prerequisite references a course that doesn't exist or contains a negative number.
+
+Please note that we capped the number of courses and prerequisites to 100. This has to do with outOfMemoryErrors
+that we got if we didn't set maximums for those inputs. In this context we decided it should be sufficient to cap those
+inputs at much higher numbers than we used in the tests before.
 
 ## find_duplicate
 
