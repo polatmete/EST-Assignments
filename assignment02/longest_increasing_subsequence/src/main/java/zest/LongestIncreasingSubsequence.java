@@ -1,7 +1,7 @@
 package zest;
 
 public class LongestIncreasingSubsequence {
-    public int lengthOfLIS(int[] nums) {
+    public static int lengthOfLIS(int[] nums) {
         if (nums == null || nums.length == 0) {
             return 0;
         }
