@@ -50,8 +50,6 @@
                 <version>0.3</version>
             </plugin>
         </plugins>
-
     </build>
-
 </project>
     
