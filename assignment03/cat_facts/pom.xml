@@ -43,7 +43,6 @@
                     <enableAssertions>true</enableAssertions>
                 </configuration>
             </plugin>
-
             <plugin>
                 <groupId>io.github.cse1110</groupId>
                 <artifactId>andy-maven-plugin</artifactId>
