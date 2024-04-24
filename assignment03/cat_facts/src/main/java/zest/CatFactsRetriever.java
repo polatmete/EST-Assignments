@@ -15,7 +15,7 @@ public class CatFactsRetriever {
      * @return      a random fact about cats
      */
     public String retrieveRandom() throws IOException {
-        String response = HttpUtil.get("https://catfact.ninja/fact");
+        String response = HTTPUtil.get("https://catfact.ninja/fact");
         JSONObject jo = new JSONObject(response);
         return jo.getString("fact");
     }
@@ -30,7 +30,7 @@ public class CatFactsRetriever {
      * @return      the longest fact from the list
      */
     public String retrieveLongest(int limit) throws IOException {
-        String response = HttpUtil.get("https://catfact.ninja/facts?limit=" + String.valueOf(limit));
+        String response = HTTPUtil.get("https://catfact.ninja/facts?limit=" + String.valueOf(limit));
         JSONArray ja = new JSONObject(response).getJSONArray("data");
 
         int length = 0;

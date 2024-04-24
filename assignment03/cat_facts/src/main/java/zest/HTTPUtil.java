@@ -11,7 +11,7 @@ import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
 
-public class HttpUtil {
+public class HTTPUtil {
 
     public static String get(String url) throws IOException {
         CloseableHttpClient client = HttpClients.createDefault();
