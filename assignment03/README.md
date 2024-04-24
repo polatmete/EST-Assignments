@@ -8,7 +8,8 @@ To guarantee consistency, the following steps are taken for every subtask!
 
 ## Naming Conventions
 In a first step the project structure is updated to fit the naming conventions of java projects. This includes renaming the packages, some classes as well as splitting java files with multiple class definitions
-wherever possible. This is done to create a better overview of the project and can be seen as a purely subjective change.
+wherever possible. This is done to create a better overview of the project and can be seen as a purely subjective change. Additionally, all classes are updated to follow the file path `src/main/java/zest/`. The corresponding test classes
+are added under `src/test/java/zest/`.
 
 ## Java 11
 The ```pom.xml``` of every subtask was updated with the following property to guarantee the usage of Java 11.
