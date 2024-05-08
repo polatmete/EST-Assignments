@@ -78,9 +78,20 @@ Pursuing this idea and applying it to the method `processMessages`, the followin
 4. List with more than one message
 5. List with two identical messages
 
-To count the **number of invocations** the `Mockito` methods `never()` and `times(<int>)` in combination with `verify` are used whenever the `sendMessages` method is called.\
+### A. Number of Invocations
+To count the **number of invocations** the `Mockito` methods `never()` and `times(<int>)` in combination with `verify` are used whenever the `sendMessages` method is called.
+
+### B. Content of invocations—`ArgumentCaptor`
 To assert the **content of invocations** two new private fields are added, namely the `receiverCaptor` and the `contentCaptor` which are used to capture both parameters. Both the
-receiver and the content can then be compared to verify the expected string. To reduce duplicate code, these two checks are combined in a method (one for `1` and another for `2+` messages).\
+receiver and the content can then be compared to verify the expected string. To reduce duplicate code, these two checks are combined in a method (one for `1` and another for `2+` messages).
+
+### C. Content of invocations—Increasing observability
+Finally, to **increase observability** of the `MessageProcessor` class, a special case of the observer pattern is implemented (single listener). For this an interface `MessageListener`
+is added which includes a method for logging sent messages. Furthermore, an additional field and instance of the provided interface is added to the constructor in `MessageProcessor`.
+Then, whenever `processMessages` is called, the listener is notified and logs all sent messages. To the test class a `TestMessageListener` subclass is added which implements the new interface with its method
+and logs all messages in a list. This helps to verify the messages' receivers and contents when testing and removes the dependency on external tools.
+
+
 
 ## movie_streaming
 
