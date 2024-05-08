@@ -42,6 +42,17 @@ is added which includes a method for logging sent messages. Furthermore, an addi
 Then, whenever `processMessages` is called, the listener is notified and logs all sent messages. To the test class a `TestMessageListener` subclass is added which implements the new interface with its method
 and logs all messages in a list. This helps to verify the messages' receivers and contents when testing and removes the dependency on external tools.
 
+### D. Comparison
+Using tools like `ArgumentCaptor` has the following consequences:
+- It's possible to directly capture the exact parameters
+- Fast implementation
+- Relies on mocking frameworks
+- Only useful for testing
+
+Increasing the observability has the following consequences:
+- Independence from external tools
+- Provides a framework which can be reused (such as the observer pattern)
+- Requires a lot of additional code
 
 
 ## movie_streaming
