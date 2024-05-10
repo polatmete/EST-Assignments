@@ -14,7 +14,7 @@ import java.util.List;
 
 public class MessageProcessorTest {
     private MessageService mockMessageService;
-    private TestMessageListener testListener;
+    private StubMessageListener stubListener;
     private MessageProcessor messageProcessor;
     private ArgumentCaptor<String> receiverCaptor;
     private ArgumentCaptor<String> contentCaptor;
@@ -22,8 +22,8 @@ public class MessageProcessorTest {
     @BeforeEach
     void init() {
         mockMessageService = Mockito.mock(MessageService.class);
-        testListener = new TestMessageListener();
-        messageProcessor = new MessageProcessor(mockMessageService, testListener);
+        stubListener = new StubMessageListener();
+        messageProcessor = new MessageProcessor(mockMessageService, stubListener);
         receiverCaptor = ArgumentCaptor.forClass(String.class);
         contentCaptor = ArgumentCaptor.forClass(String.class);
     }
@@ -79,9 +79,9 @@ public class MessageProcessorTest {
         assertEquals(messages.get(0).getContent(), content);
 
         // C. Observability
-        assertEquals(1, testListener.loggedMessages.size());
-        assertEquals(messages.get(0).getReceiver(), testListener.loggedMessages.get(0).getReceiver());
-        assertEquals(messages.get(0).getContent(), testListener.loggedMessages.get(0).getContent());
+        assertEquals(1, stubListener.loggedMessages.size());
+        assertEquals(messages.get(0).getReceiver(), stubListener.loggedMessages.get(0).getReceiver());
+        assertEquals(messages.get(0).getContent(), stubListener.loggedMessages.get(0).getContent());
     }
 
     void verifyReceiverContentTwoPlusMessages(int numberMessages, List<Message> messages) {
@@ -95,14 +95,14 @@ public class MessageProcessorTest {
         }
 
         // C. Observability
-        assertEquals(numberMessages, testListener.loggedMessages.size());
+        assertEquals(numberMessages, stubListener.loggedMessages.size());
         for (int i = 0; i < messages.size(); i++) {
-            assertEquals(messages.get(i).getReceiver(), testListener.loggedMessages.get(i).getReceiver());
-            assertEquals(messages.get(i).getContent(), testListener.loggedMessages.get(i).getContent());
+            assertEquals(messages.get(i).getReceiver(), stubListener.loggedMessages.get(i).getReceiver());
+            assertEquals(messages.get(i).getContent(), stubListener.loggedMessages.get(i).getContent());
         }
     }
 
-    private static class TestMessageListener implements MessageListener {
+    private static class StubMessageListener implements MessageListener {
         List<Message> loggedMessages = new ArrayList<>();
         @Override
         public void logSentMessage(String receiver, String content) {

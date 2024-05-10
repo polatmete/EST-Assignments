@@ -88,7 +88,7 @@ receiver and the content can then be compared to verify the expected string. To 
 ### C. Content of invocations—Increasing observability
 Finally, to **increase observability** of the `MessageProcessor` class, a special case of the observer pattern is implemented (single listener). For this an interface `MessageListener`
 is added which includes a method for logging sent messages. Furthermore, an additional field and instance of the provided interface is added to the constructor in `MessageProcessor`.
-Then, whenever `processMessages` is called, the listener is notified and logs all sent messages. To the test class a `TestMessageListener` subclass is added which implements the new interface with its method
+Then, whenever `processMessages` is called, the listener is notified and logs all sent messages. To the test class a `StubMessageListener` subclass is added which implements the new interface with its method
 and logs all messages in a list. This helps to verify the messages' receivers and contents when testing and removes the dependency on external tools.
 
 ### D. Comparison
