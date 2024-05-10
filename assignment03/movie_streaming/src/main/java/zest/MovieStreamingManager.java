@@ -23,4 +23,5 @@ public class MovieStreamingManager {
     }
 
     // Additional methods can be added here for other functionalities
+
 }

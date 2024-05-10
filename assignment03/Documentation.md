@@ -105,6 +105,8 @@ Increasing the observability has the following consequences:
 
 
 ## movie_streaming
+To successfully mock the `FileStreamSercie` and the `CacheService` the framework provided by `Mockito` is used. For this two private fields are instantiated, one `FileStream`
+and one `Cache`. To guarantee independence between tests the annotation `@BeforeEach` is used to freshly initialize both fields before running each test.\
 
 ## payment_processing
 
