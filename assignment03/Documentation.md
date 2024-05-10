@@ -1,12 +1,61 @@
 # Documentation: Effective Software Testing Lab (Assignment 3)
 
-- Deliverable: One single zip file containing all the folders that you find attached to this assignment, augmented with the
-tests you will write for each problem, as described below. Additionally, a `Documentation.md` file per exercise where
-you document your decisions, testing strategy, choices, and any assumptions made. Furthermore, create an
-Assets folder for each exercise which contains screenshots of your test results.
+- Deliverable: One single zip file containing all the folders that you find attached to this assignment, augmented with
+  the
+  tests you will write for each problem, as described below. Additionally, a `Documentation.md` file per exercise where
+  you document your decisions, testing strategy, choices, and any assumptions made. Furthermore, create an
+  Assets folder for each exercise which contains screenshots of your test results.
 - Deadline: May 20, 2024, at 18:00 (Zurich, CH, time).
 
 ## book_reviews
+
+### A. Get high-rated books
+
+#### 1. What are the external dependencies? Which of these dependencies should be tested using doubles and which should not?
+
+In this scenario, the ``BookManager`` class depends on the ``BookRatingsFetcher`` class, which in turn relies on an
+external
+dependency: the SQL database containing the book metadata. Being optimistic about external resources is a common
+test smell. A database might not always be readily available, causing tests to fail
+due to the external resource rather than the method under test. I therefore decided to use a stub to mock the
+database. I stubbed the ``BookRatingsFetcher`` class and configured it to return a
+list of books when ``all()`` is called. Using a stub also makes the test more cohesive, easier to understand and not
+flaky.
+
+#### 2. For the dependencies that should be tested using doubles, what refactoring should be done in the code? Do the refactoring and implement the tests.
+
+Initially, to facilitate testing, I needed to modify the production code. ``BookRatingsFetcher`` is now passed into the
+constructor of ``BookManager``. The method `highRatedBooks` no longer instantiates the database connection itself
+but rather accesses the instance attribute ``bookRatingsFetcher``, responsible for establishing a database
+connection. Consequently, the database is no longer handled within the test; instead, I configured a
+``BookRatingsFetcher`` stub using ``Mockito``. This grants me full control over the stub. Whenever its all() method is
+invoked, I simply return a list of books set up specifically for the test. I can then verify whether the method
+returns the correct books. ``returnHighRatedBooksOnly`` tests the method and ensures that only books with a rating
+higher or
+equal to 4 are returned by the method. I also tested with an empty list ``emptyBookRatings``. Additionally, adhering to
+best practices for comprehensive testing, I included the `ratingsOutOfRange` test to evaluate the behavior when rating
+values fall outside the given range of [1,5]. Typically, I would rely on another component of the code to enforce
+this range. However, with this test, I can now confirm that values beyond this range do not disrupt the 
+functionality of the test or the code.
+
+#### 3. What are the disadvantages of using test doubles in your test suite? Answer with examples from the BookManager class.
+
+The disadvantage of using test doubles in my test suite is that the test becomes less realistic as it only mimicks
+behaviour. Furthermore, the test code becomes more coupled with the implementation details of the production code.
+This makes the test harder to maintain (e.g., if a new attribute for `Book` is added I have to add a new attribute
+to all my `Book` contstructors)
+
+### B. Get list of all authors
+
+Next, I added a new method `uniqueAuthors`, which returns all authors of the books in the database. Additionally, I
+added some new tests to my test suite to test my new method: `returnUniqueAuthors` to verify that the method returns
+all names of all authors, and `returnDuplicateAuthors` to ensure that the method only returns duplicate author names
+once, returning a list with unique names. Furthermore, I also tested for an empty book list with the
+test `emptyAuthors`.
+
+To minimize code duplication and enhance test readability, I decided to extract a
+method `getBookManagerWithStubbedFetcher` that instantiates a stub for the `BookRatingsFetcher` and returns
+the `BookManager` with the stub as a dependency.
 
 ## bus_tracking
 
