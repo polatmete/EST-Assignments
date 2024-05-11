@@ -105,8 +105,13 @@ Increasing the observability has the following consequences:
 
 
 ## movie_streaming
-To successfully mock the `FileStreamSercie` and the `CacheService` the framework provided by `Mockito` is used. For this two private fields are instantiated, one `FileStream`
-and one `Cache`. To guarantee independence between tests the annotation `@BeforeEach` is used to freshly initialize both fields before running each test.\
+In a first step the methods `updateMovieMetadata(String movieId, MovieMetadata metadata)` and `validateStreamingToken(String movieId, String token)` are implemented.\
+The `movieId` is added as a parameter to `validateStreamingToken` since the token is generated with the help of a `movieId` and requires to for validation.
+Next, the code is adjusted to make use of the newly added methods:
+- The interface `FileStreamService` now includes `Boolean validateToken(String movieId, String token)` which return `true` if the token is validated successfully, `false` otherwise.
+- The interface `CacheService` now includes `void refreshCache(String movieId, StreamingDetails details)` to enable refreshing the cache if the token could not be validated and a new one is generated.
+- A method is added to the `MovieStreamingManager` to validate the provided input `movieId`. It throws an exception if the ID is invalid or the movie is not found.
+
 
 ## payment_processing
 
