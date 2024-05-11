@@ -30,7 +30,7 @@ public class MessageProcessorTest {
 
     @Test
     void nullList() {
-        assertThrows(NullPointerException.class, () -> messageProcessor.processMessages(null));
+        assertThrows(IllegalArgumentException.class, () -> messageProcessor.processMessages(null));
         verify(mockMessageService, never()).sendMessage(any(), any());  // w/o ArgumentCaptor any() can be used
     }
 
