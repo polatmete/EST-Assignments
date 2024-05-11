@@ -17,7 +17,7 @@ public class MovieStreamingManager {
         if (details == null) {
             MovieMetadata metadata = fileStreamService.retrieveMovie(movieId);
             String streamToken = fileStreamService.generateToken(movieId);  // Assume there's a method to generate a streaming token
-            details =  new StreamingDetails(movieId, streamToken, metadata);
+            details = new StreamingDetails(movieId, streamToken, metadata);
             cacheService.cacheDetails(movieId, details);
         }
         else if (!validateStreamingToken(movieId, details.getStreamToken())) {
