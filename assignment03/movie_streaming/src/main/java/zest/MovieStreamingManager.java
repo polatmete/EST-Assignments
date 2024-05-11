@@ -56,7 +56,7 @@ public class MovieStreamingManager {
         if (movieMetadata == null || movieMetadata.getTitle() == null ||
         movieMetadata.getDescription() == null || movieMetadata.getTitle().isEmpty() ||
         movieMetadata.getDescription().isEmpty()) {
-            throw new IllegalArgumentException("no metadata provided");
+            throw new IllegalArgumentException("invalid metadata provided");
         }
     }
 }
