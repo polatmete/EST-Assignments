@@ -106,12 +106,26 @@ Increasing the observability has the following consequences:
 
 ## movie_streaming
 In a first step the methods `updateMovieMetadata(String movieId, MovieMetadata metadata)` and `validateStreamingToken(String movieId, String token)` are implemented.\
-The `movieId` is added as a parameter to `validateStreamingToken` since the token is generated with the help of a `movieId` and requires to for validation.
+The `movieId` is added as a parameter to `validateStreamingToken` since the token is generated with the help of a `movieId` and therefore required for validation too.
+In addition, the method is made `private` since it will be only used by the `MovieStreamingManager` to validate the token when streaming a movie.
 Next, the code is adjusted to make use of the newly added methods:
 - The interface `FileStreamService` now includes `Boolean validateToken(String movieId, String token)` which return `true` if the token is validated successfully, `false` otherwise.
 - The interface `CacheService` now includes `void refreshCache(String movieId, StreamingDetails details)` to enable refreshing the cache if the token could not be validated and a new one is generated.
 - A method is added to the `MovieStreamingManager` to validate the provided input `movieId`. It throws an exception if the ID is invalid or the movie is not found.
 
+For testing, to successfully mock the `FileStreamSercie` and the `CacheService` the framework provided by `Mockito` is used.  Two private fields are instantiated, one `FileStream` and one `Cache`.
+To guarantee independence between tests the annotation `@BeforeEach` is used to freshly initialize both fields before running each test. Furthermore, two variables for `MovieMetadata` and `StreamingDetails`
+are initialized to be used during the tests.\
+When testing strings, it's common practice to also test for null / undefined as well as empty strings.
+Calling the method `streamMovie`, the following test cases can be derived as a first step:
+1. Null string `movieId`
+2. Empty string `movieId`
+3. Test string of non-existent movie
+4. Test string with empty cache
+5. Test string with cached details and invalid token
+6. Test string with cached details and valid token
+
+Calling the method
 
 ## payment_processing
 
