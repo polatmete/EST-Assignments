@@ -117,7 +117,7 @@ For testing, to successfully mock the `FileStreamSercie` and the `CacheService` 
 To guarantee independence between tests the annotation `@BeforeEach` is used to freshly initialize both fields before running each test. Furthermore, two variables for `MovieMetadata` and `StreamingDetails`
 are initialized to be used during the tests.\
 When testing strings, it's common practice to also test for null / undefined as well as empty strings.
-Calling the method `streamMovie`, the following test cases can be derived as a first step:
+Calling the method `streamMovie`, the following test cases can be derived:
 1. Null string `movieId`
 2. Empty string `movieId`
 3. Test string of non-existent movie
@@ -125,7 +125,14 @@ Calling the method `streamMovie`, the following test cases can be derived as a f
 5. Test string with cached details and invalid token
 6. Test string with cached details and valid token
 
-Calling the method
+Calling the method `updateMovieMetadata`, the following test cases can be derived:
+1. Null string `movieId`
+2. Empty string `movieId`
+3. Test string of non-existent movie
+4. Test string and `null` metadata
+5. Test string and invalid metadata: `null` in `title` or / and `description`
+6. Test string and invalid metadata: empty `title` or / and `description`
+7. Test string and valid metadata
 
 ## payment_processing
 

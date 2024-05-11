@@ -27,7 +27,7 @@ public class MovieStreamingManagerTest {
     }
 
     @Test
-    void nullMovieId() {
+    void streamMovieNullMovieId() {
         assertThrows(IllegalArgumentException.class, () -> movieStreamingManager.streamMovie(null));
         verify(mockFileStreamService, never()).retrieveMovie(any());
         verify(mockCacheService, never()).getDetails(any());
@@ -38,7 +38,7 @@ public class MovieStreamingManagerTest {
     }
 
     @Test
-    void emptyMovieId() {
+    void streamMovieEmptyMovieId() {
         assertThrows(IllegalArgumentException.class, () -> movieStreamingManager.streamMovie(""));
         verify(mockFileStreamService, never()).retrieveMovie(any());
         verify(mockCacheService, never()).getDetails(any());
@@ -49,12 +49,12 @@ public class MovieStreamingManagerTest {
     }
 
     @Test
-    void inexistentMovieId() {
+    void streamMovieNonexistentMovieId() {
         // define return values
-        when(mockFileStreamService.retrieveMovie(testMovieId)).thenReturn(null);
+        when(mockFileStreamService.retrieveMovie("nonexistent-movie-id")).thenReturn(null);
         // verify results
-        assertThrows(IllegalArgumentException.class, () -> movieStreamingManager.streamMovie(testMovieId));
-        verify(mockFileStreamService, times(1)).retrieveMovie(testMovieId);
+        assertThrows(IllegalArgumentException.class, () -> movieStreamingManager.streamMovie("nonexistent-movie-id"));
+        verify(mockFileStreamService, times(1)).retrieveMovie("nonexistent-movie-id");
         verify(mockCacheService, never()).getDetails(any());
         verify(mockFileStreamService, never()).generateToken(any());
         verify(mockCacheService, never()).cacheDetails(any(), any());
@@ -117,5 +117,76 @@ public class MovieStreamingManagerTest {
         verify(mockFileStreamService, times(1)).validateToken(testMovieId, testStreamingDetails.getStreamToken());
         verify(mockCacheService, never()).refreshCache(eq(testMovieId), refEq(testStreamingDetails));
         assertThat(testStreamingDetails).usingRecursiveComparison().isEqualTo(details);
+    }
+
+    @Test
+    void updateMetadataNullMovieId() {
+        assertThrows(IllegalArgumentException.class, () -> movieStreamingManager.updateMovieMetadata(null, testMovieMetadata));
+        verify(mockFileStreamService, never()).retrieveMovie(any());
+        verify(mockFileStreamService, never()).updateMetadata(any(), any());
+        verify(mockCacheService, never()).refreshCache(any(), (MovieMetadata) any());
+    }
+
+    @Test
+    void updateMetadataEmptyMovieId() {
+        assertThrows(IllegalArgumentException.class, () -> movieStreamingManager.updateMovieMetadata("", testMovieMetadata));
+        verify(mockFileStreamService, never()).retrieveMovie(any());
+        verify(mockFileStreamService, never()).updateMetadata(any(), any());
+        verify(mockCacheService, never()).refreshCache(any(), (MovieMetadata) any());
+    }
+
+    @Test
+    void updateMetadataNonexistentMovieId() {
+        // define return values
+        when(mockFileStreamService.retrieveMovie(testMovieId)).thenReturn(null);
+        // verify results
+        assertThrows(IllegalArgumentException.class, () -> movieStreamingManager.updateMovieMetadata("nonexistent-movie-id", testMovieMetadata));
+        verify(mockFileStreamService, times(1)).retrieveMovie("nonexistent-movie-id");
+        verify(mockFileStreamService, never()).updateMetadata(any(), any());
+        verify(mockCacheService, never()).refreshCache(any(), (MovieMetadata) any());
+    }
+
+    @Test
+    void updateMetadataNullMetadata() {
+        assertThrows(IllegalArgumentException.class, () -> movieStreamingManager.updateMovieMetadata(testMovieId, null));
+        verify(mockFileStreamService, times(1)).retrieveMovie(testMovieId);
+        verify(mockFileStreamService, never()).updateMetadata(any(), any());
+        verify(mockCacheService, never()).refreshCache(any(), (MovieMetadata) any());
+    }
+
+    @Test
+    void updateMetadataNullContent() {
+        // define variables
+        MovieMetadata testInvalidMovieMetadata = new MovieMetadata(null, "movie-description");
+        // verify results
+        assertThrows(IllegalArgumentException.class, () -> movieStreamingManager.updateMovieMetadata(testMovieId, testInvalidMovieMetadata));
+        verify(mockFileStreamService, times(1)).retrieveMovie(testMovieId);
+        verify(mockFileStreamService, never()).updateMetadata(any(), any());
+        verify(mockCacheService, never()).refreshCache(any(), (MovieMetadata) any());
+    }
+
+    @Test
+    void updateMetadataEmptyContent() {
+        // define variables
+        MovieMetadata testInvalidMovieMetadata = new MovieMetadata("", "movie-description");
+        // verify results
+        assertThrows(IllegalArgumentException.class, () -> movieStreamingManager.updateMovieMetadata(testMovieId, testInvalidMovieMetadata));
+        verify(mockFileStreamService, times(1)).retrieveMovie(testMovieId);
+        verify(mockFileStreamService, never()).updateMetadata(any(), any());
+        verify(mockCacheService, never()).refreshCache(any(), (MovieMetadata) any());
+    }
+
+    @Test
+    void updateMetadataSuccess() {
+        // define variables
+        MovieMetadata testNewMovieMetadata = new MovieMetadata("new-movie-title", "new-movie-description");
+        // define return values
+        when(mockFileStreamService.retrieveMovie(testMovieId)).thenReturn(testMovieMetadata);
+        // call method
+        movieStreamingManager.updateMovieMetadata(testMovieId, testNewMovieMetadata);
+        // verify results
+        verify(mockFileStreamService, times(1)).retrieveMovie(testMovieId);
+        verify(mockFileStreamService, times(1)).updateMetadata(testMovieId, testNewMovieMetadata);
+        verify(mockCacheService, times(1)).refreshCache(testMovieId, testNewMovieMetadata);
     }
 }

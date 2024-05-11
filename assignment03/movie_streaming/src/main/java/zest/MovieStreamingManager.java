@@ -32,6 +32,7 @@ public class MovieStreamingManager {
     // Updates movie information in the distributed file system and refreshes the cache.
     public void updateMovieMetadata(String movieId, MovieMetadata metadata) {
         validateMovieId(movieId);
+        validateMovieMetadata(metadata);
         fileStreamService.updateMetadata(movieId, metadata);
         cacheService.refreshCache(movieId, metadata);
     }
@@ -48,6 +49,14 @@ public class MovieStreamingManager {
         }
         if (fileStreamService.retrieveMovie(movieId) == null) {
             throw new IllegalArgumentException("movie not found");
+        }
+    }
+
+    private void validateMovieMetadata(MovieMetadata movieMetadata) {
+        if (movieMetadata == null || movieMetadata.getTitle() == null ||
+        movieMetadata.getDescription() == null || movieMetadata.getTitle().isEmpty() ||
+        movieMetadata.getDescription().isEmpty()) {
+            throw new IllegalArgumentException("no metadata provided");
         }
     }
 }
