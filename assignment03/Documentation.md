@@ -134,6 +134,8 @@ Calling the method `updateMovieMetadata`, the following test cases can be derive
 6. Test string and invalid metadata: empty `title` or / and `description`
 7. Test string and valid metadata
 
+To successfully compare the content of the created instances during testing (and not the objects themselves) `AssertJ` is used with its command `assertThat(<expected>).usingRecursiveComparison().isEqualTo(<actual>)`.
+
 ## payment_processing
 
 ## ticket_system

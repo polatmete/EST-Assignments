@@ -19,3 +19,14 @@ The ```pom.xml``` of every subtask was updated with the following property to gu
     [...]
 </properties>
 ```
+
+## AssertJ
+Some subtasks require `AssertJ` for content comparison when dealing with java instances. The corresponding `pom.xml` contains the following additional dependency:
+```
+<dependency>
+    <groupId>org.assertj</groupId>
+    <artifactId>assertj-core</artifactId>
+    <version>3.25.3</version>
+    <scope>test</scope>
+</dependency>
+```
