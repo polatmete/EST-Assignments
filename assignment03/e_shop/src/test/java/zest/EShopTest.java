@@ -1,5 +1,6 @@
 package zest;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
@@ -8,22 +9,42 @@ import static org.mockito.Mockito.*;
 
 public class EShopTest {
     // Setup an order
-    private String orderId = "Big order";
-    private Double amount = 100.0;
-    private Order completeOrder = new Order(orderId, amount);
+    String orderId = "Big order";
+    Double amount = 100.0;
+    Order completeOrder = new Order(orderId, amount);
 
-    // Setup the event publisher
-    private EventPublisher publisher = new EventPublisher();
+    // Setup variables
+    private EventPublisher publisher;
+    private EmailNotificationService emailService;
+    private InventoryManager inventoryManager;
+    private ArgumentCaptor<Order> orderCaptor;
 
-    // Setup mocked services
-    private EmailNotificationService emailService = mock(EmailNotificationService.class);
-    private InventoryManager inventoryManager = mock(InventoryManager.class);
+    @BeforeEach
+    void init() {
+        // Setup the event publisher
+        publisher = new EventPublisher();
 
-    @Test
-    void correctNoOfIncovations() {
+        // Setup mocked services
+        emailService = mock(EmailNotificationService.class);
+        inventoryManager = mock(InventoryManager.class);
+
+        // Setup ArgumentCaptors
+        orderCaptor = ArgumentCaptor.forClass(Order.class);
+
         // Setup subscriptions and place order
         publisher.subscribe(emailService);
         publisher.subscribe(inventoryManager);
+    }
+
+    @Test
+    void nullOrder() {
+        publisher.publishOrderToAllListeners(null);
+        verify(emailService, never()).onOrderPlaced(completeOrder);
+        verify(inventoryManager, never()).onOrderPlaced(completeOrder);
+    }
+
+    @Test
+    void publisherCallsCorrectly() {
         publisher.publishOrderToAllListeners(completeOrder);
 
         // Verify that the onOrderPlaced was called for both services
@@ -32,18 +53,10 @@ public class EShopTest {
     }
 
     @Test
-    void correctContentOfOrders() {
-        // Setup subscriptions and place order
-        publisher.subscribe(emailService);
-        publisher.subscribe(inventoryManager);
+    void wholeOrderPlacement() {
         publisher.publishOrderToAllListeners(completeOrder);
 
-        // Verify that the onOrderPlaced was called for both services
-        verify(emailService, times(1)).onOrderPlaced(completeOrder);
-        verify(inventoryManager, times(1)).onOrderPlaced(completeOrder);
-
         // Verify that the content of each calls matches the expected order
-        ArgumentCaptor<Order> orderCaptor = ArgumentCaptor.forClass(Order.class);
         verify(emailService).onOrderPlaced(orderCaptor.capture());
         verify(inventoryManager).onOrderPlaced(orderCaptor.capture());
 
@@ -57,7 +70,7 @@ public class EShopTest {
     }
 
     @Test
-    void correctContentOfInvocations() {
+    void contentOfOrderPlacements() {
         /**
          * Instead of using `ArgumentCaptor`, you could increase the observability of one or more classes to achieve the same goal.
          * Implement the necessary code for increasing the observability and write additional test(s) to

@@ -14,6 +14,40 @@ Assets folder for each exercise which contains screenshots of your test results.
 
 ## e_shop
 
+### A. Number of Invocations
+To count the **number of invocations** the `Mockito` methods `never()` and `times(<int>)` in combination with `verify` are 
+used whenever the `publishOrderToAllListeners` method is called. A first test verifies that if an null object is
+passed as an order, the `onOrderPlaced` method of the `EmailNotificationService` and the `InventoryManager` are not
+called. A second test proves that the methods are exactly called once whenever an order is placed through the `EventPublisher`.
+
+Here, we do not test for empty Orders, as they cannot be instantiated to begin with. The order is either null or has content,
+both cases being covered by the two tests.
+
+The tests for this task are the following:
+1. Null order
+2. Order is placed and correct number of calls is made
+
+### B. Content of invocations—`ArgumentCaptor`
+To test the content of the invocations we assert that the order which is published via the `EventPublisher` is the same one
+as the order that is "ordered" by the `EmailNotificationService` and the `InventoryManager`. We use an ArgumentCaptor to capture
+the order and then compare it to the original order.
+
+The tests for this task are the following:
+3. Order is placed and content of invocations (meaning the order itself) is correct.
+
+Thinking about tests 2 and 3 we realized that it would be possible to combine them both into one test by copying the 
+verify-statements from test 2 into the "middle" of test 3. For more clarity and also to follow the order of these tasks
+we left them both as they stand, even though test 3 is only an extension of test 2.
+
+### C. Content of invocations—Increasing observability
+
+Instead of using `ArgumentCaptor`, you could increase the observability of one or more classes to achieve the same goal.
+Implement the necessary code for increasing the observability and write additional test(s) to test whether the content of the messages is as expected.
+
+### D. Comparison
+
+What are the advantages and what are the disadvantages of the techniques you used in B. and C.?
+
 ## messages
 Currently, the public class `MessageProcessor` instantiates an instance of the class `MessageService` which is further used to send all messages.
 This architecture makes it difficult to work with test doubles and, therefore, the logic is split up. A constructor is added to the class `MessageProcessor`
