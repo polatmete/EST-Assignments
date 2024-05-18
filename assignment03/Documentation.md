@@ -175,5 +175,34 @@ Increasing the observability has the following consequences:
 ## movie_streaming
 
 ## payment_processing
+### Setup
+A `Transaction.java` class was created, with a `getId` method to access its ID.
+It was assumed that transactions with `id > 0` are valid, and those with `id <= 0` are invalid, as manifested in the fraud detection service mocking.
+
+## Test Scenarios
+
+### A. Number of Invocations
+Mockito was used to verify the number of times `onTransactionComplete` is called for valid, invalid, and mixed transactions.
+Boundary cases of 0 and 1 were included and worked as expected.
+
+### B. Content of Invocations—ArgumentCaptor
+The `ArgumentCaptor` was used to capture and verify the transactions passed to `onTransactionComplete`.
+By processing multiple transactions, the test ensured both the number of calls and the actual transaction IDs were correct.
+
+### C. Content of Invocations—Increasing Observability
+To increase observability, the `processPayment` method was modified to return the processed transaction if valid, or null if invalid.
+This was tested by verifying the returned values matched the expected transactions or null for invalid ones.
+
+### D. Comparison
+#### ArgumentCaptor (B):
+- **Advantages**: Captures exact arguments for detailed verification. Useful when methods do not return values.
+- **Disadvantages**: Adds complexity to the test setup.
+
+#### Increasing Observability (C):
+- **Advantages**: Simplifies tests by directly verifying return values. Makes it easier to test method outputs.
+- **Disadvantages**: May require modifying methods to return values, which could complicate the design.
+
+Both techniques have their place, with `ArgumentCaptor` providing detailed insight into method interactions and increased observability offering a straightforward approach to output verification.
+
 
 ## ticket_system

@@ -1,4 +1,5 @@
 package zest;
 
-public class TicketSystemTest {
+public class
+TicketSystemTest {
 }
