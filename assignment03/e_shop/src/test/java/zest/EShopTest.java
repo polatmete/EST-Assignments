@@ -16,11 +16,12 @@ public class EShopTest {
     private TestMessageListener testListener;
     private EmailNotificationService mockEmailService;
     private InventoryManager mockInventoryManager;
-    private ArgumentCaptor<Order> orderCaptor;
+    private ArgumentCaptor<Order> emailCaptor;
+    private ArgumentCaptor<Order> inventoryCaptor;
 
     @BeforeEach
     void init() {
-        // Setup the event publisher
+        // Set up the event publisher
         testListener = new TestMessageListener();
         publisher = new EventPublisher(testListener);
 
@@ -29,7 +30,8 @@ public class EShopTest {
         mockInventoryManager = mock(InventoryManager.class);
 
         // Setup ArgumentCaptors
-        orderCaptor = ArgumentCaptor.forClass(Order.class);
+        emailCaptor = ArgumentCaptor.forClass(Order.class);
+        inventoryCaptor = ArgumentCaptor.forClass(Order.class);
 
         // Setup subscriptions and place order
         publisher.subscribe(mockEmailService);
@@ -78,11 +80,11 @@ public class EShopTest {
 
     void verifyReceiverContentSingleOrder(Order order) {
         // B. ArgumentCaptor
-        verify(mockEmailService).onOrderPlaced(orderCaptor.capture());
-        verify(mockInventoryManager).onOrderPlaced(orderCaptor.capture());
+        verify(mockEmailService).onOrderPlaced(emailCaptor.capture());
+        verify(mockInventoryManager).onOrderPlaced(inventoryCaptor.capture());
 
-        Order capturedMessageService = orderCaptor.getAllValues().get(0);
-        Order capturedInventoryManager = orderCaptor.getAllValues().get(1);
+        Order capturedMessageService = emailCaptor.getAllValues().get(0);
+        Order capturedInventoryManager = inventoryCaptor.getAllValues().get(0);
 
         assertEquals(order.getOrderId(), capturedMessageService.getOrderId());
         assertEquals(order.getAmount(), capturedMessageService.getAmount());
@@ -99,16 +101,17 @@ public class EShopTest {
 
     void verifyReceiverContentMultipleOrders(int numberOfOrders, ArrayList<Order> orders) {
         // B. ArgumentCaptor
-        verify(mockEmailService, times(orders.size())).onOrderPlaced(orderCaptor.capture());
-        verify(mockInventoryManager, times(orders.size())).onOrderPlaced(orderCaptor.capture());
+        verify(mockEmailService, times(orders.size())).onOrderPlaced(emailCaptor.capture());
+        verify(mockInventoryManager, times(orders.size())).onOrderPlaced(inventoryCaptor.capture());
 
-        List<Order> capturedOrders = orderCaptor.getAllValues();
+        List<Order> capturedEmailOrders = emailCaptor.getAllValues();
+        List<Order> capturedInventoryOrders = inventoryCaptor.getAllValues();
 
         for (int i = 0; i < orders.size(); i++) {
-            assertEquals(orders.get(i).getOrderId(), capturedOrders.get(i).getOrderId());
-            assertEquals(orders.get(i).getAmount(), capturedOrders.get(i).getAmount());
-            assertEquals(orders.get(i).getOrderId(), capturedOrders.get(i + numberOfOrders).getOrderId());
-            assertEquals(orders.get(i).getAmount(), capturedOrders.get(i + numberOfOrders).getAmount());
+            assertEquals(orders.get(i).getOrderId(), capturedEmailOrders.get(i).getOrderId());
+            assertEquals(orders.get(i).getAmount(), capturedEmailOrders.get(i).getAmount());
+            assertEquals(orders.get(i).getOrderId(), capturedInventoryOrders.get(i).getOrderId());
+            assertEquals(orders.get(i).getAmount(), capturedInventoryOrders.get(i).getAmount());
         }
 
         // C. Observability
