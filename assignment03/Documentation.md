@@ -147,25 +147,62 @@ test is very long and makes the test suite look bloated. Configuring them also t
 
 ## e_shop
 
+### A. Number of Invocations
+To count the **number of invocations** the `Mockito` methods `never()` and `times(<int>)` in combination with `verify` are 
+used whenever the `publishOrderToAllListeners` method is called. A first test verifies that if an null object is
+passed as an order, the `onOrderPlaced` method of the `EmailNotificationService` and the `InventoryManager` are not
+called. A second test proves that the methods are exactly called once whenever an order is placed through the `EventPublisher`.
+
+Here, we do not test for empty Orders, as they cannot be instantiated to begin with. The order is either null or has content,
+both cases being covered by the two tests.
+
+The tests for this task are the following:
+1. Null order
+2. Order is placed and correct number of calls is made
+
+### B. Content of invocations—`ArgumentCaptor`
+To test the content of the orders we assert that the order which is published via the `EventPublisher` is the same one
+as the order that is "ordered" by the `EmailNotificationService` and the `InventoryManager`. We use an ArgumentCaptor to capture
+the order and then compare it to the original order.
+
+The tests for this task are the following:
+3. Single order is placed
+4. Multiple orders are placed
+
+Thinking about tests 2 and 3 we realized that it would be possible to combine them both into one test by copying the 
+verify-statements from test 2 into the "middle" of test 3. For more clarity and also to follow the order of these tasks
+we left them both as they stand, even though test 3 is only an extension of test 2.
+
+### C. Content of invocations—Increasing observability
+
+To increase the observability we introduced a new listener was implemented, similar to the one in the exercise about messages.
+An interface was added which is responsible for logging orders and their content. The `EventPublisher` was adapted to account
+for this addition. The orders are now logged in a list which can be accessed in the tests to verify their correctness.
+In terms of the tests we didn't add anything new, but expanded the tests 3 and 4 with the flow `Observability`.
+
+### D. Comparison
+
+The advantage of using the ArgumentCaptor is that no additional code has to be written in the actual implementation of the 
+classes. All the necessary code is placed in the test itself. Since we rely on mocking in this case, we are able to make use 
+of all the advantages of mocking itself. We are able to isolate the unit under test from external dependencies and improve
+readability for example.
+
+When increasing the observability we were able to see that our tests are smaller, but the additional code was placed in
+the classes instead. The additional code can be reused everywhere of course, which also has its benefits (Code is not
+only for testing). Another advantage over using the ArgumentCaptor is that we don't have to learn about an additional
+framework, potentially decreasing the amount of time we have to invest. Of course this argument doesn't hold once you 
+are familiar with Mockito.
+
 ## messages
 
-Currently, the public class `MessageProcessor` instantiates an instance of the class `MessageService` which is further
-used to send all messages.
-This architecture makes it difficult to work with test doubles and, therefore, the logic is split up. A constructor is
-added to the class `MessageProcessor`
-which accepts an `MessageService` instance as a parameter to enable dependency injection. The passed instance is then
-assigned to a private final field that
-is used throughout the class. Therefore, the method `processMessages` creates no new instance of the `MessageService`
-but always refers to the private variable.\
-In the next step the mocking framework is implemented. Namely, the `MessageService` is mocked using `Mockito`. For this
-two private fields are instantiated, one `Service`
-and one `Processor`. To guarantee independence between tests the annotation `@BeforeEach` is used to freshly initialize
-both fields before running each test.\
-When testing lists, it's common practice to test for null / undefined as well as empty lists. In addition, lists can
-have only one element, multiple elements and duplicates.
-Pursuing this idea and applying it to the method `processMessages`, the following test cases can be derived as a first
-step:
-
+Currently, the public class `MessageProcessor` instantiates an instance of the class `MessageService` which is further used to send all messages.
+This architecture makes it difficult to work with test doubles and, therefore, the logic is split up. A constructor is added to the class `MessageProcessor`
+which accepts an `MessageService` instance as a parameter to enable dependency injection. The passed instance is then assigned to a private final field that
+is used throughout the class. Therefore, the method `processMessages` creates no new instance of the `MessageService` but always refers to the private variable.\
+In the next step the mocking framework is implemented. Namely, the `MessageService` is mocked using `Mockito`. For this two private fields are instantiated, one `Service`
+and one `Processor`. To guarantee independence between tests the annotation `@BeforeEach` is used to freshly initialize both fields before running each test.\
+When testing lists, it's common practice to test for null / undefined as well as empty lists. In addition, lists can have only one element, multiple elements and duplicates.
+Pursuing this idea and applying it to the method `processMessages`, the following test cases can be derived as a first step:
 1. Null list
 2. Empty list
 3. List with one message only
@@ -174,44 +211,116 @@ step:
 
 ### A. Number of Invocations
 
-To count the **number of invocations** the `Mockito` methods `never()` and `times(<int>)` in combination with `verify`
-are used whenever the `sendMessages` method is called.
+To count the **number of invocations** the `Mockito` methods `never()` and `times(<int>)` in combination with `verify` are used whenever the `sendMessages` method is called.
 
 ### B. Content of invocations—`ArgumentCaptor`
 
-To assert the **content of invocations** two new private fields are added, namely the `receiverCaptor` and
-the `contentCaptor` which are used to capture both parameters. Both the
-receiver and the content can then be compared to verify the expected string. To reduce duplicate code, these two checks
-are combined in a method (one for `1` and another for `2+` messages).
+To assert the **content of invocations** two new private fields are added, namely the `receiverCaptor` and the `contentCaptor` which are used to capture both parameters. Both the
+receiver and the content can then be compared to verify the expected string. To reduce duplicate code, these two checks are combined in a method (one for `1` and another for `2+` messages).
 
 ### C. Content of invocations—Increasing observability
 
-Finally, to **increase observability** of the `MessageProcessor` class, a special case of the observer pattern is
-implemented (single listener). For this an interface `MessageListener`
-is added which includes a method for logging sent messages. Furthermore, an additional field and instance of the
-provided interface is added to the constructor in `MessageProcessor`.
-Then, whenever `processMessages` is called, the listener is notified and logs all sent messages. To the test class
-a `TestMessageListener` subclass is added which implements the new interface with its method
-and logs all messages in a list. This helps to verify the messages' receivers and contents when testing and removes the
-dependency on external tools.
+Finally, to **increase observability** of the `MessageProcessor` class, a special case of the observer pattern is implemented (single listener). For this an interface `MessageListener`
+is added which includes a method for logging sent messages. Furthermore, an additional field and instance of the provided interface is added to the constructor in `MessageProcessor`.
+Then, whenever `processMessages` is called, the listener is notified and logs all sent messages. To the test class a `StubMessageListener` subclass is added which implements the new interface with its method
+and logs all messages in a list. This helps to verify the messages' receivers and contents when testing and removes the dependency on external tools.
 
 ### D. Comparison
 
 Using tools like `ArgumentCaptor` has the following consequences:
-
 - It's possible to directly capture the exact parameters
 - Fast implementation
 - Relies on mocking frameworks
 - Only useful for testing
 
 Increasing the observability has the following consequences:
-
 - Independence from external tools
 - Provides a framework which can be reused (such as the observer pattern)
 - Requires a lot of additional code
 
+
 ## movie_streaming
 
+In a first step the methods `updateMovieMetadata(String movieId, MovieMetadata metadata)` and `validateStreamingToken(String movieId, String token)` are implemented.\
+The `movieId` is added as a parameter to `validateStreamingToken` since the token is generated with the help of a `movieId` and therefore required for validation too.
+In addition, the method is made `private` since it will be only used by the `MovieStreamingManager` to validate the token when streaming a movie.
+Next, the code is adjusted to make use of the newly added methods:
+- The interface `FileStreamService` now includes `Boolean validateToken(String movieId, String token)` which return `true` if the token is validated successfully, `false` otherwise.
+- The interface `CacheService` now includes `void refreshCache(String movieId, StreamingDetails details)` to enable refreshing the cache if the token could not be validated and a new one is generated.
+- A method is added to the `MovieStreamingManager` to validate the provided input `movieId`. It throws an exception if the ID is invalid or the movie is not found.
+
+For testing, to successfully mock the `FileStreamSercie` and the `CacheService` the framework provided by `Mockito` is used.  Two private fields are instantiated, one `FileStream` and one `Cache`.
+To guarantee independence between tests the annotation `@BeforeEach` is used to freshly initialize both fields before running each test. Furthermore, two variables for `MovieMetadata` and `StreamingDetails`
+are initialized to be used during the tests.\
+When testing strings, it's common practice to also test for null / undefined as well as empty strings.
+Calling the method `streamMovie`, the following test cases can be derived:
+1. Null string `movieId`
+2. Empty string `movieId`
+3. Test string of non-existent movie
+4. Test string with empty cache
+5. Test string with cached details and invalid token
+6. Test string with cached details and valid token
+
+Calling the method `updateMovieMetadata`, the following test cases can be derived:
+1. Null string `movieId`
+2. Empty string `movieId`
+3. Test string of non-existent movie
+4. Test string and `null` metadata
+5. Test string and invalid metadata: `null` in `title` or / and `description`
+6. Test string and invalid metadata: empty `title` or / and `description`
+7. Test string and valid metadata
+
+To successfully compare the content of the created instances during testing (and not the objects themselves) `AssertJ` is used with its command `assertThat(<expected>).usingRecursiveComparison().isEqualTo(<actual>)`.
+
 ## payment_processing
+### Setup
+A `Transaction.java` class was created, with a `getId` method to access its ID.
+It was assumed that transactions with `id > 0` are valid, and those with `id <= 0` are invalid, as manifested in the fraud detection service mocking.
+
+## Test Scenarios
+
+### A. Number of Invocations
+Mockito was used to verify the number of times `onTransactionComplete` is called for valid, invalid, and mixed transactions.
+Boundary cases of 0 and 1 were included and worked as expected.
+
+### B. Content of Invocations—ArgumentCaptor
+The `ArgumentCaptor` was used to capture and verify the transactions passed to `onTransactionComplete`.
+By processing multiple transactions, the test ensured both the number of calls and the actual transaction IDs were correct.
+
+### C. Content of Invocations—Increasing Observability
+To increase observability, the `processPayment` method was modified to return the processed transaction if valid, or null if invalid.
+This was tested by verifying the returned values matched the expected transactions or null for invalid ones.
+
+### D. Comparison
+#### ArgumentCaptor (B):
+- **Advantages**: Captures exact arguments for detailed verification. Useful when methods do not return values.
+- **Disadvantages**: Adds complexity to the test setup.
+
+#### Increasing Observability (C):
+- **Advantages**: Simplifies tests by directly verifying return values. Makes it easier to test method outputs.
+- **Disadvantages**: May require modifying methods to return values, which could complicate the design.
+
+Both techniques have their place, with `ArgumentCaptor` providing detailed insight into method interactions and increased observability offering a straightforward approach to output verification.
+
 
 ## ticket_system
+### Use of Doubles for NotificationService and LogService
+#### Identify Dependencies
+In the `createTicket` method, the following dependencies are external and should be mocked in the tests:
+
+1. **NotificationService**: This service is responsible for notifying the customer, likely through email. Email notifications can be slow, unreliable, and dependent on external servers, making them unsuitable for unit testing.
+2. **LogService**: This service logs ticket creation events. Logging operations can involve file I/O or network operations, which can also be slow and unreliable in a test environment.
+
+Additionally, the `TicketRepository` should be mocked as it represents an interface to a database or persistent storage, which is another external dependency.
+
+#### Test Doubles Usage
+We use Mockito to mock these dependencies and verify that the services are called correctly during the execution of the `createTicket` method.
+The tests ensure that the method interacts with the external services as expected without actually invoking them.
+
+### Disadvantages of Using Doubles in Your Tests
+1. **Lack of Realism**: Mocks and stubs do not execute actual code of the dependencies, which might miss certain integration issues.
+2. **Maintenance Overhead**: Changes in the interfaces or behaviors of the actual dependencies require corresponding updates in the mocks.
+3. **False Confidence**: Tests may pass with mocks but fail in a real environment due to unforeseen issues with the actual dependencies.
+
+### Handling of Failures in Notification and Logging
+We simulate failures in both the `NotificationService` and `LogService` to ensure the `createTicket` method handles these failures gracefully and continues its operation where appropriate.

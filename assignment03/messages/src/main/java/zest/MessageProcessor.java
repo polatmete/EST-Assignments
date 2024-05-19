@@ -17,6 +17,9 @@ public class MessageProcessor {
     }
 
     public void processMessages(List<Message> messages) {
+        if (messages == null) {
+            throw new IllegalArgumentException("no messages provided");
+        }
         for (Message message : messages) {
             messageService.sendMessage(message.getReceiver(), message.getContent());
             notifyListener(message.getReceiver(), message.getContent());
