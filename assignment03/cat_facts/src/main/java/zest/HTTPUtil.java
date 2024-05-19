@@ -13,7 +13,7 @@ import java.io.IOException;
 
 public class HTTPUtil {
 
-    public static String get(String url) throws IOException {
+    public String get(String url) throws IOException {
         CloseableHttpClient client = HttpClients.createDefault();
         HttpGet request = new HttpGet(url);
         CloseableHttpResponse response = client.execute(request);

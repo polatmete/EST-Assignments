@@ -107,6 +107,44 @@ setups, especially with setting up a comprehensive test suite.
 
 ## cat_facts
 
+### External dependencies
+
+In this exercise the `CatFactsRetriever` class depends on the `HTTPUtil` class, which relies on the `https://catfact.ninja/fact` API.
+Since every call to a method of the `CatFactsRetriever` makes a call to this API via the `HTTPUtil` class, testing the `CatFactsRetriever`
+could be flaky, as the API might not always answer. This is a common problem as soon as API calls are involved in the production code.
+The `HTTPUtil` class therefore needs to be stubbed, to avoid making "real" calls to the API and depending on its availability. For the tests
+we therefore need to configure a `mockResponse` which already consists of one or more returns from the API.
+   
+### Refactoring
+
+When first stubbing the `HTTPUtil` class we get an MissingMethodInvocationException error. This stems from the static `get` method of the class. When removing
+the static keyword, the `CatFactsRetriever` class throws a "Non-static method 'get(java.lang.String)' cannot be referenced from a static context" error. We therefore
+introduce a constructor in the `CatFactsRetriever` class with the `HTTPUtil` class in it. The methods of the `CatFactsRetriever` class no longer call 
+the `HTTPUtil` class itself but rather accesses the instance attribute `httpUtil`, responsible for calling the API. Now we are able to stub the `HTTPUtil` class
+in the tests.
+
+For the `retrieveRandom` method we only need one test and make sure the stub is called. For the `retrieveLongest` we also need to test the basic behavior first.
+Since we have the attribute `limit` in this case we also test for null and edge cases (zero or negative).
+
+The following tests are implemented:
+1. basic behavior of `retrieveRandom`
+2. basic behavior of `retrieveLongest`
+3. `retrieveLongest` with limit = null
+4. `retrieveLongest` with limit = 0 (0 is always an edge case as soon as integer are involved)
+5. `retrieveLongest` with negative limit
+
+With test 5 we noticed the strange behavior that the API still returns facts even when the limit is set to a negative number.
+It seems like it returns the longest fact overall in this case. We still left this test in the test suite and used the originally
+returned facts in our stub, since it qualifies as special behavior and should be covered by the test suite.
+   
+### Disadvantages of using test doubles
+
+A general disadvantage when testing with test doubles is that if the API changes, we would not pick this up in our test suite,
+as the tests would still pass. We would have to notice this somehow and then adapt our test suite to the new real returns
+by the API. In terms of the `CatFactsRetriever` class another disadvantage is, that we have to instantiate the stubbed return
+for every test, meaning we have a lot of Strings for our mocked responses. Especially the mocked response for the last
+test is very long and makes the test suite look bloated. Configuring them also takes some time.
+
 ## e_shop
 
 ## messages
