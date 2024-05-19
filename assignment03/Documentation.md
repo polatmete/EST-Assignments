@@ -28,12 +28,13 @@ The tests for this task are the following:
 2. Order is placed and correct number of calls is made
 
 ### B. Content of invocations—`ArgumentCaptor`
-To test the content of the invocations we assert that the order which is published via the `EventPublisher` is the same one
+To test the content of the orders we assert that the order which is published via the `EventPublisher` is the same one
 as the order that is "ordered" by the `EmailNotificationService` and the `InventoryManager`. We use an ArgumentCaptor to capture
 the order and then compare it to the original order.
 
 The tests for this task are the following:
-3. Order is placed and content of invocations (meaning the order itself) is correct.
+3. Single order is placed
+4. Multiple orders are placed
 
 Thinking about tests 2 and 3 we realized that it would be possible to combine them both into one test by copying the 
 verify-statements from test 2 into the "middle" of test 3. For more clarity and also to follow the order of these tasks
@@ -41,12 +42,23 @@ we left them both as they stand, even though test 3 is only an extension of test
 
 ### C. Content of invocations—Increasing observability
 
-Instead of using `ArgumentCaptor`, you could increase the observability of one or more classes to achieve the same goal.
-Implement the necessary code for increasing the observability and write additional test(s) to test whether the content of the messages is as expected.
+To increase the observability we introduced a new listener was implemented, similar to the one in the exercise about messages.
+An interface was added which is responsible for logging orders and their content. The `EventPublisher` was adapted to account
+for this addition. The orders are now logged in a list which can be accessed in the tests to verify their correctness.
+In terms of the tests we didn't add anything new, but expanded the tests 3 and 4 with the flow `Observability`.
 
 ### D. Comparison
 
-What are the advantages and what are the disadvantages of the techniques you used in B. and C.?
+The advantage of using the ArgumentCaptor is that no additional code has to be written in the actual implementation of the 
+classes. All the necessary code is placed in the test itself. Since we rely on mocking in this case, we are able to make use 
+of all the advantages of mocking itself. We are able to isolate the unit under test from external dependencies and improve
+readability for example.
+
+When increasing the observability we were able to see that our tests are smaller, but the additional code was placed in
+the classes instead. The additional code can be reused everywhere of course, which also has its benefits (Code is not
+only for testing). Another advantage over using the ArgumentCaptor is that we don't have to learn about an additional
+framework, potentially decreasing the amount of time we have to invest. Of course this argument doesn't hold once you 
+are familiar with Mockito.
 
 ## messages
 Currently, the public class `MessageProcessor` instantiates an instance of the class `MessageService` which is further used to send all messages.

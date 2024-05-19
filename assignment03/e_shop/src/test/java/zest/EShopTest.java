@@ -4,79 +4,133 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 public class EShopTest {
-    // Setup an order
-    String orderId = "Big order";
-    Double amount = 100.0;
-    Order completeOrder = new Order(orderId, amount);
-
-    // Setup variables
     private EventPublisher publisher;
-    private EmailNotificationService emailService;
-    private InventoryManager inventoryManager;
+    private TestMessageListener testListener;
+    private EmailNotificationService mockEmailService;
+    private InventoryManager mockInventoryManager;
     private ArgumentCaptor<Order> orderCaptor;
 
     @BeforeEach
     void init() {
         // Setup the event publisher
-        publisher = new EventPublisher();
+        testListener = new TestMessageListener();
+        publisher = new EventPublisher(testListener);
 
         // Setup mocked services
-        emailService = mock(EmailNotificationService.class);
-        inventoryManager = mock(InventoryManager.class);
+        mockEmailService = mock(EmailNotificationService.class);
+        mockInventoryManager = mock(InventoryManager.class);
 
         // Setup ArgumentCaptors
         orderCaptor = ArgumentCaptor.forClass(Order.class);
 
         // Setup subscriptions and place order
-        publisher.subscribe(emailService);
-        publisher.subscribe(inventoryManager);
+        publisher.subscribe(mockEmailService);
+        publisher.subscribe(mockInventoryManager);
     }
 
     @Test
     void nullOrder() {
-        publisher.publishOrderToAllListeners(null);
-        verify(emailService, never()).onOrderPlaced(completeOrder);
-        verify(inventoryManager, never()).onOrderPlaced(completeOrder);
+        Order order = new Order("Big Order", 100.0);
+        assertThrows(NullPointerException.class, () -> publisher.publishOrderToAllListeners(null));
+        verify(mockEmailService, never()).onOrderPlaced(order);
+        verify(mockInventoryManager, never()).onOrderPlaced(order);
     }
 
     @Test
-    void publisherCallsCorrectly() {
-        publisher.publishOrderToAllListeners(completeOrder);
+    void verifiyNumberOfInvocations() {
+        Order order = new Order("Big Order", 100.0);
+        publisher.publishOrderToAllListeners(order);
 
         // Verify that the onOrderPlaced was called for both services
-        verify(emailService, times(1)).onOrderPlaced(completeOrder);
-        verify(inventoryManager, times(1)).onOrderPlaced(completeOrder);
+        verify(mockEmailService, times(1)).onOrderPlaced(order);
+        verify(mockInventoryManager, times(1)).onOrderPlaced(order);
     }
 
     @Test
-    void wholeOrderPlacement() {
-        publisher.publishOrderToAllListeners(completeOrder);
+    void verifySingleOrder() {
+        Order order = new Order("Big Order", 100.0);
+        publisher.publishOrderToAllListeners(order);
 
-        // Verify that the content of each calls matches the expected order
-        verify(emailService).onOrderPlaced(orderCaptor.capture());
-        verify(inventoryManager).onOrderPlaced(orderCaptor.capture());
-
-        // Retrieve the captured orders
-        Order capturedService1 = orderCaptor.getAllValues().get(0);
-        Order capturedService2 = orderCaptor.getAllValues().get(1);
-
-        // Assert that the captured orders are equal to the original order
-        assertEquals(completeOrder, capturedService1);
-        assertEquals(completeOrder, capturedService2);
+        verifyReceiverContentSingleOrder(order);
     }
 
     @Test
-    void contentOfOrderPlacements() {
+    void verifyMultipleOrders() {
+        ArrayList<Order> orders = new ArrayList<>();
+        orders.add(new Order("Big Order", 100.0));
+        orders.add(new Order("Second Order", 200.0));
+        orders.add(new Order("Third Order", 300.0));
+
+        for (int i = 0; i < orders.size(); i++) {
+            publisher.publishOrderToAllListeners(orders.get(i));
+        }
+
+        verifyReceiverContentMultipleOrders(3, orders);
+    }
+
+    void verifyReceiverContentSingleOrder(Order order) {
+        // B. ArgumentCaptor
+        verify(mockEmailService).onOrderPlaced(orderCaptor.capture());
+        verify(mockInventoryManager).onOrderPlaced(orderCaptor.capture());
+
+        Order capturedMessageService = orderCaptor.getAllValues().get(0);
+        Order capturedInventoryManager = orderCaptor.getAllValues().get(1);
+
+        assertEquals(order.getOrderId(), capturedMessageService.getOrderId());
+        assertEquals(order.getAmount(), capturedMessageService.getAmount());
+        assertEquals(order.getOrderId(), capturedInventoryManager.getOrderId());
+        assertEquals(order.getAmount(), capturedInventoryManager.getAmount());
+
+        // C. Observability
+        assertEquals(2, testListener.loggedMessages.size());
+        for (int i = 0; i < testListener.loggedMessages.size(); i++) {
+            assertEquals(order.getOrderId(), testListener.loggedMessages.get(i).getOrderId());
+            assertEquals(order.getAmount(), testListener.loggedMessages.get(i).getAmount());
+        }
+    }
+
+    void verifyReceiverContentMultipleOrders(int numberOfOrders, ArrayList<Order> orders) {
+        // B. ArgumentCaptor
+        verify(mockEmailService, times(orders.size())).onOrderPlaced(orderCaptor.capture());
+        verify(mockInventoryManager, times(orders.size())).onOrderPlaced(orderCaptor.capture());
+
+        List<Order> capturedOrders = orderCaptor.getAllValues();
+
+        for (int i = 0; i < orders.size(); i++) {
+            assertEquals(orders.get(i).getOrderId(), capturedOrders.get(i).getOrderId());
+            assertEquals(orders.get(i).getAmount(), capturedOrders.get(i).getAmount());
+            assertEquals(orders.get(i).getOrderId(), capturedOrders.get(i + numberOfOrders).getOrderId());
+            assertEquals(orders.get(i).getAmount(), capturedOrders.get(i + numberOfOrders).getAmount());
+        }
+
+        // C. Observability
+        assertEquals(numberOfOrders * 2, testListener.loggedMessages.size());
+
         /**
-         * Instead of using `ArgumentCaptor`, you could increase the observability of one or more classes to achieve the same goal.
-         * Implement the necessary code for increasing the observability and write additional test(s) to
-         * test whether the content of the messages is as expected.
+         * Every order is two times in messages. One from the messageService and once from the inventoryManager.
+         * We therefore need to compare the first two messages to the first order, the second two messages to the
+         * second order and so on. That is why we divide the iterator for the orders by 2.
          */
+        for (int i = 0; i < testListener.loggedMessages.size(); i++) {
+            assertEquals(orders.get(i/2).getOrderId(), testListener.loggedMessages.get(i).getOrderId());
+            assertEquals(orders.get(i/2).getAmount(), testListener.loggedMessages.get(i).getAmount());
+        }
     }
 
+    private static class TestMessageListener implements MessageListener {
+        List<Order> loggedMessages = new ArrayList<>();
+        @Override
+        public void logSentMessage(String orderId, Double amount) {
+            loggedMessages.add(new Order(orderId, amount));
+        }
+    }
 
 }
