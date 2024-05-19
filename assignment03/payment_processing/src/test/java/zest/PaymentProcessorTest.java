@@ -10,7 +10,7 @@ import java.util.List;
 
 import static org.mockito.Mockito.*;
 
-public class PaymentProcessingTest {
+public class PaymentProcessorTest {
 
     private PaymentProcessor processorUnderTest;
     private List<AuditService> mockAuditServices;

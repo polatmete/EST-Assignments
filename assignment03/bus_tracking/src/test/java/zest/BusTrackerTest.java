@@ -7,7 +7,7 @@ import org.mockito.ArgumentCaptor;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
-public class BusTrackingTest {
+public class BusTrackerTest {
     private final String busId ="bus_id";
     private final String waypointName = "WaypointName";
     private final Double latitude = 47.3769;
