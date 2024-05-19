@@ -119,8 +119,8 @@ public class PaymentProcessingTest {
 
             List<Transaction> capturedTransactions = transactionCaptor.getAllValues();
             assertEquals(2, capturedTransactions.size());
-            assertEquals(123, capturedTransactions.get(0).getId());
-            assertEquals(1234, capturedTransactions.get(1).getId());
+            assertEquals(validTransaction1.getId(), capturedTransactions.get(0).getId());
+            assertEquals(validTransaction2.getId(), capturedTransactions.get(1).getId());
         }
     }
 
@@ -136,9 +136,9 @@ public class PaymentProcessingTest {
 
         // Assert the returned transactions are as expected
         assertNotNull(returnedTransaction1);
-        assertEquals(567, returnedTransaction1.getId());
+        assertEquals(validTransaction1.getId(), returnedTransaction1.getId());
         assertNotNull(returnedTransaction2);
-        assertEquals(5678, returnedTransaction2.getId());
+        assertEquals(validTransaction2.getId(), returnedTransaction2.getId());
     }
 
     @Test
@@ -152,7 +152,7 @@ public class PaymentProcessingTest {
         Transaction returnedInvalidTransaction = processorUnderTest.processPayment(invalidTransaction);
 
         // Assert the valid transaction is returned and the invalid transaction is null
-        assertEquals(890, returnedValidTransaction.getId());
+        assertEquals(validTransaction.getId(), returnedValidTransaction.getId());
         assertNull(returnedInvalidTransaction);
     }
 }
