@@ -18,7 +18,7 @@ public class BookManagerTest {
     }
 
     @Test
-    public void returnHighRatedBooksOnly(){
+    void returnHighRatedBooksOnly(){
         Book book1 = new Book("Book1", 3, "Sandra");
         Book book2 = new Book("Book2", 4, "Emily");
         Book book3 = new Book("Book3", 5, "Josh");
@@ -30,7 +30,7 @@ public class BookManagerTest {
     }
 
     @Test
-    public void emptyBookRatings(){
+    void emptyBookRatings(){
         List<Book> listOfBooks = List.of();
         BookManager bookManager = getBookManagerWithStubbedFetcher(listOfBooks);
 
@@ -38,7 +38,7 @@ public class BookManagerTest {
     }
 
     @Test
-    public void ratingsOutOfRange(){
+    void ratingsOutOfRange(){
         Book book1 = new Book("Book1", -1, "Sandra");
         Book book2 = new Book("Book2", 0, "Emily");
         Book book3 = new Book("Book3", 6, "Josh");
@@ -50,7 +50,7 @@ public class BookManagerTest {
     }
 
     @Test
-    public void returnUniqueAuthors(){
+    void returnUniqueAuthors(){
         Book book1 = new Book("Book1", 3, "Sandra");
         Book book2 = new Book("Book2", 4, "Emily");
         Book book3 = new Book("Book3", 5, "Josh");
@@ -62,7 +62,7 @@ public class BookManagerTest {
     }
 
     @Test
-    public void returnDuplicateAuthors(){
+    void returnDuplicateAuthors(){
         Book book1 = new Book("Book1", 3, "Sandra");
         Book book2 = new Book("Book2", 4, "Emily");
         Book book3 = new Book("Book3", 5, "Josh");
@@ -76,7 +76,7 @@ public class BookManagerTest {
     }
 
     @Test
-    public void emptyAuthors(){
+    void emptyAuthors(){
         List<Book> listOfBooks = List.of();
         BookManager bookManager = getBookManagerWithStubbedFetcher(listOfBooks);
 

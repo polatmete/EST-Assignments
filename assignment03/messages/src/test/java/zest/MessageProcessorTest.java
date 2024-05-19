@@ -70,7 +70,7 @@ public class MessageProcessorTest {
         verifyReceiverContentTwoPlusMessages(2, messages);
     }
 
-    void verifyReceiverContentSingleMessage(List<Message> messages) {
+    private void verifyReceiverContentSingleMessage(List<Message> messages) {
         // B. ArgumentCaptor
         verify(mockMessageService, times(1)).sendMessage(receiverCaptor.capture(), contentCaptor.capture());
         String receiver = receiverCaptor.getValue();
@@ -84,7 +84,7 @@ public class MessageProcessorTest {
         assertEquals(messages.get(0).getContent(), stubListener.loggedMessages.get(0).getContent());
     }
 
-    void verifyReceiverContentTwoPlusMessages(int numberMessages, List<Message> messages) {
+    private void verifyReceiverContentTwoPlusMessages(int numberMessages, List<Message> messages) {
         // B. ArgumentCaptor
         verify(mockMessageService, times(numberMessages)).sendMessage(receiverCaptor.capture(), contentCaptor.capture());
         List<String> receiver = receiverCaptor.getAllValues();

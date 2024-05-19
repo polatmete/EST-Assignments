@@ -16,7 +16,7 @@ public class PaymentProcessorTest {
     private List<AuditService> mockAuditServices;
 
     @BeforeEach
-    public void initialize() {
+    void init() {
         // Initialize the mock audit services
         mockAuditServices = new ArrayList<>();
         mockAuditServices.add(mock(AuditService.class));
@@ -51,7 +51,7 @@ public class PaymentProcessorTest {
     }
 
     @Test
-    public void shouldInvokeOnTransactionCompleteForValidTransactions() {
+    void shouldInvokeOnTransactionCompleteForValidTransactions() {
         // Create valid transactions
         Transaction validTransaction1 = new Transaction(1);
         Transaction validTransaction2 = new Transaction(2);
@@ -67,7 +67,7 @@ public class PaymentProcessorTest {
     }
 
     @Test
-    public void shouldNotInvokeOnTransactionCompleteForInvalidTransactions() {
+    void shouldNotInvokeOnTransactionCompleteForInvalidTransactions() {
         // Create invalid transactions
         Transaction invalidTransaction1 = new Transaction(0);
         Transaction invalidTransaction2 = new Transaction(-1);
@@ -83,7 +83,7 @@ public class PaymentProcessorTest {
     }
 
     @Test
-    public void shouldInvokeOnTransactionCompleteForMixedTransactions() {
+    void shouldInvokeOnTransactionCompleteForMixedTransactions() {
         // Create mixed transactions
         Transaction validTransaction = new Transaction(1);
         Transaction invalidTransaction = new Transaction(0);
@@ -99,7 +99,7 @@ public class PaymentProcessorTest {
     }
 
     @Test
-    public void shouldCaptureArgumentsOfCompletedTransactions() {
+    void shouldCaptureArgumentsOfCompletedTransactions() {
         // Create transactions
         Transaction validTransaction1 = new Transaction(123);
         Transaction validTransaction2 = new Transaction(1234);
@@ -125,7 +125,7 @@ public class PaymentProcessorTest {
     }
 
     @Test
-    public void shouldReturnProcessedValidTransactions() {
+    void shouldReturnProcessedValidTransactions() {
         // Create valid transactions
         Transaction validTransaction1 = new Transaction(567);
         Transaction validTransaction2 = new Transaction(5678);
@@ -142,7 +142,7 @@ public class PaymentProcessorTest {
     }
 
     @Test
-    public void shouldReturnMixedProcessedTransactions() {
+    void shouldReturnMixedProcessedTransactions() {
         // Create a valid and an invalid transaction
         Transaction validTransaction = new Transaction(890);
         Transaction invalidTransaction = new Transaction(-98);
