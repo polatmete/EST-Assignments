@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
-public class EShopTest {
+public class EventPublisherTest {
     private EventPublisher publisher;
     private TestMessageListener testListener;
     private EmailNotificationService mockEmailService;
@@ -71,14 +71,14 @@ public class EShopTest {
         orders.add(new Order("Second Order", 200.0));
         orders.add(new Order("Third Order", 300.0));
 
-        for (int i = 0; i < orders.size(); i++) {
-            publisher.publishOrderToAllListeners(orders.get(i));
+        for (Order order : orders) {
+            publisher.publishOrderToAllListeners(order);
         }
 
         verifyReceiverContentMultipleOrders(3, orders);
     }
 
-    void verifyReceiverContentSingleOrder(Order order) {
+    private void verifyReceiverContentSingleOrder(Order order) {
         // B. ArgumentCaptor
         verify(mockEmailService).onOrderPlaced(emailCaptor.capture());
         verify(mockInventoryManager).onOrderPlaced(inventoryCaptor.capture());
@@ -117,7 +117,7 @@ public class EShopTest {
         // C. Observability
         assertEquals(numberOfOrders * 2, testListener.loggedMessages.size());
 
-        /**
+        /*
          * Every order is two times in messages. One from the messageService and once from the inventoryManager.
          * We therefore need to compare the first two messages to the first order, the second two messages to the
          * second order and so on. That is why we divide the iterator for the orders by 2.

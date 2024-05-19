@@ -10,12 +10,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class CatFactsTest {
+public class CatFactsRetrieverTest {
 
     private CatFactsRetriever catFactsRetriever;
     private HTTPUtil mockHttpUtil;
-
-    private String url = "https://catfact.ninja/fact";
     private String singleMockResponse;
     private String multipleMockResponse;
     private String noMockResponse;
@@ -33,7 +31,7 @@ public class CatFactsTest {
     }
 
     @Test
-    public void testRetrieveRandom() throws IOException {
+    void testRetrieveRandom() throws IOException {
         mockResponse = new JSONObject(singleMockResponse);
         when(mockHttpUtil.get("https://catfact.ninja/fact")).thenReturn(singleMockResponse);
         String fact = catFactsRetriever.retrieveRandom();
@@ -41,7 +39,7 @@ public class CatFactsTest {
     }
 
     @Test
-    public void testRetrieveLongest() throws IOException {
+    void testRetrieveLongest() throws IOException {
         mockResponse = new JSONObject(multipleMockResponse);
         int limit = mockResponse.getJSONArray("data").length();
         when(mockHttpUtil.get("https://catfact.ninja/facts?limit=" + limit)).thenReturn(multipleMockResponse);
@@ -60,7 +58,7 @@ public class CatFactsTest {
     }
 
     @Test
-    public void testRetrieveLongestLimitZero() throws IOException {
+    void testRetrieveLongestLimitZero() throws IOException {
         mockResponse = new JSONObject(noMockResponse);
         int limit = mockResponse.getJSONArray("data").length();
         when(mockHttpUtil.get("https://catfact.ninja/facts?limit=" + limit)).thenReturn(noMockResponse);
@@ -70,7 +68,7 @@ public class CatFactsTest {
     }
 
     @Test
-    public void testRetrieveLongestNegativeLimit() throws IOException {
+    void testRetrieveLongestNegativeLimit() throws IOException {
         mockResponse = new JSONObject(negativeMockResponse);
         int limit = mockResponse.getJSONArray("data").length();
         when(mockHttpUtil.get("https://catfact.ninja/facts?limit=" + limit)).thenReturn(negativeMockResponse);
