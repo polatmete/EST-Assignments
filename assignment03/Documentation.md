@@ -111,23 +111,14 @@ setups, especially with setting up a comprehensive test suite.
 
 ## messages
 
-Currently, the public class `MessageProcessor` instantiates an instance of the class `MessageService` which is further
-used to send all messages.
-This architecture makes it difficult to work with test doubles and, therefore, the logic is split up. A constructor is
-added to the class `MessageProcessor`
-which accepts an `MessageService` instance as a parameter to enable dependency injection. The passed instance is then
-assigned to a private final field that
-is used throughout the class. Therefore, the method `processMessages` creates no new instance of the `MessageService`
-but always refers to the private variable.\
-In the next step the mocking framework is implemented. Namely, the `MessageService` is mocked using `Mockito`. For this
-two private fields are instantiated, one `Service`
-and one `Processor`. To guarantee independence between tests the annotation `@BeforeEach` is used to freshly initialize
-both fields before running each test.\
-When testing lists, it's common practice to test for null / undefined as well as empty lists. In addition, lists can
-have only one element, multiple elements and duplicates.
-Pursuing this idea and applying it to the method `processMessages`, the following test cases can be derived as a first
-step:
-
+Currently, the public class `MessageProcessor` instantiates an instance of the class `MessageService` which is further used to send all messages.
+This architecture makes it difficult to work with test doubles and, therefore, the logic is split up. A constructor is added to the class `MessageProcessor`
+which accepts an `MessageService` instance as a parameter to enable dependency injection. The passed instance is then assigned to a private final field that
+is used throughout the class. Therefore, the method `processMessages` creates no new instance of the `MessageService` but always refers to the private variable.\
+In the next step the mocking framework is implemented. Namely, the `MessageService` is mocked using `Mockito`. For this two private fields are instantiated, one `Service`
+and one `Processor`. To guarantee independence between tests the annotation `@BeforeEach` is used to freshly initialize both fields before running each test.\
+When testing lists, it's common practice to test for null / undefined as well as empty lists. In addition, lists can have only one element, multiple elements and duplicates.
+Pursuing this idea and applying it to the method `processMessages`, the following test cases can be derived as a first step:
 1. Null list
 2. Empty list
 3. List with one message only
@@ -136,43 +127,66 @@ step:
 
 ### A. Number of Invocations
 
-To count the **number of invocations** the `Mockito` methods `never()` and `times(<int>)` in combination with `verify`
-are used whenever the `sendMessages` method is called.
+To count the **number of invocations** the `Mockito` methods `never()` and `times(<int>)` in combination with `verify` are used whenever the `sendMessages` method is called.
 
 ### B. Content of invocations—`ArgumentCaptor`
 
-To assert the **content of invocations** two new private fields are added, namely the `receiverCaptor` and
-the `contentCaptor` which are used to capture both parameters. Both the
-receiver and the content can then be compared to verify the expected string. To reduce duplicate code, these two checks
-are combined in a method (one for `1` and another for `2+` messages).
+To assert the **content of invocations** two new private fields are added, namely the `receiverCaptor` and the `contentCaptor` which are used to capture both parameters. Both the
+receiver and the content can then be compared to verify the expected string. To reduce duplicate code, these two checks are combined in a method (one for `1` and another for `2+` messages).
 
 ### C. Content of invocations—Increasing observability
 
-Finally, to **increase observability** of the `MessageProcessor` class, a special case of the observer pattern is
-implemented (single listener). For this an interface `MessageListener`
-is added which includes a method for logging sent messages. Furthermore, an additional field and instance of the
-provided interface is added to the constructor in `MessageProcessor`.
-Then, whenever `processMessages` is called, the listener is notified and logs all sent messages. To the test class
-a `TestMessageListener` subclass is added which implements the new interface with its method
-and logs all messages in a list. This helps to verify the messages' receivers and contents when testing and removes the
-dependency on external tools.
+Finally, to **increase observability** of the `MessageProcessor` class, a special case of the observer pattern is implemented (single listener). For this an interface `MessageListener`
+is added which includes a method for logging sent messages. Furthermore, an additional field and instance of the provided interface is added to the constructor in `MessageProcessor`.
+Then, whenever `processMessages` is called, the listener is notified and logs all sent messages. To the test class a `StubMessageListener` subclass is added which implements the new interface with its method
+and logs all messages in a list. This helps to verify the messages' receivers and contents when testing and removes the dependency on external tools.
 
 ### D. Comparison
 
 Using tools like `ArgumentCaptor` has the following consequences:
-
 - It's possible to directly capture the exact parameters
 - Fast implementation
 - Relies on mocking frameworks
 - Only useful for testing
 
 Increasing the observability has the following consequences:
-
 - Independence from external tools
 - Provides a framework which can be reused (such as the observer pattern)
 - Requires a lot of additional code
 
+
 ## movie_streaming
+
+In a first step the methods `updateMovieMetadata(String movieId, MovieMetadata metadata)` and `validateStreamingToken(String movieId, String token)` are implemented.\
+The `movieId` is added as a parameter to `validateStreamingToken` since the token is generated with the help of a `movieId` and therefore required for validation too.
+In addition, the method is made `private` since it will be only used by the `MovieStreamingManager` to validate the token when streaming a movie.
+Next, the code is adjusted to make use of the newly added methods:
+- The interface `FileStreamService` now includes `Boolean validateToken(String movieId, String token)` which return `true` if the token is validated successfully, `false` otherwise.
+- The interface `CacheService` now includes `void refreshCache(String movieId, StreamingDetails details)` to enable refreshing the cache if the token could not be validated and a new one is generated.
+- A method is added to the `MovieStreamingManager` to validate the provided input `movieId`. It throws an exception if the ID is invalid or the movie is not found.
+
+For testing, to successfully mock the `FileStreamSercie` and the `CacheService` the framework provided by `Mockito` is used.  Two private fields are instantiated, one `FileStream` and one `Cache`.
+To guarantee independence between tests the annotation `@BeforeEach` is used to freshly initialize both fields before running each test. Furthermore, two variables for `MovieMetadata` and `StreamingDetails`
+are initialized to be used during the tests.\
+When testing strings, it's common practice to also test for null / undefined as well as empty strings.
+Calling the method `streamMovie`, the following test cases can be derived:
+1. Null string `movieId`
+2. Empty string `movieId`
+3. Test string of non-existent movie
+4. Test string with empty cache
+5. Test string with cached details and invalid token
+6. Test string with cached details and valid token
+
+Calling the method `updateMovieMetadata`, the following test cases can be derived:
+1. Null string `movieId`
+2. Empty string `movieId`
+3. Test string of non-existent movie
+4. Test string and `null` metadata
+5. Test string and invalid metadata: `null` in `title` or / and `description`
+6. Test string and invalid metadata: empty `title` or / and `description`
+7. Test string and valid metadata
+
+To successfully compare the content of the created instances during testing (and not the objects themselves) `AssertJ` is used with its command `assertThat(<expected>).usingRecursiveComparison().isEqualTo(<actual>)`.
 
 ## payment_processing
 
