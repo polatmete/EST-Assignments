@@ -220,3 +220,23 @@ Both techniques have their place, with `ArgumentCaptor` providing detailed insig
 
 
 ## ticket_system
+### Use of Doubles for NotificationService and LogService
+#### Identify Dependencies
+In the `createTicket` method, the following dependencies are external and should be mocked in the tests:
+
+1. **NotificationService**: This service is responsible for notifying the customer, likely through email. Email notifications can be slow, unreliable, and dependent on external servers, making them unsuitable for unit testing.
+2. **LogService**: This service logs ticket creation events. Logging operations can involve file I/O or network operations, which can also be slow and unreliable in a test environment.
+
+Additionally, the `TicketRepository` should be mocked as it represents an interface to a database or persistent storage, which is another external dependency.
+
+#### Test Doubles Usage
+We use Mockito to mock these dependencies and verify that the services are called correctly during the execution of the `createTicket` method.
+The tests ensure that the method interacts with the external services as expected without actually invoking them.
+
+### Disadvantages of Using Doubles in Your Tests
+1. **Lack of Realism**: Mocks and stubs do not execute actual code of the dependencies, which might miss certain integration issues.
+2. **Maintenance Overhead**: Changes in the interfaces or behaviors of the actual dependencies require corresponding updates in the mocks.
+3. **False Confidence**: Tests may pass with mocks but fail in a real environment due to unforeseen issues with the actual dependencies.
+
+### Handling of Failures in Notification and Logging
+We simulate failures in both the `NotificationService` and `LogService` to ensure the `createTicket` method handles these failures gracefully and continues its operation where appropriate.
