@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
-class TicketManagerTest {
+public class TicketSystemTest {
 
     private NotificationService notificationService;
     private LogService logService;
@@ -14,7 +14,7 @@ class TicketManagerTest {
     private TicketManager ticketManager;
 
     @BeforeEach
-    void setUp() {
+    public void setUp() {
         notificationService = mock(NotificationService.class);
         logService = mock(LogService.class);
         ticketRepository = mock(TicketRepository.class);
@@ -22,7 +22,7 @@ class TicketManagerTest {
     }
 
     @Test
-    void testCreateTicket() {
+    public void testCreateTicket() {
         Ticket ticket = new Ticket("customer@example.com", "Issue description", TicketPriority.NORMAL);
 
         ticketManager.createTicket(ticket);
@@ -33,7 +33,7 @@ class TicketManagerTest {
     }
 
     @Test
-    void testCreateTicketWithNullTicket() {
+    public void testCreateTicketWithNullTicket() {
         assertThrows(IllegalArgumentException.class, () -> ticketManager.createTicket(null));
 
         verify(logService, never()).logTicketCreation(any(Ticket.class));
@@ -42,7 +42,7 @@ class TicketManagerTest {
     }
 
     @Test
-    void testCreateTicketWithNotificationFailure() {
+    public void testCreateTicketWithNotificationFailure() {
         Ticket ticket = new Ticket("customer@example.com", "Issue description", TicketPriority.NORMAL);
         doThrow(new RuntimeException("Notification failure")).when(notificationService).notifyCustomer(anyString(), anyString());
 
@@ -54,7 +54,7 @@ class TicketManagerTest {
     }
 
     @Test
-    void testCreateTicketWithLoggingFailure() {
+    public void testCreateTicketWithLoggingFailure() {
         Ticket ticket = new Ticket("customer@example.com", "Issue description", TicketPriority.NORMAL);
         doThrow(new RuntimeException("Logging failure")).when(logService).logTicketCreation(any(Ticket.class));
 
